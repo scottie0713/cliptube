@@ -1,0 +1,38 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    tty: true
+    container_name: laravel-app
+    working_dir: /var/www
+    volumes:
+      - ./laravel:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    ports:
+      - "8000:8000" # ポートフォワーディングの設定を追加
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:5.7
+    container_name: laravel-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - laravel
+
+networks:
+  laravel:
+
+volumes:
+  mysql-data:
+
