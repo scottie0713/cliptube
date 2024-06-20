@@ -1,10 +1,5 @@
 import { createApp } from 'vue';
-import App from '../vue/App.vue'; // ルートコンポーネント
+import App from '@/App.vue'; // ルートコンポーネント
+import router from './router';
 
-const app = createApp(App);
-//app.config.devtools = true;
-
-// 必要に応じて他のプラグインやコンポーネントを登録
-// 例: app.use(router); 
-
-app.mount('#app');
+createApp(App).use(router).mount('#app');
