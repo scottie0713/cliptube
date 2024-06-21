@@ -9,7 +9,19 @@ use App\Http\Controllers\Auth\LoginController;
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 // Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+// Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+//     ->middleware('guest')
+//     ->name('login');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+});
 // Route::post('/loggedin', [LoginController::class, 'loggedin'])->name('loggedin');
 // Route::controller(RegisterController::class)->group(function () {
 //     Route::post('register', 'register');
@@ -21,3 +33,6 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 // });
 
 // Route::middleware(['auth:sanctum'])->get('/user', 'UserController@index');
+
+// auth.php取り込み
+// require __DIR__ . '/auth.php';

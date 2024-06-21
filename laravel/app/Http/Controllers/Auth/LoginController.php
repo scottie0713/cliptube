@@ -12,28 +12,20 @@ use App\Http\Requests\Auth\LoginRequest;
 
 class LoginController extends Controller
 {
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
-        $credentials = $request->validated();
+        $credentials = $request->validate([
+            'account_id' => ['required', 'string'],
+            'password' => ['required'],
+        ]);
 
+        // 認証が成功した場合の処理
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            $user->tokens()->delete();
-            $token = $user->createToken("login:user{$user->id}")->plainTextToken;
-
-            return response()->json([
-                'result' => true,
-                'token' => $token
-            ], Response::HTTP_OK);
+            // セッションIDの再生成
+            $request->session()->regenerate();
+            return response()->json(['message' => 'Login successful']);
         }
-        return response()->json([
-            'result' => false,
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        return response()->json(['message' => 'Login failed'], 401);
     }
 
-    public function loggedin()
-    {
-        return response()->json('', 200);
-    }
 }

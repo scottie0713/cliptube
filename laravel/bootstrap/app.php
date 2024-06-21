@@ -3,7 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use \App\Http\Middleware\AssignSessionID;
+// use \App\Http\Middleware\AssignSessionID;
+use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\URL;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,11 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
 
-        $middleware->alias([
-            'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
-        ]);
-        $middleware->redirectGuestsTo('/');
-        //
+        $middleware->redirectGuestsTo(function () {
+            //return URL::to('/');
+            //return route('login');
+            return env('APP_URL');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
