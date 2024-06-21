@@ -5,12 +5,13 @@
         <h2>ログイン</h2>
         <form @submit.prevent="login">
           <div class="mb-3">
-            <label for="loginUsername" class="form-label">アカウントID</label>
+            <p v-if="errorMessage" style="color: red">{{ errorMessage }}</p>
+            <label for="loginAccountId" class="form-label">アカウントID</label>
             <input
               type="text"
               class="form-control"
-              id="loginUsername"
-              v-model="username"
+              id="loginAccountId"
+              v-model="accountId"
               required
             />
           </div>
@@ -33,17 +34,38 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      username: "",
+      accountId: "",
       password: "",
+      errorMessage: "",
     };
   },
   methods: {
-    login() {
-      // ログイン処理
-      alert(`ログイン: ${this.username}`);
+    async login() {
+      try {
+        const response = await axios.post("/api/login", {
+          account_id: this.accountId,
+          password: this.password,
+        });
+        if (response.status === 200) {
+          this.$router.push("/member");
+        }
+      } catch (error) {
+        // エラーハンドリング
+        if (error.response) {
+          console.error(error.response.data);
+          this.errorMessage = error.response.data; // API からのエラーメッセージを表示
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+          this.errorMessage = "応答がありません"; // レスポンスがない場合のエラー処理
+        } else {
+          console.error("Error setting up request:", error.message);
+          this.errorMessage = "Request setup error."; // リクエスト設定時のエラー処理
+        }
+      }
     },
     scrollToTop() {
       this.$emit("scrollToTop");
