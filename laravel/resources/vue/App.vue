@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app-vue">
     <Header
       :isLoggedIn="isLoggedIn"
       :accountId="accountId"
@@ -8,7 +8,7 @@
     />
     <LoginModal :visible="showLogin" @close="showLogin = false" />
     <RegisterModal :visible="showRegister" @close="showRegister = false" />
-    <Menu />
+    <Main />
   </div>
 </template>
 
@@ -17,14 +17,14 @@ import axios from "axios";
 import Header from "@/components/Header.vue";
 import LoginModal from "@/components/LoginModal.vue";
 import RegisterModal from "@/components/RegisterModal.vue";
-import Menu from "@/components/Menu.vue";
+import Main from "@/components/Main.vue";
 
 export default {
   components: {
     Header,
     LoginModal,
     RegisterModal,
-    Menu,
+    Main,
   },
   data() {
     return {
@@ -61,9 +61,7 @@ export default {
 </script>
 
 <style scoped>
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.app-vue {
+  height: 100%;
 }
 </style>

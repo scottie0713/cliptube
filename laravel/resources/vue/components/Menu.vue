@@ -1,15 +1,13 @@
 <template>
-  <div class="menu-container">
-    <h1 class="title">Cliptube</h1>
+  <div class="menu-container" ref="menuSection">
+    <h1 class="title display-4">Cliptube</h1>
     <div class="menu-grid">
-      <div
-        v-for="item in menuItems"
-        :key="item.code"
-        class="menu-item"
-        @click="handleClick(item.code)"
-      >
-        {{ item.name }}
+      <div class="menu-item" @click="scrollToSearchYoutubeChannel">
+        クリップ作成
       </div>
+      <div class="menu-item" @click="scrollToClipList">クリップ一覧</div>
+      <div class="menu-item" @click="scrollToAbout">Cliptubeについて</div>
+      <div class="menu-item" @click="openTwitter">X(旧Twitter)</div>
     </div>
   </div>
 </template>
@@ -17,31 +15,20 @@
 <script>
 export default {
   data() {
-    return {
-      menuItems: [
-        {
-          code: "create",
-          name: "クリップ作成",
-        },
-        {
-          code: "list",
-          name: "クリップ一覧",
-        },
-        {
-          code: "about",
-          name: "Cliptubeについて",
-        },
-        {
-          code: "twitter",
-          name: "X(旧Twitter)",
-        },
-      ],
-    };
+    return {};
   },
   methods: {
-    handleClick(code) {
-      alert(`You clicked on ${code}`);
-      // ここにクリック時の処理を追加できます
+    scrollToSearchYoutubeChannel() {
+      this.$emit("scrollToSearchYoutubeChannel");
+    },
+    scrollToClipList() {
+      this.$emit("scrollToClipList");
+    },
+    scrollToAbout() {
+      this.$emit("scrollToAbout");
+    },
+    openTwitter() {
+      window.open("https://twitter.com/", "_blank");
     },
   },
 };
@@ -49,14 +36,10 @@ export default {
 
 <style scoped>
 .menu-container {
+  width: 100%;
+  height: 100%;
   text-align: center;
-  margin: 40px auto;
   padding: 20px;
-  color: aliceblue;
-  background-color: rgba(40, 40, 40, 0.5);
-  border-radius: 20px;
-  width: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title {

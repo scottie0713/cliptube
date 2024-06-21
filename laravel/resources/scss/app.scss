@@ -15,6 +15,10 @@ body {
     background-attachment: fixed; // 背景を固定する
 }
 
+#app {
+    height: 100%;
+}
+
 .component-container {
     background-color: rgba(255, 255, 255, 0.8);
     width: 100%;
