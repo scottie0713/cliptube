@@ -40,7 +40,7 @@ export default {
 
 .title {
   font-size: 5em;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .menu-grid {

@@ -1,26 +1,33 @@
 <template>
-  <div class="menu-container" ref="searchYoutubeChannelSection">
-    <div class="back-to-menu" @click="scrollToMenu">
-      &#9650; <!-- Up arrow symbol -->
+  <div class="container" ref="searchYoutubeChannelSection">
+    <div class="back-to-menu" @click="navigatoTo('Menu')">
+      &#9650;
+      <!-- Up arrow symbol -->
     </div>
-    <h2 class="title">チャンネル検索</h2>
-    <div class="menu-grid">
-      <form @submit.prevent="searchChannel">
+    <h2 class="title">動画検索</h2>
+    <div>
+      <form @submit.prevent="searchChannel" class="">
         <input
           type="text"
           v-model="searchWord"
-          placeholder="チャンネル名を入力"
-          class="menu-item"
+          placeholder="動画名を入力"
+          class="form-control w-50"
         />
-        <button type="submit" class="menu-item">検索</button>
+        <button
+          type="submit"
+          class="btn btn-outline-light"
+          @click="searchMovie"
+        >
+          検索
+        </button>
       </form>
       <div
-        v-for="channel in channels"
-        :key="channel.id"
+        v-for="m in movies"
+        :key="m.id"
         class="menu-item"
-        @click="channelClick(channel.id)"
+        @click="selectMovie(m.id)"
       >
-        {{ channel.name }}
+        {{ m.name }}
       </div>
     </div>
   </div>
@@ -33,11 +40,14 @@ export default {
   data() {
     return {
       searchWord: "",
-      channels: [],
+      movies: [],
     };
   },
+  mounted() {
+    this.$emit("closeLoading");
+  },
   methods: {
-    async searchChannel(code) {
+    async searchMovie(code) {
       try {
         const response = await axios.get("/api/search-channel", {
           params: {
@@ -52,28 +62,19 @@ export default {
         console.error(error);
       }
     },
-    scrollToMenu() {
-      this.$emit("scrollToMenu");
+    navigatoTo(component) {
+      this.$emit("navigate", component);
     },
   },
 };
 </script>
 
 <style scoped>
-.menu-container {
+.container {
   text-align: center;
   margin: 40px auto;
   padding: 20px;
   color: aliceblue;
-  background-color: rgba(40, 40, 40, 0.5);
-  border-radius: 20px;
-  width: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-  font-size: 2em;
-  margin-bottom: 20px;
 }
 
 .menu-grid {

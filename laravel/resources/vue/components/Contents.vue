@@ -16,7 +16,7 @@
 <script>
 import Loading from "@/components/Loading.vue";
 import Menu from "@/components/Menu.vue";
-// import SearchYoutubeChannel from "@/components/SearchYoutubeChannel.vue";
+import SearchYoutubeChannel from "@/components/SearchYoutubeChannel.vue";
 import ClipList from "@/components/ClipList.vue";
 import About from "@/components/About.vue";
 
@@ -24,7 +24,7 @@ export default {
   components: {
     Loading,
     Menu,
-    // SearchYoutubeChannel,
+    SearchYoutubeChannel,
     ClipList,
     About,
   },

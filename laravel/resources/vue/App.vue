@@ -6,8 +6,16 @@
       @show-login="showLoginModal"
       @show-register="showRegisterModal"
     />
-    <LoginModal :visible="showLogin" @close="showLogin = false" />
-    <RegisterModal :visible="showRegister" @close="showRegister = false" />
+    <LoginModal
+      :visible="showLogin"
+      @close="showLogin = false"
+      @get-user="getUser"
+    />
+    <RegisterModal
+      :visible="showRegister"
+      @close="showRegister = false"
+      @ger-user="getUser"
+    />
     <Main />
   </div>
 </template>
