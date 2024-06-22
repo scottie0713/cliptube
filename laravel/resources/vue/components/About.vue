@@ -7,6 +7,9 @@
         お気に入りの動画の一部を切り取って保存し、いつでも見返すことができます。
       </p>
       <p>また、クリップした動画を他のユーザーと共有することもできます。</p>
+      <button class="btn btn-outline-light" @click="navigatoTo('Menu')">
+        戻る
+      </button>
     </div>
   </div>
 </template>
@@ -16,7 +19,13 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    this.$emit("closeLoading");
+  },
   methods: {
+    navigatoTo(component) {
+      this.$emit("navigate", component);
+    },
   },
 };
 </script>

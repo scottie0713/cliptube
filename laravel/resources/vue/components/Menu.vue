@@ -2,12 +2,14 @@
   <div class="menu-container" ref="menuSection">
     <h1 class="title display-4">Cliptube</h1>
     <div class="menu-grid">
-      <div class="menu-item" @click="scrollToSearchYoutubeChannel">
+      <div class="menu-item" @click="navigateTo('SearchYoutubeChannel')">
         クリップ作成
       </div>
-      <div class="menu-item" @click="scrollToClipList">クリップ一覧</div>
-      <div class="menu-item" @click="scrollToAbout">Cliptubeについて</div>
-      <div class="menu-item" @click="openTwitter">X(旧Twitter)</div>
+      <div class="menu-item" @click="navigateTo('ClipList')">クリップ一覧</div>
+      <div class="menu-item" @click="navigateTo('About')">Cliptubeについて</div>
+      <div class="menu-item" @click="navigateTo('openTwitter')">
+        X(旧Twitter)
+      </div>
     </div>
   </div>
 </template>
@@ -17,18 +19,12 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    this.$emit("closeLoading");
+  },
   methods: {
-    scrollToSearchYoutubeChannel() {
-      this.$emit("scrollToSearchYoutubeChannel");
-    },
-    scrollToClipList() {
-      this.$emit("scrollToClipList");
-    },
-    scrollToAbout() {
-      this.$emit("scrollToAbout");
-    },
-    openTwitter() {
-      window.open("https://twitter.com/", "_blank");
+    navigateTo(component) {
+      this.$emit("navigate", component);
     },
   },
 };
@@ -43,7 +39,7 @@ export default {
 }
 
 .title {
-  font-size: 2em;
+  font-size: 5em;
   margin-bottom: 20px;
 }
 
