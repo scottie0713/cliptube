@@ -16,7 +16,7 @@ class VideoCheckpointController extends Controller
             return response()->json([], 400);
         }
 
-        $checkpoints = UserVideoCheckpoint::select('sec')
+        $checkpoints = UserVideoCheckpoint::select('id', 'sec')
             ->where('user_id', $request->user()->id)
             ->where('video_id', $videoId)
             ->get();
@@ -31,12 +31,20 @@ class VideoCheckpointController extends Controller
             'sec' => 'required|integer',
         ]);
 
-        $userVideoCheckpoint = new UserVideoCheckpoint();
-        $userVideoCheckpoint->user_id = $request->user()->id;
-        $userVideoCheckpoint->video_id =
-            $request->input('video_id');
-        $userVideoCheckpoint->checkpoint = $request->input('sec');
-        $userVideoCheckpoint->save();
+        // user_id, video_id, secの存在チェック
+        if (UserVideoCheckpoint::where('user_id', $request->user()->id)
+            ->where('video_id', $request->input('video_id'))
+            ->where('sec', $request->input('sec'))
+            ->exists()
+        ) {
+            return response()->json([], 208);
+        }
+
+        $model = new UserVideoCheckpoint();
+        $model->user_id = $request->user()->id;
+        $model->video_id = $request->input('video_id');
+        $model->sec = $request->input('sec');
+        $model->save();
 
         return response()->json([], 200);
     }

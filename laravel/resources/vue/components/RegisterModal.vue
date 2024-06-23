@@ -10,7 +10,7 @@
             type="text"
             id="account_id"
             class="form-control"
-            v-model="account_id"
+            v-model="accountId"
             required
           />
         </div>
@@ -34,7 +34,7 @@
             type="password"
             id="password_confirmation"
             class="form-control"
-            v-model="password_confirmation"
+            v-model="passwordConfirmation"
             required
           />
         </div>
@@ -69,8 +69,8 @@ export default {
           password_confirmation: this.passwordConfirmation,
         });
         if (response.status === 200) {
-          // 登録成功後の処理
-          this.$router.push("/member");
+          this.$emit("close");
+          this.$emit("getUser");
         }
       } catch (error) {
         // エラーハンドリング

@@ -19,6 +19,6 @@ class UserVideoCheckpoint extends Authenticatable
     protected $fillable = [
         'user_id',
         'video_id',
-        'checkpoint',
+        'sec',
     ];
 }

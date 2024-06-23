@@ -53,9 +53,9 @@ export default {
       this.isLoggedIn = true;
       this.accountId = accountId;
     },
-    async getUser() {
+    getUser() {
       try {
-        const response = await axios.get("/api/user");
+        const response = axios.get("/api/user");
         if (response.status === 200) {
           console.log(response);
           this.setAccountId(response.data.account_id);

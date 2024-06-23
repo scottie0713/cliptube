@@ -8,17 +8,72 @@
           チェック
         </button>
       </div>
-      <div>
+
+      <div class="checkpoints-container">
         <h4>チェックポイント</h4>
-        <div v-for:="checkPoint in checkpoints" :key="checkPointKey">
-          <div>
-            {{ checkPoint.sec }}&nbsp;{{ getTimeFormat(checkPoint.sec) }}
-          </div>
-          <div @click="deleteCheckPoint(checkPointKey)">×</div>
+        <div
+          v-for:="checkpoint in checkpoints"
+          :key="checkpoint.id"
+          class="checkpoint-box"
+        >
+          <span @click="seekAndPlay(checkpoint.sec)">{{
+            getTimeFormat(checkpoint.sec)
+          }}</span>
+          <button
+            @click="deleteCheckpoint(checkpoint.id)"
+            class="delete-button"
+          >
+            ×
+          </button>
         </div>
       </div>
-      <div>
-        <h4>クリップ</h4>
+
+      <div class="clips-container">
+        <h4>クリップ管理</h4>
+
+        <form @submit.prevent="addClip">
+          <div class="form-group">
+            <label for="title">タイトル</label>
+            <input type="text" v-model="newClip.title" id="title" required />
+          </div>
+          <div class="form-group">
+            <label for="start-time">開始時間</label>
+            <select v-model="newClip.start" id="start-time" required>
+              <option
+                v-for="checkpoint in checkpoints"
+                :key="checkpoint.id"
+                :value="checkpoint.sec"
+              >
+                {{ getTimeFormat(checkpoint.sec) }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="end-time">終了時間</label>
+            <select v-model="newClip.end" id="end-time" required>
+              <option
+                v-for="checkpoint in checkpoints"
+                :key="checkpoint.id"
+                :value="checkpoint.sec"
+              >
+                {{ getTimeFormat(checkpoint.sec) }}
+              </option>
+            </select>
+          </div>
+          <button type="submit">追加</button>
+        </form>
+
+        <h3>クリップリスト</h3>
+        <ul class="clip-list">
+          <li v-for="clip in clips" :key="clip.id" class="clip-item">
+            <span>{{ clip.title }}</span>
+            <span
+              >{{ getTimeFormat(clip.start_sec) }} ～
+              {{ getTimeFormat(clip.end_sec) }}</span
+            >
+            <button @click="deleteClip(clip.id)">×</button>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -42,6 +97,11 @@ export default {
     return {
       checkpoints: [],
       clips: [],
+      newClip: {
+        title: "",
+        start: "",
+        end: "",
+      },
     };
   },
   mounted() {
@@ -53,7 +113,6 @@ export default {
       try {
         const response = await axios.get("/api/checkpoint/" + this.videoId, {});
         if (response.status === 200) {
-          console.log("getCheckpoints", response);
           this.setCheckpoints(response.data);
         }
       } catch (error) {
@@ -77,13 +136,9 @@ export default {
         console.error(error);
       }
     },
-    async deleteCheckPoint(key) {
-      const checkpoint = this.checkpoints[key];
-      console.log("Delete Checkpoint key:", key);
-      console.log("Delete Checkpoint sec:", checkpoint);
-
+    async deleteCheckpoint(id) {
       try {
-        const response = await axios.delete("/api/checkpoint/" + key, {});
+        const response = await axios.delete("/api/checkpoint/" + id, {});
         if (response.status === 200) {
           console.log("deleteCheckPoint", response);
           this.getCheckpoints();
@@ -93,6 +148,7 @@ export default {
       }
     },
     setCheckpoints(checkpoints) {
+      this.checkpoints = [];
       for (const checkpoint of checkpoints) {
         this.checkpoints.push(checkpoint);
       }
@@ -102,25 +158,57 @@ export default {
       try {
         const response = await axios.get("/api/clip/" + this.videoId, {});
         if (response.status === 200) {
-          console.log("getClips", response);
-          this.clips = response.data;
+          this.setClips(response.data);
         }
       } catch (error) {
         console.error(error);
       }
     },
     setClips(clips) {
+      this.clips = [];
       for (const clip of clips) {
-        this.checkpoints.push(clip);
+        this.clips.push(clip);
+      }
+    },
+    async addClip() {
+      console.log("addClip", this.newClip);
+      try {
+        const response = await axios.post("/api/clip", {
+          video_id: this.videoId,
+          start_sec: this.newClip.start,
+          end_sec: this.newClip.end,
+          title: this.newClip.title,
+        });
+        if (response.status === 200) {
+          console.log("addClip", response);
+          this.getClips();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteClip(id) {
+      try {
+        const response = await axios.delete("/api/clip/" + id, {});
+        if (response.status === 200) {
+          this.getClips();
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     // その他
     getTimeFormat(seconds) {
-      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
       const remainingSeconds = Math.floor(seconds % 60);
-      return `${minutes}:${
-        remainingSeconds < 10 ? "0" : ""
-      }${remainingSeconds}`;
+
+      return `${hours > 0 ? `${hours}:` : ""}${
+        minutes < 10 && hours > 0 ? "0" : ""
+      }${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+    },
+    seekAndPlay(sec) {
+      this.$refs.YouTubePlayer.seekAndPlay(sec);
     },
   },
 };
@@ -179,5 +267,112 @@ export default {
 .back-to-menu:hover {
   background-color: #0056b3;
   transform: scale(1.05);
+}
+
+.checkpoints-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.checkpoint-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  border: 1px solid #147700;
+  width: 120px;
+  position: relative;
+}
+
+.checkpoint-box span {
+  font-size: 14px;
+  background-color: #f5f5f5;
+  color: #147700;
+  border-left: 1px solid #ccc;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #147700;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.clips-container {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  width: 400px;
+  margin: 0 auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.clip-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.clip-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.clip-item button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #f00;
+  cursor: pointer;
+}
+
+.clip-item button:hover {
+  color: #c00;
 }
 </style>

@@ -47,6 +47,12 @@ export default {
       }
       return 0;
     },
+    seekAndPlay(sec) {
+      if (this.player) {
+        this.player.seekTo(sec);
+        this.player.playVideo();
+      }
+    },
   },
 };
 </script>

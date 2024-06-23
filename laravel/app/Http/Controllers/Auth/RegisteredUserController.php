@@ -26,13 +26,13 @@ class RegisteredUserController extends Controller
         ]);
 
         // 存在チェック
-        if (User::where('account_id', $request->account_id)->exists()) {
+        if (User::where('account_id', $request->input('account_id'))->exists()) {
             return response()->json(['アカウントIDが既に使われています'], 409); // 409はConflictを意味するステータスコード
         }
 
         $user = User::create([
-            'account_id' => $request->string('account_id'),
-            'password' => Hash::make($request->string('password')),
+            'account_id' => $request->input('account_id'),
+            'password' => Hash::make($request->input('password')),
         ]);
 
         event(new Registered($user));

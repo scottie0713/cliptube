@@ -16,7 +16,8 @@ class VideoClipController extends Controller
             return response()->json([], 400);
         }
 
-        $checkpoints = UserVideoClip::select('title', 'description', 'start', 'end')->where('user_id', $request->user()->id)
+        $checkpoints = UserVideoClip::select('id', 'title', 'description', 'start_sec', 'end_sec')
+            ->where('user_id', $request->user()->id)
             ->where('video_id', $videoId)
             ->get();
 
@@ -27,23 +28,25 @@ class VideoClipController extends Controller
     {
         $request->validate([
             'video_id' => 'required|string|max:32',
-            'start' => 'required|integer',
-            'end' => 'required|integer',
+            'start_sec' => 'required|integer',
+            'end_sec' => 'integer',
+            'title' => 'string|max:255',
         ]);
 
-        $userVideoClip = new UserVideoClip();
-        $userVideoClip->user_id = $request->user()->id;
-        $userVideoClip->video_id = $request->input('video_id');
-        $userVideoClip->start = $request->input('sec');
-        $userVideoClip->end = $request->input('sec');
-        $userVideoClip->save();
+        $model = new UserVideoClip();
+        $model->user_id = $request->user()->id;
+        $model->video_id = $request->input('video_id');
+        $model->start_sec = $request->input('start_sec');
+        $model->end_sec = $request->input('end_sec');
+        $model->title = $request->input('title');
+        $model->save();
 
         return response()->json([], 200);
     }
 
     public function delete(Request $request, $id): JsonResponse
     {
-        UserVideoClip::where('id', $id)->where('user_id', $request->user()->Id)
+        UserVideoClip::where('id', $id)->where('user_id', $request->user()->id)
             ->delete();
 
         return response()->json([], 200);
