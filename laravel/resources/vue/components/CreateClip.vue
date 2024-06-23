@@ -1,23 +1,23 @@
 <template>
   <div class="container">
     <div class="back-to-menu" @click="switchTo('Menu')">&#9650;</div>
-    <Search />
-    <!-- <EditClip v-if="movieId !== ''" :movieId="movieId" /> -->
+    <Search @set-movie="setMovie" />
+    <EditClip v-if="videoId !== ''" :videoId="videoId" />
   </div>
 </template>
 
 <script>
-// import EditClip from "@/components/CreateClip/EditClip.vue";
+import EditClip from "@/components/CreateClip/EditClip.vue";
 import Search from "@/components/CreateClip/Search.vue";
 
 export default {
   components: {
-    // EditClip,
+    EditClip,
     Search,
   },
   data() {
     return {
-      movieId: "",
+      videoId: "",
     };
   },
   mounted() {
@@ -27,8 +27,8 @@ export default {
     switchTo(component) {
       this.$emit("switchTo", component);
     },
-    setMovie(movieId) {
-      this.movieId = movieId;
+    setMovie(videoId) {
+      this.videoId = videoId;
     },
   },
 };

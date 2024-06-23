@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('video_id');
             $table->string('title');
             $table->string('description')->nullable();
-            $table->integer('start');
-            $table->integer('end')->nullable();
+            $table->integer('start_sec');
+            $table->integer('end_sec')->nullable();
             $table->timestamps();
             $table->index(['user_id', 'video_id']);
         });
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('user_video_clips');
     }
 };

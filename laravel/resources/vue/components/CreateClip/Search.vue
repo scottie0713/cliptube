@@ -2,6 +2,7 @@
   <div class="container">
     <h2 class="title">動画検索</h2>
     <div>
+      <!-- 動画検索フォーム -->
       <form @submit.prevent="searchMovie" class="">
         <input
           type="text"
@@ -9,22 +10,35 @@
           placeholder="動画名を入力"
           class="form-control w-50"
         />
-        <button
-          type="submit"
-          class="btn btn-outline-light"
-          @click="searchMovie"
-        >
-          検索
-        </button>
+        <button type="submit" class="btn btn-outline-light">検索</button>
       </form>
-      <div
-        v-for="m in movies"
-        :key="m.id"
-        class="menu-item"
-        @click="selectMovie(m.id)"
-      >
-        {{ m.name }}
+      <!-- /動画検索フォーム -->
+
+      <!-- 検索結果一覧 -->
+      <div class="search-results">
+        <div v-if="videos.length === 0">検索結果がありません。</div>
+        <div v-else>
+          <div
+            v-for="video in videos"
+            :key="video.id"
+            class="video-item p-2 m-1"
+            @click="setMovie(video.id.videoId)"
+          >
+            <img
+              :src="video.snippet.thumbnails.default.url"
+              :alt="video.snippet.title"
+              class="thumbnail"
+            />
+            <div class="video-info text-start">
+              <h3 class="video-title text-dark">{{ video.snippet.title }}</h3>
+              <p class="video-publish-time text-dark">
+                {{ formatDate(video.snippet.publishTime) }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+      <!-- /検索結果一覧 -->
     </div>
   </div>
 </template>
@@ -36,26 +50,32 @@ export default {
   data() {
     return {
       query: "",
-      movies: [],
+      videos: [],
     };
   },
   methods: {
     async searchMovie() {
       try {
-        const response = await axios.get("/api/youtube-search", {
+        const response = await axios.get("/api/youtube/search", {
           params: {
             query: this.query,
           },
         });
         if (response.status === 200) {
-          console.log(response);
-          this.channels = response.data;
+          console.log(response.data);
+          this.videos = response.data.items;
         }
       } catch (error) {
         console.error(error);
       }
     },
-    selectMovie(movieId) {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return (
+        date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
+      );
+    },
+    setMovie(movieId) {
       this.$emit("setMovie", movieId);
     },
   },
@@ -70,48 +90,44 @@ export default {
   color: aliceblue;
 }
 
-.menu-grid {
+.youtube-search-results {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.menu-item {
+.video-item {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ededed;
-  color: rgb(66, 66, 66);
-  padding: 20px;
+  align-items: flex-start;
+  background-color: rgba(255, 255, 255, 0.5);
+  gap: 1rem;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.video-item:hover {
+  background-color: #ffffff;
+  transform: scale(1.02);
+}
+
+.thumbnail {
   width: 120px;
-  text-align: center;
-  transition: transform 0.3s, background-color 0.3s;
+  height: auto;
+  border-radius: 4px;
 }
 
-.menu-item:hover {
-  background-color: #ffff61;
-  transform: scale(1.05);
+.video-info {
+  flex: 1;
 }
 
-.back-to-menu {
-  position: absolute;
-  top: -30px; /* Adjust as needed */
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, background-color 0.3s;
+.video-title {
+  font-size: 1.2rem;
+  margin: 0;
 }
 
-.back-to-menu:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+.video-publish-time {
+  font-size: 0.9rem;
+  color: #d6d6d6;
 }
 </style>
