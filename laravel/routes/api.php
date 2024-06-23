@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::post('/youtube-search', [YoutubeSearchController::class, 'search']);
+    Route::get('/youtube-search', [YoutubeSearchController::class, 'search']);
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });

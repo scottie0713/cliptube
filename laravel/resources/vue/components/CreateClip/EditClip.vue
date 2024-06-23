@@ -1,35 +1,7 @@
 <template>
   <div class="container" ref="searchYoutubeChannelSection">
-    <div class="back-to-menu" @click="navigatoTo('Menu')">
-      &#9650;
-      <!-- Up arrow symbol -->
-    </div>
-    <h2 class="title">動画検索</h2>
-    <div>
-      <form @submit.prevent="searchChannel" class="">
-        <input
-          type="text"
-          v-model="searchWord"
-          placeholder="動画名を入力"
-          class="form-control w-50"
-        />
-        <button
-          type="submit"
-          class="btn btn-outline-light"
-          @click="searchMovie"
-        >
-          検索
-        </button>
-      </form>
-      <div
-        v-for="m in movies"
-        :key="m.id"
-        class="menu-item"
-        @click="selectMovie(m.id)"
-      >
-        {{ m.name }}
-      </div>
-    </div>
+    <h2 class="title">Clip編集</h2>
+    <div></div>
   </div>
 </template>
 
@@ -39,31 +11,26 @@ import axios from "axios";
 export default {
   data() {
     return {
-      searchWord: "",
-      movies: [],
+      movieId: "",
     };
   },
   mounted() {
-    this.$emit("closeLoading");
+    this.getMovie();
   },
   methods: {
-    async searchMovie(code) {
+    async getMovie() {
       try {
-        const response = await axios.get("/api/search-channel", {
+        const response = await axios.get("/api/get-movie", {
           params: {
-            searchWord: this.searchWord,
+            id: this.movieId,
           },
         });
         if (response.status === 200) {
           console.log(response);
-          this.channels = response.data;
         }
       } catch (error) {
         console.error(error);
       }
-    },
-    navigatoTo(component) {
-      this.$emit("navigate", component);
     },
   },
 };

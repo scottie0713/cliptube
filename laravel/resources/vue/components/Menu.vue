@@ -1,15 +1,11 @@
 <template>
-  <div class="menu-container" ref="menuSection">
+  <div class="container" ref="menuSection">
     <h1 class="title display-4">Cliptube</h1>
     <div class="menu-grid">
-      <div class="menu-item" @click="navigateTo('SearchYoutubeChannel')">
-        クリップ作成
-      </div>
-      <div class="menu-item" @click="navigateTo('ClipList')">クリップ一覧</div>
-      <div class="menu-item" @click="navigateTo('About')">Cliptubeについて</div>
-      <div class="menu-item" @click="navigateTo('openTwitter')">
-        X(旧Twitter)
-      </div>
+      <div class="menu-item" @click="switchTo('CreateClip')">クリップ作成</div>
+      <div class="menu-item" @click="switchTo('ClipList')">クリップ一覧</div>
+      <div class="menu-item" @click="switchTo('About')">Cliptubeについて</div>
+      <div class="menu-item" @click="switchTo('openTwitter')">X(旧Twitter)</div>
     </div>
   </div>
 </template>
@@ -23,15 +19,15 @@ export default {
     this.$emit("closeLoading");
   },
   methods: {
-    navigateTo(component) {
-      this.$emit("navigate", component);
+    switchTo(component) {
+      this.$emit("switchTo", component);
     },
   },
 };
 </script>
 
 <style scoped>
-.menu-container {
+.container {
   width: 100%;
   height: 100%;
   text-align: center;

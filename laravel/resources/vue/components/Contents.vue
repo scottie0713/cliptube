@@ -1,32 +1,31 @@
 <template>
-  <div class="contents-container">
-    <!-- <button @click="hoge()">Toggle2</button> -->
+  <div class="container">
     <Loading v-show="isLoadingSvg" />
     <Transition>
       <div v-show="isFade" class="loading"></div>
     </Transition>
     <component
       :is="currentComponent"
-      @navigate="navigate"
+      @switch-to="switchTo"
       @close-loading="closeLoading"
     />
   </div>
 </template>
 
 <script>
+import About from "@/components/About.vue";
+import ClipList from "@/components/ClipList.vue";
+import CreateClip from "@/components/CreateClip.vue";
 import Loading from "@/components/Loading.vue";
 import Menu from "@/components/Menu.vue";
-import SearchYoutubeChannel from "@/components/SearchYoutubeChannel.vue";
-import ClipList from "@/components/ClipList.vue";
-import About from "@/components/About.vue";
 
 export default {
   components: {
+    About,
+    ClipList,
+    CreateClip,
     Loading,
     Menu,
-    SearchYoutubeChannel,
-    ClipList,
-    About,
   },
   data() {
     return {
@@ -41,7 +40,7 @@ export default {
   },
   methods: {
     // コンポーネント切り替え&ローディング開始
-    navigate(component) {
+    switchTo(component) {
       this.isFade = true;
       setTimeout(() => {
         this.currentComponent = component;
@@ -58,7 +57,7 @@ export default {
 </script>
 
 <style scoped>
-.contents-container {
+.container {
   position: absolute;
   overflow-x: auto;
   width: 90%;
@@ -80,13 +79,10 @@ export default {
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.2s ease;
-  /* height: 100%;
-  transition: height 0.3s ease-in-out; */
 }
 
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-  /* height: 0; */
 }
 </style>

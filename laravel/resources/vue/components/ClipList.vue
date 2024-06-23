@@ -1,7 +1,10 @@
 <template>
-  <div class="clip-list-container">
+  <div class="container">
     <h2>クリップ一覧</h2>
     <p>クリップした動画の一覧です</p>
+    <button class="btn btn-outline-light" @click="switchTo('Menu')">
+      戻る
+    </button>
   </div>
 </template>
 
@@ -13,12 +16,16 @@ export default {
   mounted() {
     this.$emit("closeLoading");
   },
-  methods: {},
+  methods: {
+    switchTo(component) {
+      this.$emit("switchTo", component);
+    },
+  },
 };
 </script>
 
 <style scoped>
-.clip-list-container {
+.container {
   width: 100%;
   height: 100%;
   text-align: center;

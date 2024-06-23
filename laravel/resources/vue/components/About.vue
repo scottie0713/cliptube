@@ -1,5 +1,5 @@
 <template>
-  <div class="about-container">
+  <div class="container">
     <h2 class="">Cliptubeについて</h2>
     <div>
       <p>Cliptubeは、YouTubeの動画をクリップして保存できるサービスです。</p>
@@ -7,7 +7,7 @@
         お気に入りの動画の一部を切り取って保存し、いつでも見返すことができます。
       </p>
       <p>また、クリップした動画を他のユーザーと共有することもできます。</p>
-      <button class="btn btn-outline-light" @click="navigatoTo('Menu')">
+      <button class="btn btn-outline-light" @click="switchTo('Menu')">
         戻る
       </button>
     </div>
@@ -23,15 +23,15 @@ export default {
     this.$emit("closeLoading");
   },
   methods: {
-    navigatoTo(component) {
-      this.$emit("navigate", component);
+    switchTo(component) {
+      this.$emit("switchTo", component);
     },
   },
 };
 </script>
 
 <style scoped>
-.about-container {
+.container {
   width: 100%;
   height: 100%;
   text-align: center;
