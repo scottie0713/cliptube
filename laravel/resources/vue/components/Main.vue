@@ -20,10 +20,18 @@ export default {
 
 <style scoped>
 .main-container {
+  position: absolute;
   width: 90%;
+  min-width: 480px;
   height: 86%;
-  margin: 20px auto;
+  top: 3em;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  padding: 20px;
   overflow-x: auto;
+  overflow-wrap: break-word;
   color: aliceblue;
   background-color: rgba(40, 40, 40, 0.5);
   border-radius: 20px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="contents-container">
     <Loading v-show="isLoadingSvg" />
     <Transition>
       <div v-show="isFade" class="loading"></div>
@@ -57,12 +57,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  position: absolute;
-  overflow-x: auto;
-  width: 90%;
-  height: 86%;
-  border-radius: 20px;
+.contents-container {
   white-space: nowrap;
 }
 

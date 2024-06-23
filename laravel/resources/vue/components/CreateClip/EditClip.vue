@@ -1,32 +1,38 @@
 <template>
-  <div class="container" ref="searchYoutubeChannelSection">
-    <h2 class="title">Clip編集</h2>
-    <div>
-      <div>
+  <div class="edit-clip-container" ref="searchYoutubeChannelSection">
+    <h2 class="text-light">Clip編集</h2>
+    <div class="py-4">
+      <div class="player">
         <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
         <button @click="addCheckPoint" class="btn btn-outline-light">
           チェック
         </button>
       </div>
 
+      <hr />
+
       <div class="checkpoints-container">
-        <h4>チェックポイント</h4>
-        <div
-          v-for:="checkpoint in checkpoints"
-          :key="checkpoint.id"
-          class="checkpoint-box"
-        >
-          <span @click="seekAndPlay(checkpoint.sec)">{{
-            getTimeFormat(checkpoint.sec)
-          }}</span>
-          <button
-            @click="deleteCheckpoint(checkpoint.id)"
-            class="delete-button"
+        <h4 class="text-light">チェックポイント</h4>
+        <div class="checkpoints-container-item">
+          <div
+            v-for:="checkpoint in checkpoints"
+            :key="checkpoint.id"
+            class="checkpoint-box"
           >
-            ×
-          </button>
+            <span @click="seekAndPlay(checkpoint.sec)">{{
+              getTimeFormat(checkpoint.sec)
+            }}</span>
+            <button
+              @click="deleteCheckpoint(checkpoint.id)"
+              class="delete-button"
+            >
+              ×
+            </button>
+          </div>
         </div>
       </div>
+
+      <hr />
 
       <div class="clips-container">
         <h4>クリップ管理</h4>
@@ -215,61 +221,30 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.edit-clip-container {
   text-align: center;
   margin: 40px auto;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
   color: rgb(10, 36, 59);
 }
 
-.menu-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+.player {
+  position: relative;
 }
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ededed;
-  color: rgb(66, 66, 66);
-  padding: 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 120px;
-  text-align: center;
-  transition: transform 0.3s, background-color 0.3s;
-}
-
-.menu-item:hover {
-  background-color: #ffff61;
-  transform: scale(1.05);
-}
-
-.back-to-menu {
+.player button {
   position: absolute;
-  top: -30px; /* Adjust as needed */
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #007bff;
+  bottom: 100px;
+  left: 10px;
+  background-color: #136600;
   color: white;
+  border: none;
+  border-radius: 4px;
   padding: 10px;
-  border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, background-color 0.3s;
 }
 
-.back-to-menu:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-.checkpoints-container {
+.checkpoints-container-item {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -306,12 +281,6 @@ export default {
 }
 
 .clips-container {
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background-color: #f5f5f5;
-  width: 400px;
-  margin: 0 auto;
 }
 
 form {
@@ -338,14 +307,14 @@ button[type="submit"] {
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #bbdcff;
   color: white;
   cursor: pointer;
   font-size: 16px;
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #465669;
 }
 
 .clip-list {

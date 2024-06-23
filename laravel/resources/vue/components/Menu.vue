@@ -28,10 +28,7 @@ export default {
 
 <style scoped>
 .container {
-  width: 100%;
-  height: 100%;
   text-align: center;
-  padding: 20px;
 }
 
 .title {
@@ -61,7 +58,7 @@ export default {
 }
 
 .menu-item:hover {
-  background-color: #ffff61;
+  background-color: #daeeff;
   transform: scale(1.05);
 }
 </style>

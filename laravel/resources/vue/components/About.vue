@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="about-container w-100 h-100 text-wrap">
     <h2 class="">Cliptubeについて</h2>
     <div>
       <p>Cliptubeは、YouTubeの動画をクリップして保存できるサービスです。</p>
@@ -31,10 +31,11 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  width: 100%;
-  height: 100%;
+.about-container {
   text-align: center;
+}
+.p {
+  margin: 10px auto;
   padding: 20px;
 }
 </style>

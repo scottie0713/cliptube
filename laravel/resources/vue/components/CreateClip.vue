@@ -1,7 +1,9 @@
 <template>
-  <div class="container">
-    <div class="back-to-menu" @click="switchTo('Menu')">&#9650;</div>
+  <div class="container p-3">
+    <h2><button @click="switchTo('Menu')">＜</button>&nbsp;クリップ作成</h2>
+    <hr />
     <Search @set-movie="setMovie" />
+    <hr v-if="videoId !== ''" />
     <EditClip v-if="videoId !== ''" :videoId="videoId" />
   </div>
 </template>
@@ -40,11 +42,19 @@ export default {
   white-space: nowrap;
 }
 
-.back-to-menu {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 2em;
+h2 {
+  text-align: center;
+}
+
+hr {
+  border: 1px solid #ffffff;
+}
+
+h2 button {
+  background: none;
+  border: none;
+  color: aliceblue;
+  font-size: 1em;
   cursor: pointer;
 }
 </style>

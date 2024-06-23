@@ -7,15 +7,15 @@
         <input
           type="text"
           v-model="query"
-          placeholder="動画名を入力"
-          class="form-control w-50"
+          placeholder="検索ワードを入力してください"
+          class="form-control w-75"
         />
         <button type="submit" class="btn btn-outline-light">検索</button>
       </form>
       <!-- /動画検索フォーム -->
 
       <!-- 検索結果一覧 -->
-      <div class="search-results">
+      <div class="mt-4">
         <div v-if="videos.length === 0">検索結果がありません。</div>
         <div v-else>
           <div
@@ -29,9 +29,9 @@
               :alt="video.snippet.title"
               class="thumbnail"
             />
-            <div class="video-info text-start">
-              <h3 class="video-title text-dark">{{ video.snippet.title }}</h3>
-              <p class="video-publish-time text-dark">
+            <div class="video-info text-start text-wrap">
+              <h3 class="text-light fs-5">{{ video.snippet.title }}</h3>
+              <p class="text-light fs-6">
                 {{ formatDate(video.snippet.publishTime) }}
               </p>
             </div>
@@ -83,51 +83,33 @@ export default {
 </script>
 
 <style scoped>
+form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .container {
   text-align: center;
-  margin: 40px auto;
+  margin: 10px auto;
   padding: 20px;
   color: aliceblue;
 }
 
-.youtube-search-results {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .video-item {
   display: flex;
-  align-items: flex-start;
-  background-color: rgba(255, 255, 255, 0.5);
+  align-items: center;
   gap: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
   transition: transform 0.3s, background-color 0.3s;
 }
 
 .video-item:hover {
-  background-color: #ffffff;
-  transform: scale(1.02);
+  background-color: rgb(64, 64, 64);
 }
 
 .thumbnail {
   width: 120px;
   height: auto;
-  border-radius: 4px;
-}
-
-.video-info {
-  flex: 1;
-}
-
-.video-title {
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-.video-publish-time {
-  font-size: 0.9rem;
-  color: #d6d6d6;
+  border-radius: 8px;
 }
 </style>
