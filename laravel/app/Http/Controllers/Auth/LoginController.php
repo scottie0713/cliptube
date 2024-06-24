@@ -28,4 +28,12 @@ class LoginController extends Controller
         return response()->json(['message' => 'Login failed'], 401);
     }
 
+    public function logout(Request $request): JsonResponse
+    {
+        // ユーザーの現在のアクセストークンを無効にする
+        // $request->user()->currentAccessToken()->delete();
+        $request->session()->invalidate();
+
+        return response()->json(['message' => 'Logout successful']);
+    }
 }

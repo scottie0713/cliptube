@@ -5,6 +5,7 @@
       :accountId="accountId"
       @show-login="showLoginModal"
       @show-register="showRegisterModal"
+      @logout="logout"
     />
     <LoginModal
       :visible="showLogin"
@@ -53,16 +54,19 @@ export default {
       this.isLoggedIn = true;
       this.accountId = accountId;
     },
-    getUser() {
+    async getUser() {
       try {
-        const response = axios.get("/api/user");
+        const response = await axios.get("/api/user");
         if (response.status === 200) {
-          console.log(response);
           this.setAccountId(response.data.account_id);
         }
       } catch (error) {
         console.error(error);
       }
+    },
+    logout() {
+      this.isLoggedIn = false;
+      this.accountId = "";
     },
   },
 };

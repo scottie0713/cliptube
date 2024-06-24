@@ -1,13 +1,18 @@
 <template>
   <div class="about-container w-100 h-100 text-wrap">
-    <h2 class="">Cliptubeについて</h2>
+    <h2 class="my-2 fs-2">このサイトって？</h2>
     <div>
-      <p>Cliptubeは、YouTubeの動画をクリップして保存できるサービスです。</p>
       <p>
-        お気に入りの動画の一部を切り取って保存し、いつでも見返すことができます。
+        YouTubeの動画の好きなシーンの時間を保存して、それをまとめるツールです。
       </p>
-      <p>また、クリップした動画を他のユーザーと共有することもできます。</p>
-      <button class="btn btn-outline-light" @click="switchTo('Menu')">
+      <p>あくまで時間を保存するだけなので動画を作成するわけではないです。</p>
+      <p>
+        YouTubeにはすでにクリップ機能がありますが、本家とは違い時間制限を気にしなくて良いし、複数動画のシーンをまとめることができます。
+      </p>
+      <p>
+        例：動画Ａの00:10～00:30を再生してから動画Ｂの01:00～01:30を続けて見たい
+      </p>
+      <button class="btn btn-outline-dark w-50 my-4" @click="switchTo('Menu')">
         戻る
       </button>
     </div>

@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('/youtube/search', [YoutubeController::class, 'search']);
     Route::get('/youtube/info', [YoutubeController::class, 'info']);
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');
 
     Route::get('/checkpoint/{video_id}', [VideoCheckpointController::class, 'list']);

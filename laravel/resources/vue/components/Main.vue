@@ -32,10 +32,7 @@ export default {
   padding: 20px;
   overflow-x: auto;
   overflow-wrap: break-word;
-  color: aliceblue;
-  background-color: rgba(40, 40, 40, 0.5);
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
 }
 .main-container::-webkit-scrollbar {
   display: none;

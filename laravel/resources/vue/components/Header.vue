@@ -1,28 +1,27 @@
 <template>
-  <header class="header">
+  <header class="header py-2 pl-4 pr-2">
     <div class="container">
-      <div class="auth">
-        <button
-          class="btn btn-outline-light btn-sm mx-2"
-          v-if="!isLoggedIn"
-          @click="showLogin"
-        >
-          Login
+      <div v-if="!isLoggedIn">
+        <span class="mx-2">ゲストさん</span>
+        <button class="btn btn-outline-light btn-sm mx-2" @click="showLogin">
+          ログイン
         </button>
-        <button
-          class="btn btn-outline-light btn-sm mx-2"
-          v-if="!isLoggedIn"
-          @click="showRegister"
-        >
-          Register
+        <button class="btn btn-outline-light btn-sm mx-2" @click="showRegister">
+          新規登録
         </button>
-        <span v-else>{{ accountId }}</span>
+      </div>
+      <div v-else>
+        <span>{{ accountId }}さん</span>
+        <button class="btn btn-outline-light btn-sm mx-2" @click="logout">
+          ログアウト
+        </button>
       </div>
     </div>
   </header>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: {
     isLoggedIn: Boolean,
@@ -35,6 +34,10 @@ export default {
     showRegister() {
       this.$emit("show-register");
     },
+    async logout() {
+      const response = await axios.post("/api/logout");
+      this.$emit("logout");
+    },
   },
 };
 </script>
@@ -43,26 +46,7 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem;
   background-color: #333;
-  color: white;
+  color: aliceblue;
 }
-
-/* .header .brand {
-  font-size: 1.5rem;
-} */
-
-/* .header .auth button {
-  margin-left: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.header .auth button:hover {
-  background-color: #0056b3;
-} */
 </style>

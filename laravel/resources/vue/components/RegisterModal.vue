@@ -39,7 +39,7 @@
           />
         </div>
 
-        <div class="mt-6">
+        <div class="mt-4">
           <p v-if="errorMessage" style="color: red">{{ errorMessage }}</p>
           <button type="submit" class="btn btn-primary">登録</button>
         </div>
@@ -107,11 +107,12 @@ export default {
 }
 
 .modal-content {
-  background-color: white;
-  padding: 2rem;
-  width: 90%;
+  color: aliceblue;
+  background-color: #333;
+  padding: 4rem;
+  margin: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .close {
@@ -120,9 +121,5 @@ export default {
   right: 1rem;
   font-size: 2rem;
   cursor: pointer;
-}
-
-button {
-  width: 100%;
 }
 </style>
