@@ -1,6 +1,9 @@
 <template>
-  <div class="container p-3">
-    <h2><button @click="switchTo('Menu')">＜</button>&nbsp;クリップ作成</h2>
+  <div class="about-container w-100 h-100 text-wrap">
+    <h2 class="my-2 fs-2">
+      <button @click="switchTo('Menu')" class="text-dark">＜</button
+      >&nbsp;クリップ作成
+    </h2>
     <hr />
     <Search @set-movie="setMovie" />
     <hr v-if="videoId !== ''" />

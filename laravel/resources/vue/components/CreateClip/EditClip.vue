@@ -1,83 +1,80 @@
 <template>
-  <div class="edit-clip-container" ref="searchYoutubeChannelSection">
-    <h2 class="text-light">Clip編集</h2>
-    <div class="py-4">
+  <div
+    class="edit-clip-container text-dark text-center"
+    ref="searchYoutubeChannelSection"
+  >
+    <h2 class="my-2 fs-3">②クリップを作りましょう</h2>
+    <div class="py-1">
       <div class="player">
         <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
-        <button @click="addCheckPoint" class="btn btn-outline-light">
-          チェック
-        </button>
-      </div>
-
-      <hr />
-
-      <div class="checkpoints-container">
-        <h4 class="text-light">チェックポイント</h4>
-        <div class="checkpoints-container-item">
-          <div
-            v-for:="checkpoint in checkpoints"
-            :key="checkpoint.id"
-            class="checkpoint-box"
-          >
-            <span @click="seekAndPlay(checkpoint.sec)">{{
-              getTimeFormat(checkpoint.sec)
-            }}</span>
-            <button
-              @click="deleteCheckpoint(checkpoint.id)"
-              class="delete-button"
-            >
-              ×
-            </button>
-          </div>
+        <div class="player-control d-flex justify-content-center">
+          <button @click="relativeSeekAndPlay(-30)" class="flex-fill btn">
+            &lt;&nbsp;30秒
+          </button>
+          <div class="vr"></div>
+          <button @click="relativeSeekAndPlay(-5)" class="flex-fill btn">
+            &lt;&nbsp;5秒
+          </button>
+          <div class="vr"></div>
+          <button @click="setNewClipStart" class="flex-fill btn">
+            開始時間マーク
+          </button>
+          <div class="vr"></div>
+          <button @click="setNewClipEnd" class="flex-fill btn">
+            終了時間マーク
+          </button>
+          <div class="vr"></div>
+          <button @click="relativeSeekAndPlay(5)" class="flex-fill btn">
+            5秒&nbsp;&gt;
+          </button>
+          <div class="vr"></div>
+          <button @click="relativeSeekAndPlay(30)" class="flex-fill btn">
+            30秒&nbsp;&gt;
+          </button>
         </div>
       </div>
 
-      <hr />
-
-      <div class="clips-container">
-        <h4>クリップ管理</h4>
-
+      <div class="mt-4">
         <form @submit.prevent="addClip">
-          <div class="form-group">
-            <label for="title">タイトル</label>
-            <input type="text" v-model="newClip.title" id="title" required />
+          <div class="d-flex form-group gap-1">
+            <input
+              type="text"
+              v-model="newClip.title"
+              id="title"
+              placeholder="クリップタイトル"
+            />
+            <button
+              class="btn btn-outline-dark"
+              @click="seekAndPlay(newClip.start)"
+            >
+              {{ getTimeFormat(newClip.start) }}~
+            </button>
+            <button
+              class="btn btn-outline-dark"
+              @click="seekAndPlay(newClip.end)"
+            >
+              ~{{ getTimeFormat(newClip.end) }}
+            </button>
+            <button type="submit" class="btn btn-outline-success">追加</button>
           </div>
-          <div class="form-group">
-            <label for="start-time">開始時間</label>
-            <select v-model="newClip.start" id="start-time" required>
-              <option
-                v-for="checkpoint in checkpoints"
-                :key="checkpoint.id"
-                :value="checkpoint.sec"
-              >
-                {{ getTimeFormat(checkpoint.sec) }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="end-time">終了時間</label>
-            <select v-model="newClip.end" id="end-time" required>
-              <option
-                v-for="checkpoint in checkpoints"
-                :key="checkpoint.id"
-                :value="checkpoint.sec"
-              >
-                {{ getTimeFormat(checkpoint.sec) }}
-              </option>
-            </select>
-          </div>
-          <button type="submit">追加</button>
         </form>
-
-        <h3>クリップリスト</h3>
+      </div>
+      <div class="mt-4">
+        <h3>追加したクリップ一覧</h3>
         <ul class="clip-list">
           <li v-for="clip in clips" :key="clip.id" class="clip-item">
             <span>{{ clip.title }}</span>
-            <span
-              >{{ getTimeFormat(clip.start_sec) }} ～
-              {{ getTimeFormat(clip.end_sec) }}</span
-            >
-            <button @click="deleteClip(clip.id)">×</button>
+            <span>
+              {{ getTimeFormat(clip.start_sec) }}~{{
+                getTimeFormat(clip.end_sec)
+              }}
+            </span>
+            <button class="btn btn-outline-info" @click="copyToNewClip(clip)">
+              コピー
+            </button>
+            <button class="btn btn-outline-danger" @click="deleteClip(clip.id)">
+              削除
+            </button>
           </li>
         </ul>
       </div>
@@ -101,63 +98,30 @@ export default {
   },
   data() {
     return {
-      checkpoints: [],
       clips: [],
       newClip: {
         title: "",
-        start: "",
-        end: "",
+        start: 0,
+        end: 0,
       },
     };
   },
   mounted() {
-    this.getCheckpoints();
+    this.getClips();
   },
   methods: {
-    // チェックポイント
-    async getCheckpoints() {
-      try {
-        const response = await axios.get("/api/checkpoint/" + this.videoId, {});
-        if (response.status === 200) {
-          this.setCheckpoints(response.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    copyToNewClip(clip) {
+      this.newClip.title = clip.title;
+      this.newClip.start = clip.start_sec;
+      this.newClip.end = clip.end_sec;
     },
-    async addCheckPoint() {
-      const currentTime = Math.floor(this.$refs.YouTubePlayer.getCurrentTime());
-      console.log("Current Time:", currentTime);
-
-      try {
-        const response = await axios.post("/api/checkpoint", {
-          video_id: this.videoId,
-          sec: currentTime,
-        });
-        if (response.status === 200) {
-          console.log("addCheckPoint", response);
-          this.getCheckpoints();
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    setNewClipStart() {
+      this.newClip.start = Math.floor(
+        this.$refs.YouTubePlayer.getCurrentTime()
+      );
     },
-    async deleteCheckpoint(id) {
-      try {
-        const response = await axios.delete("/api/checkpoint/" + id, {});
-        if (response.status === 200) {
-          console.log("deleteCheckPoint", response);
-          this.getCheckpoints();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    setCheckpoints(checkpoints) {
-      this.checkpoints = [];
-      for (const checkpoint of checkpoints) {
-        this.checkpoints.push(checkpoint);
-      }
+    setNewClipEnd() {
+      this.newClip.end = Math.floor(this.$refs.YouTubePlayer.getCurrentTime());
     },
     // クリップ
     async getClips() {
@@ -170,10 +134,10 @@ export default {
         console.error(error);
       }
     },
-    setClips(clips) {
+    setClips(userClips) {
       this.clips = [];
-      for (const clip of clips) {
-        this.clips.push(clip);
+      for (const userClip of userClips) {
+        this.clips.push(userClip.clip);
       }
     },
     async addClip() {
@@ -205,6 +169,9 @@ export default {
     },
     // その他
     getTimeFormat(seconds) {
+      if (seconds === 0) {
+        return "0:00";
+      }
       const hours = Math.floor(seconds / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
       const remainingSeconds = Math.floor(seconds % 60);
@@ -215,6 +182,9 @@ export default {
     },
     seekAndPlay(sec) {
       this.$refs.YouTubePlayer.seekAndPlay(sec);
+    },
+    relativeSeekAndPlay(sec) {
+      this.$refs.YouTubePlayer.relativeSeekAndPlay(sec);
     },
   },
 };
@@ -232,16 +202,10 @@ export default {
 .player {
   position: relative;
 }
-.player button {
-  position: absolute;
-  bottom: 100px;
-  left: 10px;
-  background-color: #136600;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px;
-  cursor: pointer;
+
+.player-control {
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .checkpoints-container-item {
@@ -283,27 +247,17 @@ export default {
 .clips-container {
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-}
-
 .form-group {
   margin-bottom: 10px;
 }
 
-.form-group label {
-  margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group select {
+.form-group input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-button[type="submit"] {
+/* button[type="submit"] {
   padding: 10px;
   border: none;
   border-radius: 4px;
@@ -311,11 +265,11 @@ button[type="submit"] {
   color: white;
   cursor: pointer;
   font-size: 16px;
-}
+} */
 
-button[type="submit"]:hover {
+/* button[type="submit"]:hover {
   background-color: #465669;
-}
+} */
 
 .clip-list {
   list-style-type: none;

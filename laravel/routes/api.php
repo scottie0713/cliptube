@@ -7,8 +7,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\YoutubeController;
-use App\Http\Controllers\API\VideoCheckpointController;
-use App\Http\Controllers\API\VideoClipController;
+use App\Http\Controllers\API\StoryController;
+use App\Http\Controllers\API\ClipController;
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -22,13 +22,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');
 
-    Route::get('/checkpoint/{video_id}', [VideoCheckpointController::class, 'list']);
-    Route::post('/checkpoint', [VideoCheckpointController::class, 'add']);
-    Route::delete('/checkpoint/{id}', [VideoCheckpointController::class, 'delete']);
-
-    Route::get('/clip/{video_id}', [VideoClipController::class, 'list']);
-    Route::post('/clip', [VideoClipController::class, 'add']);
-    Route::delete('/clip/{id}', [VideoClipController::class, 'delete']);
+    Route::get('/clip', [ClipController::class, 'listAll']);
+    Route::get('/clip/{video_id}', [ClipController::class, 'list']);
+    Route::post('/clip', [ClipController::class, 'add']);
+    Route::delete('/clip/{id}', [ClipController::class, 'delete']);
 });
 
 // auth.php取り込み

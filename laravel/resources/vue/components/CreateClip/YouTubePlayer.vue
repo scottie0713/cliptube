@@ -53,6 +53,12 @@ export default {
         this.player.playVideo();
       }
     },
+    relativeSeekAndPlay(sec) {
+      if (this.player) {
+        this.player.seekTo(this.player.getCurrentTime() + sec, true);
+        this.player.playVideo();
+      }
+    },
   },
 };
 </script>

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class UserVideoClip extends Authenticatable
+class Clip extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -17,11 +17,10 @@ class UserVideoClip extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
         'video_id',
         'title',
-        'description',
-        'start',
-        'end',
+        'start_sec',
+        'end_sec',
+        'point',
     ];
 }
