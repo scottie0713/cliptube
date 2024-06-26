@@ -1,6 +1,7 @@
 <template>
   <header class="header py-2 pl-4 pr-2">
     <div class="container">
+      <span class="mx-4">つべくりっぷ</span>
       <div v-if="!isLoggedIn">
         <span class="mx-2">ゲストさん</span>
         <button class="btn btn-outline-light btn-sm mx-2" @click="showLogin">

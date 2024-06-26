@@ -14,7 +14,9 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': '/resources/vue',
-            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap')
+            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+            '~js': '/resources/js',
+            '~scss': '/resources/scss',
         },
     },
     server: {

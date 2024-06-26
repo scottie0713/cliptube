@@ -17,28 +17,30 @@
       @close="showRegister = false"
       @ger-user="getUser"
     />
-    <Main />
+    <router-view :userHash="userHash"></router-view>
   </div>
 </template>
 
 <script>
+import { createApp } from 'vue';
 import axios from "axios";
+import router from '~js/router';
 import Header from "@/components/Header.vue";
 import LoginModal from "@/components/LoginModal.vue";
 import RegisterModal from "@/components/RegisterModal.vue";
-import Main from "@/components/Main.vue";
 
 export default {
+  name: "App",
   components: {
     Header,
     LoginModal,
     RegisterModal,
-    Main,
   },
   data() {
     return {
       isLoggedIn: false,
       accountId: "",
+      userHash: "",
       showLogin: false,
       showRegister: false,
     };
@@ -59,6 +61,7 @@ export default {
         const response = await axios.get("/api/user");
         if (response.status === 200) {
           this.setAccountId(response.data.account_id);
+          this.userHash = response.data.hash;
         }
       } catch (error) {
         console.error(error);
@@ -67,6 +70,7 @@ export default {
     logout() {
       this.isLoggedIn = false;
       this.accountId = "";
+      this.userHash = "";
     },
   },
 };
