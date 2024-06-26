@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ClipSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class ClipSeeder extends Seeder
     {
         $storyId = DB::table('stories')->insertGetId([
             'title' => 'ストーリーテスト',
+            'hash' => Str::random(6),
             'description' => 'description',
         ]);
 
@@ -24,6 +26,7 @@ class ClipSeeder extends Seeder
         ]);
 
         foreach ($this->getAttributes() as $index => $attribute) {
+            $attribute['hash'] = Str::random(6);
             $clipId = DB::table('clips')->insertGetId($attribute);
             DB::table('story_clips')->insert([
                 'story_id' => $storyId,

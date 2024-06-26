@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('clips', function (Blueprint $table) {
             $table->id();
+            $table->string('hash', 6)->unique();
             $table->string('video_id');
             $table->string('title');
             $table->integer('start_sec');

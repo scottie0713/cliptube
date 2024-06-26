@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('stories', function (Blueprint $table) {
             $table->id();
+            $table->string('hash', 6)->unique();
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('point')->default(0);
