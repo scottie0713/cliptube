@@ -1,23 +1,22 @@
 <template>
-  <div class="app-vue">
-    <Header
-      :isLoggedIn="isLoggedIn"
-      :accountId="accountId"
-      @show-login="showLoginModal"
-      @show-register="showRegisterModal"
-      @logout="logout"
-    />
-    <LoginModal
-      :visible="showLogin"
-      @close="showLogin = false"
-      @get-user="getUser"
-    />
-    <RegisterModal
-      :visible="showRegister"
-      @close="showRegister = false"
-      @ger-user="getUser"
-    />
-    <router-view :userHash="userHash"></router-view>
+  <div class="bg-body-secondary w-100 h-100">
+    <div class="w-100 bg-dark">
+      <Header
+        :isLoggedIn="isLoggedIn"
+        :accountId="accountId"
+        @logout="logout"
+      />
+    </div>
+    <div class="d-flex justify-content-center h-100 bg-dark">
+      <div class="flex bg-dark-subtle" style="width:200px" v-if="breakPoint === 'XXL'">
+        <LeftAd />
+      </div>
+      <div class="flex col word-break w-100 h-100">
+        {{ maxWidth }}
+        <button @click="checkIsXXL">Check</button>
+        <router-view :userHash="userHash"></router-view>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -26,15 +25,13 @@ import { createApp } from 'vue';
 import axios from "axios";
 import router from '~js/router';
 import Header from "@/components/Header.vue";
-import LoginModal from "@/components/LoginModal.vue";
-import RegisterModal from "@/components/RegisterModal.vue";
+import LeftAd from "@/components/LeftAd.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    LoginModal,
-    RegisterModal,
+    LeftAd,
   },
   data() {
     return {
@@ -43,14 +40,31 @@ export default {
       userHash: "",
       showLogin: false,
       showRegister: false,
+      maxWidth: 0,
+      breakPoint: "",
     };
   },
+  created() {
+    window.addEventListener('resize', this.checkWindowSize);
+    this.checkWindowSize(); // 初回チェック
+    this.maxWidth = window.innerWidth;
+  },
   methods: {
-    showLoginModal() {
-      this.showLogin = true;
+    checkIsXXL() {
+      console.log("breakPoint", this.breakPoint);
     },
-    showRegisterModal() {
-      this.showRegister = true;
+    checkWindowSize() {
+      if (window.innerWidth >= 1400) {
+        this.breakPoint = "XXL";
+      } else if (window.innerWidth >= 1200 && window.innerWidth < 1400) {
+        this.breakPoint = "XL";
+      } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
+        this.breakPoint = "LG";
+      } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
+        this.breakPoint = "MD";
+      } else {
+        this.breakPoint = "SM";
+      }
     },
     setAccountId(accountId) {
       this.isLoggedIn = true;
@@ -77,7 +91,4 @@ export default {
 </script>
 
 <style scoped>
-.app-vue {
-  height: 100%;
-}
 </style>

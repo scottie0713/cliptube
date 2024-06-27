@@ -4,10 +4,10 @@
       <span class="mx-4">つべくりっぷ</span>
       <div v-if="!isLoggedIn">
         <span class="mx-2">ゲストさん</span>
-        <button class="btn btn-outline-light btn-sm mx-2" @click="showLogin">
+        <button class="btn btn-outline-light btn-sm mx-2" @click="goToPage('/login')">
           ログイン
         </button>
-        <button class="btn btn-outline-light btn-sm mx-2" @click="showRegister">
+        <button class="btn btn-outline-light btn-sm mx-2" @click="goToPage('/register')">
           新規登録
         </button>
       </div>
@@ -29,15 +29,12 @@ export default {
     accountId: String,
   },
   methods: {
-    showLogin() {
-      this.$emit("show-login");
-    },
-    showRegister() {
-      this.$emit("show-register");
+    goToPage(path) {
+      this.$router.push(path);
     },
     async logout() {
       const response = await axios.post("/api/logout");
-      this.$emit("logout");
+      this.goToPage('/');
     },
   },
 };

@@ -4,12 +4,16 @@ import AboutPage from '@/pages/AboutPage.vue';
 import ClipCreatePage from '@/pages/ClipCreatePage.vue';
 import ClipPage from '@/pages/ClipPage.vue';
 import HomePage from '@/pages/HomePage.vue';
+import LoginPage from '@/pages/LoginPage.vue';
+import RegisterPage from '@/pages/RegisterPage.vue';
 import StoryCreatePage from '@/pages/StoryCreatePage.vue';
 import StoryPage from '@/pages/StoryPage.vue';
 import UserPage from '@/pages/UserPage.vue';
 
 const routes = [
     { path: '/', component: HomePage },
+    { path: '/register', component: RegisterPage },
+    { path: '/login', component: LoginPage },
     { path: '/about', component: AboutPage },
     { path: '/clip-create', component: ClipCreatePage },
     { path: '/clip/:hash', component: ClipPage },

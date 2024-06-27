@@ -1,6 +1,23 @@
 <template>
-  <div class="page-container text-center">
+  <div class="page-container text-center text-light">
     <h1 class="title display-4">つべくりっぷ</h1>
+    <div>
+      Youtubeのクリップ機能が個人的に面倒なので作りました。
+      お気に入りシーンを見返すことが多い人へ。
+    </div>
+    <h3>できること</h3>
+    <div>
+      <ul>
+        <li>動画にクリップを連続で作成</li>
+        <li>クリップした動画を組み合わせて連続で再生</li>
+        <li></li>
+      </ul>
+    </div>
+    <h3>注意事項</h3>
+    <ul>
+      <li>Youtubeが提供する機能の無料分でできる範囲でのご利用となります。</li>
+      <li>Youtube外部プレイヤーを使用しています。クリップ作成時に広告が流れる場合があります。</li>
+    </ul>
     <div class="menu-grid text-wrap">
       <div class="menu-item" @click="goToPage('/clip-create')">
         <div class="fs-3">クリップ作成</div>
