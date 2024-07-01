@@ -1,24 +1,20 @@
 <template>
   <div class="page-container w-100 h-100 text-wrap">
     <h2 class="my-2 fs-2">
-      <button @click="goToPage('Menu')" class="text-dark">＜</button
-      >&nbsp;クリップ作成
+      <button @click="goToPage('/')">＜</button
+      >&nbsp;クリップする動画を探しましょう
     </h2>
     <hr />
-    <Search @set-movie="setMovie" />
-    <hr v-if="videoId !== ''" />
-    <EditClip v-if="videoId !== ''" :videoId="videoId" />
+    <VideoSearch />
   </div>
 </template>
 
 <script>
-import EditClip from "@/components/CreateClip/EditClip.vue";
-import Search from "@/components/CreateClip/Search.vue";
+import VideoSearch from "@/components/VideoSearch.vue";
 
 export default {
   components: {
-    EditClip,
-    Search,
+    VideoSearch,
   },
   data() {
     return {

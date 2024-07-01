@@ -44,7 +44,7 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
-  background-color: #333;
+  background-color: #111;
   color: aliceblue;
 }
 </style>

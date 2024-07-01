@@ -19,7 +19,7 @@
       <li>Youtube外部プレイヤーを使用しています。クリップ作成時に広告が流れる場合があります。</li>
     </ul>
     <div class="menu-grid text-wrap">
-      <div class="menu-item" @click="goToPage('/clip-create')">
+      <div class="menu-item" @click="goToPage('/video/search')">
         <div class="fs-3">クリップ作成</div>
         <p class="fs-6 text-body-tertiary">
           YouTube動画から好きなところを保存します

@@ -16,12 +16,21 @@ export default {
   data() {
     return {
       player: null,
+      width: 640,
+      height: 360,
     };
   },
   mounted() {
+    this.setPlayerSize();
     this.loadYouTubeIframeAPI();
   },
   methods: {
+    setPlayerSize() {
+      // 横幅は画面いっぱいに広げる 最大幅は1024px
+      this.width = Math.min(window.innerWidth, 1024);
+      // 立幅は横幅の16:9
+      this.height = (this.width * 9) / 16;
+    },
     loadYouTubeIframeAPI() {
       if (!window.YT) {
         const tag = document.createElement("script");
@@ -36,8 +45,8 @@ export default {
     },
     onYouTubeIframeAPIReady() {
       this.player = new YT.Player("player", {
-        width: "640",
-        height: "360",
+        width: this.width,
+        height: this.height,
         videoId: this.videoId,
       });
     },
@@ -46,6 +55,16 @@ export default {
         return this.player.getCurrentTime();
       }
       return 0;
+    },
+    play() {
+      if (this.player) {
+        this.player.playVideo();
+      }
+    },
+    pause() {
+      if (this.player) {
+        this.player.pauseVideo();
+      }
     },
     seekAndPlay(sec) {
       if (this.player) {

@@ -1,6 +1,5 @@
 <template>
-  <div class="video-search-container text-dark text-center">
-    <h3 class="my-2 fs-3">①動画を探しましょう</h3>
+  <div class="video-search-container text-center">
     <div>
       <!-- 動画検索フォーム -->
       <form @submit.prevent="searchMovie" class="d-flex gap-3">
@@ -10,7 +9,7 @@
           placeholder="検索ワードを入力してください"
           class="form-control w-75"
         />
-        <button type="submit" class="btn btn-outline-dark">検索</button>
+        <button type="submit" class="btn btn-outline-light">検索</button>
       </form>
       <!-- /動画検索フォーム -->
 
@@ -22,7 +21,7 @@
             v-for="video in videos"
             :key="video.id"
             class="video-item py-1 px-2 m-1"
-            @click="setMovie(video.id.videoId)"
+            @click="goToPage(video.id.videoId)"
           >
             <img
               :src="video.snippet.thumbnails.default.url"
@@ -30,7 +29,7 @@
               class="thumbnail"
             />
             <div
-              class="text-start flex-column text-wrap align-items-center fs-6 text-dark"
+              class="text-start flex-column text-wrap align-items-center fs-6"
             >
               <div>{{ video.snippet.title }}</div>
               <div>
@@ -77,8 +76,8 @@ export default {
         date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
       );
     },
-    setMovie(movieId) {
-      this.$emit("setMovie", movieId);
+    goToPage(movieId) {
+      this.$router.push('/edit/clip/' + movieId);
     },
   },
 };

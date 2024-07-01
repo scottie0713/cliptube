@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-body-secondary w-100 h-100">
+  <div class="w-100 h-100">
     <div class="w-100 bg-dark">
       <Header
         :isLoggedIn="isLoggedIn"
@@ -7,13 +7,11 @@
         @logout="logout"
       />
     </div>
-    <div class="d-flex justify-content-center h-100 bg-dark">
+    <div class="d-flex justify-content-center h-100">
       <div class="flex bg-dark-subtle" style="width:200px" v-if="breakPoint === 'XXL'">
         <LeftAd />
       </div>
-      <div class="flex col word-break w-100 h-100">
-        {{ maxWidth }}
-        <button @click="checkIsXXL">Check</button>
+      <div class="flex col word-break w-100 h-100 text-light">
         <router-view :userHash="userHash"></router-view>
       </div>
     </div>
@@ -49,7 +47,22 @@ export default {
     this.checkWindowSize(); // 初回チェック
     this.maxWidth = window.innerWidth;
   },
+  mounted() {
+    this.login();
+  },
   methods: {
+    async login() {
+      try {
+        const response = await axios.post("/api/login", {
+          account_id: "kimukimi713",
+          password: "kiminori713",
+        });
+        if (response.status === 200) {
+          this.getUser();
+        }
+      } catch (error) {
+      }
+    },
     checkIsXXL() {
       console.log("breakPoint", this.breakPoint);
     },
