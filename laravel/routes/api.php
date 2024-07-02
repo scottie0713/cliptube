@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/clip', [ClipController::class, 'listAll']);
     Route::get('/clip/{video_id}', [ClipController::class, 'list']);
+    Route::get('/clip/{video_id}/trash', [ClipController::class, 'disableList']);
     Route::post('/clip', [ClipController::class, 'add']);
     Route::delete('/clip/{id}', [ClipController::class, 'delete']);
 });

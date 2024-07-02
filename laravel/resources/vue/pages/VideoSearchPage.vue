@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container w-100 h-100 text-wrap">
+  <div class="page-container w-100 h-100 text-wrap p-4">
     <h2 class="my-2 fs-2">
       <button @click="goToPage('/')">＜</button
       >&nbsp;クリップする動画を探しましょう

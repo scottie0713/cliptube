@@ -29,6 +29,24 @@ class ClipController extends Controller
         return response()->json($checkpoints, 200);
     }
 
+    public function disableList(Request $request, $videoId): JsonResponse
+    {
+        // videoIdのバリデーション
+        if (!preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoId)) {
+            return response()->json([], 400);
+        }
+
+        $checkpoints = UserClip::with([
+            'clip' => function ($query) use ($videoId) {
+                $query->where('video_id', $videoId);
+            }
+        ])
+            ->where('user_id', $request->user()->id)
+            ->get();
+
+        return response()->json($checkpoints, 200);
+    }
+
     public function listAll(Request $request): JsonResponse
     {
         $checkpoints = UserClip::with(['clip'])->where('user_id', $request->user()->id)

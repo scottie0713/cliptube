@@ -2,7 +2,7 @@
   <div
     class="edit-clip-controller-container text-center bg-light"
   >
-    <div class="player-control d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
       <button @click="relativeSeekAndPlay(-30)" class="flex-fill btn">
         &lt;&nbsp;30秒
       </button>
@@ -40,22 +40,8 @@ export default {
       isPlay: false,
     };
   },
-  created() {
-  },
-  mounted() {
-  },
   methods: {
-    pause() {
-      this.isPlay = false;
-      this.$emit("pause");
-    },
-    play() {
-      this.isPlay = true;
-      this.$emit("play");
-    },
-    relativeSeekAndPlay(sec) {
-      this.$emit("relativeSeekAndPlay", sec);
-    },
+
   },
 };
 </script>

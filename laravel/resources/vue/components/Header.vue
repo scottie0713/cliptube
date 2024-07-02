@@ -1,7 +1,7 @@
 <template>
   <header class="header py-2 pl-4 pr-2">
-    <div class="container">
-      <span class="mx-4">つべくりっぷ</span>
+    <div class="container d-flex">
+      <div class="mx-4">つべくりっぷ</div>
       <div v-if="!isLoggedIn">
         <span class="mx-2">ゲストさん</span>
         <button class="btn btn-outline-light btn-sm mx-2" @click="goToPage('/login')">
