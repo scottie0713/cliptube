@@ -4,7 +4,7 @@
         <h2 class="fs-3">クリップ編集</h2>
         <EditClipForm
             :videoId="videoId"
-            @add-clip="addClip"
+            @get-clips="getClips"
             ref="EditClipForm"
         />
         <!-- 2つのタブつきメニュー -->
@@ -19,7 +19,7 @@
             </ul>
             <div class="tab-content">
                 <EditClipList
-                    v-show="activeTab === 1"
+                    v-if="activeTab === 1"
                     :videoId="videoId"
                     @setForm="setForm"
                     ref="EditClipList"
@@ -72,10 +72,9 @@ export default {
             }
         },
         // リストコンポーネント操作関数群
-        async addClip(title, startSec, endSec) {
-            this.$refs.EditClipList.addClip(title, startSec, endSec);
+        getClips() {
+            this.$refs.EditClipList.getClips();
         },
-        async trashClip(id) {},
     },
 };
 </script>

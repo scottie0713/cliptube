@@ -8,6 +8,7 @@ use App\Models\UserClip;
 use App\Models\Clip;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ClipController extends Controller
 {
@@ -24,6 +25,7 @@ class ClipController extends Controller
             }
         ])
             ->where('user_id', $request->user()->id)
+            ->where('enabled', true)
             ->get();
 
         return response()->json($checkpoints, 200);
@@ -42,6 +44,7 @@ class ClipController extends Controller
             }
         ])
             ->where('user_id', $request->user()->id)
+            ->where('enabled', false)
             ->get();
 
         return response()->json($checkpoints, 200);
@@ -68,6 +71,7 @@ class ClipController extends Controller
         try {
             $clipId = DB::table('clips')->insertGetId([
                 'video_id' => $request->input('video_id'),
+                'hash' => Str::random(6),
                 'start_sec' => $request->input('start_sec'),
                 'end_sec' => $request->input('end_sec'),
                 'title' => $request->input('title'),
@@ -81,8 +85,23 @@ class ClipController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            dump($e->getMessage());
             return response()->json([], 500);
         }
+
+        return response()->json([], 200);
+    }
+
+    public function put(Request $request, $id): JsonResponse
+    {
+        $request->validate([
+            'enabled' => 'required|boolean',
+        ]);
+
+        UserClip::where('id', $id)->where('user_id', $request->user()->id)
+            ->update([
+                'enabled' => $request->input('enabled'),
+            ]);
 
         return response()->json([], 200);
     }

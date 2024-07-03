@@ -12,6 +12,14 @@
                             }}
                         </span>
                     </div>
+                    <div class="d-flex flex-row gap-1 justify-content-between">
+                        <button
+                            class="btn btn-light"
+                            @click="enableClip(clip.id)"
+                        >
+                            復活
+                        </button>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -60,6 +68,19 @@ export default {
             this.clips = [];
             for (const userClip of userClips) {
                 this.clips.push(userClip.clip);
+            }
+        },
+        async enableClip(clipId) {
+            console.log("enableClip", this.newClip);
+            try {
+                const response = await axios.put("/api/user-clip/" + clipId, {
+                    enabled: true,
+                });
+                if (response.status === 200) {
+                    this.getClips();
+                }
+            } catch (error) {
+                console.error(error);
             }
         },
     },

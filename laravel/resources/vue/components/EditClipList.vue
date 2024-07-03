@@ -1,5 +1,10 @@
 <template>
     <div class="edit-clip-list-container text-start">
+        <div class="my-2">
+            <button class="btn btn-light btn-sm" @click="getClips()">
+                更新
+            </button>
+        </div>
         <ul class="list-group">
             <li
                 v-for="tmpClip in tmpClips"
@@ -42,15 +47,12 @@
                         </span>
                     </div>
                     <div class="d-flex flex-row gap-1 justify-content-between">
-                        <button
-                            class="btn btn-light"
-                            @click="copyToNewClip(clip)"
-                        >
+                        <button class="btn btn-light" @click="setForm(clip)">
                             <Edit :width="'20px'" :height="'20px'" />
                         </button>
                         <button
                             class="btn btn-light"
-                            @click="deleteClip(clip.id)"
+                            @click="disableClip(clip.id)"
                         >
                             <TrashBox :width="'20px'" :height="'20px'" />
                         </button>
@@ -88,29 +90,7 @@ export default {
     mounted() {
         this.getClips();
     },
-    watch: {
-        tmpClips: {
-            handler: function (newVal, oldVal) {
-                for (const tmpClip of newVal) {
-                    if (tmpClip.status === "new") {
-                        tmpClip.status = "saving";
-                        this.postClip(tmpClip);
-                    }
-                }
-            },
-            deep: true,
-        },
-    },
     methods: {
-        addClip(title, startSec, endSec) {
-            const tmpClip = {
-                title: title,
-                start: startSec,
-                end: endSec,
-                status: "new",
-            };
-            this.tmpClips.push(tmpClip);
-        },
         setForm(clip) {
             this.$emit("setForm", clip);
         },
@@ -133,18 +113,14 @@ export default {
                 console.error(error);
             }
         },
-        async postClip(clip) {
-            console.log("addClip", this.newClip);
+        async disableClip(clipId) {
+            console.log("disableClip", this.newClip);
             try {
-                const response = await axios.post("/api/clip", {
-                    video_id: this.videoId,
-                    start_sec: clip.startSec,
-                    end_sec: clip.endSec,
-                    title: clip.title,
+                const response = await axios.put("/api/user-clip/" + clipId, {
+                    enabled: false,
                 });
                 if (response.status === 200) {
-                    console.log("addClip", response);
-                    //this.getClips();
+                    this.getClips();
                 }
             } catch (error) {
                 console.error(error);

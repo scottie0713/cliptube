@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('story_id');
+            $table->boolean('enabled')->default(true);
             $table->timestamps();
         });
     }

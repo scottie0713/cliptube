@@ -71,13 +71,15 @@
             />
 
             <div class="mt-3">
-                <button @click="addClip" class="btn btn-success">保存</button>
+                <button @click="playClip" class="btn btn-success">再生</button>
+                <button @click="postClip" class="btn btn-success">保存</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 import { timeHelper } from "~js/helpers/timeHelper.js";
 import YouTubePlayer from "@/components/YouTubePlayer.vue";
 import Pause from "@/components/Parts/Pause.vue";
@@ -138,12 +140,24 @@ export default {
             this.startSec = clip.start_sec;
             this.endSec = clip.end_sec;
         },
-        async addClip() {
-            this.$emit("addClip", {
-                title: this.title,
-                startSec: this.startSec,
-                endSec: this.endSec,
-            });
+        playClip() {
+            this.$refs.YouTubePlayer.seek(this.startSec);
+            this.$refs.YouTubePlayer.play();
+        },
+        async postClip() {
+            try {
+                const response = await axios.post("/api/clip", {
+                    video_id: this.videoId,
+                    start_sec: this.startSec,
+                    end_sec: this.endSec,
+                    title: this.title,
+                });
+                if (response.status === 200) {
+                    this.$emit("getClips");
+                }
+            } catch (error) {
+                console.error(error);
+            }
         },
         // Youtubeプレイヤー操作系
         async pause() {
