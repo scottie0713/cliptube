@@ -60,7 +60,19 @@ export default {
                     disablekb: 1, // キーボード操作を無効化
                     autohide: 1, // コントロールの自動非表示
                 },
+                events: {
+                    onReady: this.onPlayerReady,
+                    onStateChange: this.onPlayerStateChange,
+                },
             });
+        },
+        onPlayerReady(event) {},
+        onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                this.$emit("eventPlay");
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                this.$emit("eventPause");
+            }
         },
         getCurrentTime() {
             if (this.player) {

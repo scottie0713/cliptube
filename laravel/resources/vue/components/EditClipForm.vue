@@ -1,13 +1,14 @@
 <template>
     <div class="edit-clip-form-container">
-        <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
+        <YouTubePlayer
+            :videoId="videoId"
+            @event-play="eventPlay"
+            @event-pause="eventPause"
+            ref="YouTubePlayer"
+        />
         <div class="text-center px-2">
             <div class="edit-clip-form-control">
                 <div class="btn-group w-100 mb-2 fs-5">
-                    <button @click="relativeSeek(-60)" class="btn btn-light">
-                        -1m
-                    </button>
-                    <div class="vr"></div>
                     <button @click="relativeSeek(-10)" class="btn btn-light">
                         -10s
                     </button>
@@ -21,10 +22,20 @@
                         @click="pause"
                         class="btn btn-light pause"
                     >
-                        <Pause :width="'20px'" :height="'20px'" />
+                        <div class="current-time">
+                            {{ timeFormat(currentTime) }}
+                        </div>
+                        <div>
+                            <Pause :width="'14px'" :height="'14px'" />
+                        </div>
                     </button>
                     <button v-else @click="play" class="btn btn-light play">
-                        <Play :width="'20px'" :height="'20px'" />
+                        <div class="current-time">
+                            {{ timeFormat(currentTime) }}
+                        </div>
+                        <div>
+                            <Play :width="'14px'" :height="'14px'" />
+                        </div>
                     </button>
                     <div class="vr"></div>
                     <button @click="relativeSeek(1)" class="btn btn-light">
@@ -33,10 +44,6 @@
                     <div class="vr"></div>
                     <button @click="relativeSeek(10)" class="btn btn-light">
                         +10s
-                    </button>
-                    <div class="vr"></div>
-                    <button @click="relativeSeek(60)" class="btn btn-light">
-                        +1m
                     </button>
                 </div>
 
@@ -70,8 +77,13 @@
                 placeholder="クリップメモ"
             />
 
-            <div class="mt-3">
-                <button @click="playClip" class="btn btn-success">再生</button>
+            <div class="mt-3 d-flex gap-2 justify-content-center">
+                <button @click="playClip(startSec)" class="btn btn-success">
+                    開始時間へ
+                </button>
+                <button @click="playClip(endSec)" class="btn btn-success">
+                    終了時間へ
+                </button>
                 <button @click="postClip" class="btn btn-success">保存</button>
             </div>
         </div>
@@ -105,12 +117,22 @@ export default {
     data() {
         return {
             isPlay: false,
+            currentTime: 0,
             title: "",
             startSec: 0,
             endSec: 0,
         };
     },
+    mounted() {
+        this.setCurrentTime();
+    },
     methods: {
+        setCurrentTime() {
+            if (this.isPlay) {
+                this.currentTime = this.$refs.YouTubePlayer.getCurrentTime();
+            }
+            setTimeout(this.setCurrentTime, 300);
+        },
         setStartSec() {
             this.startSec = Math.floor(
                 this.$refs.YouTubePlayer.getCurrentTime()
@@ -140,8 +162,8 @@ export default {
             this.startSec = clip.start_sec;
             this.endSec = clip.end_sec;
         },
-        playClip() {
-            this.$refs.YouTubePlayer.seek(this.startSec);
+        playClip(sec) {
+            this.$refs.YouTubePlayer.seek(sec);
             this.$refs.YouTubePlayer.play();
         },
         async postClip() {
@@ -170,6 +192,12 @@ export default {
                 this.isPlay = true;
             }
         },
+        eventPlay() {
+            this.isPlay = true;
+        },
+        eventPause() {
+            this.isPlay = false;
+        },
         async seek(sec) {
             this.$refs.YouTubePlayer.seek(sec);
         },
@@ -184,12 +212,11 @@ export default {
 .vr {
     width: 2px;
 }
-/* .play {
-    background-image: url("../../images/play.svg");
+
+.current-time {
+    font-size: 0.7em;
+    line-height: 0.5em;
 }
-.pause {
-    background-image: url("../../images/pause.svg");
-} */
 
 .edit-clip-form-control button {
     height: 2em;

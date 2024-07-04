@@ -1,7 +1,6 @@
 <template>
     <div class="edit-clip-container text-center py-2">
-        <br />
-        <h2 class="fs-3">クリップ編集</h2>
+        <h2 class="fs-6">クリップ編集</h2>
         <EditClipForm
             :videoId="videoId"
             @get-clips="getClips"

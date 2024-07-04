@@ -20,7 +20,7 @@
     </ul>
     <div class="menu-grid text-wrap">
       <div class="menu-item" @click="goToPage('/video/search')">
-        <div class="fs-3">クリップ作成</div>
+        <div class="fs-3">クリップを作る</div>
         <p class="fs-6 text-body-tertiary">
           YouTube動画から好きなところを保存します
         </p>
