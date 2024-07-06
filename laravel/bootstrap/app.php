@@ -20,10 +20,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->redirectGuestsTo(function () {
-            //return URL::to('/');
-            //return route('login');
             return env('APP_URL');
         });
+
+        $middleware->priority([
+            \App\Http\Middleware\CacheResponse::class,
+            'throttle',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

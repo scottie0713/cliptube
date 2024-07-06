@@ -2,14 +2,18 @@
 
 namespace App\Actions;
 
+use App\Models\LogYoutubeApiEvent;
+use App\Traits\CacheKeyGenerator;
 use Google_Client;
 use Google_Service_YouTube;
+use Illuminate\Support\Facades\Cache;
 
-class GoogleServiceYoutubeListSearchAction
+class GoogleServiceYoutubeSearchListAction
 {
   public function execute($query)
   {
     return $this->responseMock();
+
     $client = new Google_Client();
     $client->setDeveloperKey(env('YOUTUBE_API_KEY'));
 
@@ -21,6 +25,13 @@ class GoogleServiceYoutubeListSearchAction
         'maxResults' => 10,
         'part' => 'id,snippet',
         'type' => 'video',
+      ]);
+
+      // log_youtube_api_eventsに記録
+      LogYoutubeApiEvent::create([
+        'api' => 'search',
+        'method' => 'list',
+        'params' => json_encode(['q' => $query]),
       ]);
 
       return $searchResponse;
