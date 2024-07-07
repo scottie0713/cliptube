@@ -3,7 +3,6 @@
 namespace App\Actions;
 
 use App\Models\LogYoutubeApiEvent;
-use App\Traits\CacheKeyGenerator;
 use Google_Client;
 use Google_Service_YouTube;
 use Illuminate\Support\Facades\Cache;

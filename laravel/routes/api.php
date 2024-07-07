@@ -19,11 +19,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::get('/user/video', [ClipController::class, 'videoList']);
     Route::middleware([
         CacheResponse::class,
         'throttle:' . Config::get('youtube_api.limit') . ',' . Config::get('youtube_api.period')
     ])->get('/youtube/search', [YoutubeController::class, 'search']);
-    Route::get('/youtube/info', [YoutubeController::class, 'info']);
+    Route::get('/youtube/video', [YoutubeController::class, 'video']);
     Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');
 

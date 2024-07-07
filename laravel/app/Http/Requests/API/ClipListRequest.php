@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class YoutubeSearchRequest extends FormRequest
+class ClipListRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,7 @@ class YoutubeSearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'query' => 'required|string|max:255',
+            'videoId' => ['required', 'regex:/^[a-zA-Z0-9_-]{11}$/'],
         ];
     }
 }

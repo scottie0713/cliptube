@@ -43,12 +43,12 @@ export default {
     };
   },
   created() {
+    this.login();
     window.addEventListener('resize', this.checkWindowSize);
     this.checkWindowSize(); // 初回チェック
     this.maxWidth = window.innerWidth;
   },
   mounted() {
-    this.login();
   },
   methods: {
     async login() {

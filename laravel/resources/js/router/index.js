@@ -8,7 +8,8 @@ import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
 // import StoryCreatePage from '@/pages/StoryCreatePage.vue';
 // import StoryPage from '@/pages/StoryPage.vue';
-import UserPage from "@/pages/UserPage.vue";
+import UserClipPage from "@/pages/UserClipPage.vue";
+import UserVideoPage from "@/pages/UserVideoPage.vue";
 import VideoSearchPage from "@/pages/VideoSearchPage.vue";
 
 const routes = [
@@ -21,7 +22,8 @@ const routes = [
     //{ path: '/clip/:hash', component: ClipPage },
     //{ path: '/story-create', component: StoryCreatePage },
     //{ path: '/story/:hash', component: StoryPage },
-    { path: "/user", component: UserPage },
+    { path: "/user/clip/:hash", component: UserClipPage },
+    { path: "/user/video", component: UserVideoPage },
     { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
 

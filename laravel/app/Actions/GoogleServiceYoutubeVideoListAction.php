@@ -5,20 +5,19 @@ namespace App\Actions;
 use Google_Client;
 use Google_Service_YouTube;
 
-class GoogleServiceYoutubeListSearchAction
+class GoogleServiceYoutubeVideoListAction
 {
-  public function execute($query)
+  public function execute(array $videoIds)
   {
-    return $this->responseMock();
+    // return $this->responseMock();
     $client = new Google_Client();
     $client->setDeveloperKey(env('YOUTUBE_API_KEY'));
 
     $youtube = new Google_Service_YouTube($client);
 
     try {
-      $searchResponse = $youtube->search->list([
-        'q' => $query,
-        'maxResults' => 10,
+      $searchResponse = $youtube->video->list([
+        'id' => $videoIds,
         'part' => 'id,snippet',
         'type' => 'video',
       ]);
