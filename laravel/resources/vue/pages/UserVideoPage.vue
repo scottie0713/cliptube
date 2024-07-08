@@ -6,9 +6,10 @@
                 v-for="video in videos"
                 :key="video.id"
                 class="p border border-dark"
+                @click="goToPage(`/user/video/${video.id}`)"
             >
-                <div class="fs-4">{{ video.title }}</div>
-                <div class="fs-6">{{ video.url }}</div>
+                <img :src="video.thumbnail" class="fs-4" />
+                <div class="fs-6">{{ video.title }}</div>
             </div>
         </div>
         <div>
@@ -38,7 +39,6 @@ export default {
     methods: {
         async get() {
             const response = await axios.get("/api/user/video");
-            //console.log(response.data);
             this.videos = response.data;
         },
         goToPage(path) {

@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => [env('FRONTEND_URL', 'https://bug-free-telegram-4wqvxvgq4rj256w-5173.app.github.dev')],
 
     'allowed_origins_patterns' => [],
 

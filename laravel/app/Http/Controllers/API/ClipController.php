@@ -10,24 +10,16 @@ use App\Http\Requests\API\ClipListRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class ClipController extends Controller
 {
-    public function videoList(Request $request): JsonResponse
+    public function list(Request $request, $videoId): JsonResponse
     {
-        $action = new GetUserVideoListAction();
-
-        try {
-            $videos = $action->execute($request->user()->id);
-        } catch (\Exception $e) {
-            dump($e->getMessage());
-            return response()->json([$e->getMessage()], 500);
+        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoId) === 0) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
-        return response()->json($videos, 200);
-    }
 
-    public function list(ClipListRequest $request, $videoId): JsonResponse
-    {
         $userClips = UserClip::with([
             'clip' => function ($query) use ($videoId) {
                 $query->where('video_id', $videoId);

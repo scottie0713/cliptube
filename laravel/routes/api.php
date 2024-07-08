@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\API\YoutubeController;
 use App\Http\Controllers\API\StoryController;
 use App\Http\Controllers\API\ClipController;
+use App\Http\Controllers\API\UserController;
 use App\Http\Middleware\CacheResponse;
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -19,7 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/user/video', [ClipController::class, 'videoList']);
+    Route::get('/user/video', [UserController::class, 'videoList']);
     Route::middleware([
         CacheResponse::class,
         'throttle:' . Config::get('youtube_api.limit') . ',' . Config::get('youtube_api.period')

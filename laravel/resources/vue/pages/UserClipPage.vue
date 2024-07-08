@@ -1,42 +1,84 @@
 <template>
-  <div class="page-container w-100 h-100 text-wrap">
-    <h2 class="my-2 fs-2">このサイトって？</h2>
-    <div>
-      <p>
-        YouTubeの動画の好きなシーンの時間を保存して、それをまとめるツールです。
-      </p>
-      <p>あくまで時間を保存するだけなので動画を作成するわけではないです。</p>
-      <p>
-        YouTubeにはすでにクリップ機能がありますが、本家とは違い時間制限を気にしなくて良いし、複数動画のシーンをまとめることができます。
-      </p>
-      <p>
-        例：動画Ａの00:10～00:30を再生してから動画Ｂの01:00～01:30を続けて見たい
-      </p>
-      <button class="btn btn-outline-dark w-50 my-4" @click="switchTo('Menu')">
-        戻る
-      </button>
+    <div class="page-container w-100 h-100 text-wrap">
+        <h2 class="my-2 fs-2"></h2>
+        <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
+
+        <div
+            v-for="userClip in userClips"
+            :key="userClip.id"
+            class="p border border-dark"
+            @click="playClip(userClip.clip.start_sec, userClip.clip.end_sec)"
+        >
+            <div class="fs-6">{{ userClip.id }}</div>
+            <div class="fs-6">{{ userClip.clip.title }}</div>
+        </div>
+        <div>
+            <button
+                class="btn btn-outline-dark w-50 my-4"
+                @click="switchTo('/user/video')"
+            >
+                戻る
+            </button>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
+import axios from "axios";
+import YouTubePlayer from "@/components/YouTubePlayerForWatch.vue";
 export default {
-  data() {
-    return {};
-  },
-  mounted() {
-  },
-  methods: {
-  },
+    components: {
+        YouTubePlayer,
+    },
+    data() {
+        return {
+            videoId: null,
+            startSec: null,
+            endSec: null,
+            userClips: [],
+        };
+    },
+    created() {
+        this.videoId = this.$route.params.hash;
+    },
+    mounted() {
+        setTimeout(() => {
+            this.getClips();
+        }, 1000);
+        // this.getClips();
+    },
+    methods: {
+        async getClips() {
+            try {
+                const response = await axios.get(
+                    "/api/clip/" + this.videoId,
+                    {}
+                );
+                if (response.status === 200) {
+                    this.setUserClips(response.data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        setUserClips(userClips) {
+            for (const userClip of userClips) {
+                this.userClips.push(userClip);
+            }
+        },
+        playClip(startSec, endSec) {
+            this.$refs.YouTubePlayer.seekAndPlay(startSec, endSec);
+        },
+    },
 };
 </script>
 
 <style scoped>
 .page-container {
-  text-align: center;
+    text-align: center;
 }
 .p {
-  margin: 10px auto;
-  padding: 20px;
+    margin: 10px auto;
+    padding: 20px;
 }
 </style>

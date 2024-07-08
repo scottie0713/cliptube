@@ -22,7 +22,7 @@ const routes = [
     //{ path: '/clip/:hash', component: ClipPage },
     //{ path: '/story-create', component: StoryCreatePage },
     //{ path: '/story/:hash', component: StoryPage },
-    { path: "/user/clip/:hash", component: UserClipPage },
+    { path: "/user/video/:hash", component: UserClipPage },
     { path: "/user/video", component: UserVideoPage },
     { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
