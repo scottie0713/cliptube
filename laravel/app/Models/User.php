@@ -17,8 +17,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'password',
-        'account_id',
+        'provider',
+        'provider_id',
+        'name',
+        'avatar',
+        'token',
     ];
 
     /**
@@ -27,22 +30,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     * 上の英文を日本語に翻訳
-     * キャストされる属性を取得します。
-     * 
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'account_id' => 'string',
-            'password' => 'hashed',
-        ];
-    }
 }

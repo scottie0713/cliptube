@@ -41,21 +41,18 @@
                 </div>
             </div>
             <div class="d-flex flex-row gap-5">
-                <div class="flex-fill menu-item" @click="goToPage('About')">
+                <div class="flex-fill menu-item" @click="goToLogin()">
                     <div class="row justify-content-center">
                         <div class="menu-icon">
                             <img src="../../images/kari01.png" width="80" />
                         </div>
                     </div>
-                    <div class="row justify-content-center menu-title">
-                        作成
+                    <div class="row justify-content-center menu-title">X</div>
+                    <div class="row justify-content-center menu-desc">
+                        ログイン
                     </div>
-                    <div class="row justify-content-center menu-desc">aaa</div>
                 </div>
-                <div
-                    class="flex-fill menu-item"
-                    @click="goToPage('openTwitter')"
-                >
+                <div class="flex-fill menu-item" @click="goToPage('/')">
                     <div class="row justify-content-center">
                         <div class="menu-icon">
                             <img src="../../images/kari01.png" width="80" />
@@ -87,6 +84,9 @@ export default {
     methods: {
         goToPage(path) {
             this.$router.push(path);
+        },
+        goToLogin() {
+            location.href = "/login/twitter";
         },
     },
 };

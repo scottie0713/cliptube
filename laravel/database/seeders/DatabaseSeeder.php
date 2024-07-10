@@ -17,9 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         DB::table('users')->insert([
-            'account_id' => 'kimukimi713',
-            'hash' => Str::random(6),
-            'password' => '$2y$12$8WkUL5zoxQFjYoN3Q765kuM2lNmsAveJSRcAw/dWiUnQbVckbrdy2',
+            'provider' => 'twitter',
+            'provider_id' => '11194222',
+            'name' => 'scottie2nd',
+            'avatar' => 'https://pbs.twimg.com/profile_images/824897060495167489/a15ksl2S_x96.jpg',
+            'token' => 'Snlrb28zVWpLakxUTEF5dDZ6RV9UM2Y3cmhJaGE4TjZFdFdKeFh5bkdHRWdJOjE3MjA2MzMwMDc2NzQ6MToxOmF0OjE',
         ]);
         $this->call([
             ClipSeeder::class,
