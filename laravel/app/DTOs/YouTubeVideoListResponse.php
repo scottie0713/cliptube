@@ -10,7 +10,7 @@ class YouTubeVideoListResponse
 
     public string $thumbnail;
 
-    public static function create(array $data)
+    public static function create(array $data): YouTubeVideoListResponse
     {
         $item = $data['items'][0];
 

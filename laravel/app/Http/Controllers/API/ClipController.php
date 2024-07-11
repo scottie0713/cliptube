@@ -17,7 +17,7 @@ class ClipController extends Controller
     public function list(Request $request, $videoId): JsonResponse
     {
         if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoId) === 0) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([], 422);
         }
 
         $userClips = UserClip::with([

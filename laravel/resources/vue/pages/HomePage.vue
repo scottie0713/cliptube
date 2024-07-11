@@ -1,10 +1,6 @@
 <template>
     <div class="page-container text-center text-light">
-        <Header
-            :isLoggedIn="isLoggedIn"
-            :accountId="accountId"
-            @logout="logout"
-        />
+        <Header />
         <div class="area-clip fs-6">
             <div class="d-flex flex-row gap-5 py-5">
                 <div
@@ -69,7 +65,9 @@
 </template>
 
 <script>
+import axios from "axios";
 import Header from "@/components/Header.vue";
+
 export default {
     components: {
         Header,
@@ -78,9 +76,7 @@ export default {
     data() {
         return {};
     },
-    mounted() {
-        console.log("userHash", this.userHash);
-    },
+    mounted() {},
     methods: {
         goToPage(path) {
             this.$router.push(path);

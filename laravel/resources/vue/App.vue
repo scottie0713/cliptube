@@ -39,24 +39,24 @@ export default {
         };
     },
     created() {
-        this.login();
+        //this.login();
         window.addEventListener("resize", this.checkWindowSize);
         this.checkWindowSize(); // 初回チェック
         this.maxWidth = window.innerWidth;
     },
     mounted() {},
     methods: {
-        async login() {
-            try {
-                const response = await axios.post("/api/login", {
-                    account_id: "kimukimi713",
-                    password: "kiminori713",
-                });
-                if (response.status === 200) {
-                    this.getUser();
-                }
-            } catch (error) {}
-        },
+        // async login() {
+        //     try {
+        //         const response = await axios.post("/api/login", {
+        //             account_id: "kimukimi713",
+        //             password: "kiminori713",
+        //         });
+        //         if (response.status === 200) {
+        //             this.getUser();
+        //         }
+        //     } catch (error) {}
+        // },
         checkIsXXL() {
             console.log("breakPoint", this.breakPoint);
         },
