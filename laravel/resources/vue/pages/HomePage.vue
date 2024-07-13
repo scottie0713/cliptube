@@ -26,7 +26,9 @@
                     <div class="menu-icon">
                         <ImageClip size="36" />
                     </div>
-                    <div class="menu-desc flex-fill">作ったクリップを見る</div>
+                    <div class="menu-desc flex-fill">
+                        自分の作ったクリップを見る
+                    </div>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
@@ -80,32 +82,10 @@ export default {
 </script>
 
 <style scoped>
-.bg-clip {
-    background-color: #c75c5c;
-}
-
-.area-clip {
-    width: 100%;
-    background-image: url("../../images/black_00014.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-attachment: fixed;
-    border: #333 3px solid;
-    border-left: transparent;
-    border-right: transparent;
-    padding: 1rem 2em;
-}
-
-.menu-item {
-    /* min-width: 10rem;
-    width: 16rem; */
-}
-
 .menu-box {
-    margin: 2rem;
+    margin: 1rem;
     border-radius: 0.5rem;
-    padding: 1rem;
+    padding: 1.4rem;
     color: #fff;
     font-size: 1.2rem;
 }

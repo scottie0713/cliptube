@@ -1,42 +1,63 @@
 <template>
-    <div class="edit-clip-container text-center py-2">
-        <h2 class="fs-6">クリップ編集</h2>
-        <EditClipForm
-            :videoId="videoId"
-            @get-clips="getClips"
-            ref="EditClipForm"
-        />
-        <!-- 2つのタブつきメニュー -->
-        <div class="tab-box">
-            <ul class="tab-menu">
-                <li :class="{ active: activeTab === 1 }" @click="activeTab = 1">
-                    クリップ一覧
-                </li>
-                <li :class="{ active: activeTab === 2 }" @click="activeTab = 2">
-                    ごみ箱
-                </li>
-            </ul>
-            <div class="tab-content">
-                <EditClipList
-                    v-if="activeTab === 1"
-                    :videoId="videoId"
-                    @setForm="setForm"
-                    ref="EditClipList"
-                />
-                <EditClipTrashList
-                    v-if="activeTab === 2"
-                    :videoId="videoId"
-                    ref="EditClipTrashList"
-                />
+    <div>
+        <Header />
+
+        <div class="page-container">
+            <!-- タイトル -->
+            <div
+                class="page-title d-flex justify-content-center align-items-center"
+            >
+                <div>
+                    <ImageScissors size="30" />
+                </div>
+                <div>クリップ編集</div>
+            </div>
+            <!-- /タイトル -->
+            <EditClipForm
+                :videoId="videoId"
+                @get-clips="getClips"
+                ref="EditClipForm"
+            />
+            <!-- 2つのタブつきメニュー -->
+            <div class="tab-box">
+                <ul class="tab-menu">
+                    <li
+                        :class="{ active: activeTab === 1 }"
+                        @click="activeTab = 1"
+                    >
+                        クリップ一覧
+                    </li>
+                    <li
+                        :class="{ active: activeTab === 2 }"
+                        @click="activeTab = 2"
+                    >
+                        ごみ箱
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <EditClipList
+                        v-if="activeTab === 1"
+                        :videoId="videoId"
+                        @setForm="setForm"
+                        ref="EditClipList"
+                    />
+                    <EditClipTrashList
+                        v-if="activeTab === 2"
+                        :videoId="videoId"
+                        ref="EditClipTrashList"
+                    />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import Header from "@/components/HeaderMini.vue";
 import EditClipForm from "@/components/EditClipForm.vue";
 import EditClipList from "@/components/EditClipList.vue";
 import EditClipTrashList from "@/components/EditClipTrashList.vue";
+import ImageScissors from "@/components/Images/Scissors.vue";
 
 export default {
     props: {},
@@ -44,6 +65,8 @@ export default {
         EditClipForm,
         EditClipList,
         EditClipTrashList,
+        Header,
+        ImageScissors,
     },
     data() {
         return {
@@ -79,7 +102,15 @@ export default {
 </script>
 
 <style scoped>
-.edit-clip-container {
+.page-container {
+}
+
+.page-title {
+    background-color: #c75c5c;
+    width: 90%;
+    margin: 0 auto 2rem auto;
+    padding: 0.2em;
+    border-radius: 2em;
 }
 
 .player {

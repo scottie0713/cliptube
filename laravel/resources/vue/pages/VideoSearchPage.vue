@@ -2,62 +2,92 @@
     <div>
         <Header />
 
-        <!-- 動画検索フォーム -->
-        <div class="page-form-container">
-            <h2 class="my-2 fs-5 mb-4">まずはクリップの動画を探します</h2>
+        <div class="page-container">
+            <!-- タイトル -->
+            <div
+                class="page-title d-flex justify-content-center align-items-center"
+            >
+                <div>
+                    <ImageSearch size="30" />
+                </div>
+                <div>YouTube動画検索</div>
+            </div>
+            <!-- /タイトル -->
 
+            <!-- 動画検索フォーム -->
             <form
                 @submit.prevent="searchMovie"
-                class="d-flex justify-content-center gap-3"
+                class="page-form d-flex justify-content-center gap-3 mb-4"
             >
                 <input
                     type="text"
                     v-model="query"
                     placeholder="検索ワードを入力してください"
-                    class="form-control w-75"
+                    class="form-control"
                 />
                 <button type="submit" class="btn btn-outline-light">
                     検索
                 </button>
             </form>
-        </div>
-        <!-- /動画検索フォーム -->
+            <!-- /動画検索フォーム -->
 
-        <!-- 検索結果一覧 -->
-        <div
-            v-if="videos.length > 0"
-            class="page-viceos-container d-flex gap-3 my-4 justify-content-center flex-wrap"
-        >
-            <div v-for="v in videos" class="card" style="width: 10rem">
-                <div @click="goToPage('/edit/clip/' + v.id)">
-                    <img
-                        :src="v.thumbnail"
-                        class="card-img-top"
-                        :alt="v.title"
-                    />
-                    <div class="card-body">
-                        <h5 class="card-title" style="font-size: 0.8rem">
-                            {{ v.title }}
-                        </h5>
-                        <p class="card-text" style="font-size: 0.6rem">
-                            {{ formatDate(v.publishedAt) }}投稿
-                        </p>
+            <!-- 検索結果一覧 -->
+            <div
+                v-if="videos.length > 0"
+                class="d-flex justify-content-center mb-2 gap-2 align-items-center"
+            >
+                <div>
+                    <ImageScissors size="24" />
+                </div>
+                <div>クリップする動画を選択</div>
+            </div>
+            <div
+                v-if="videos.length > 0"
+                class="row video-container d-flex justify-content-start flex-wrap"
+            >
+                <div
+                    v-for="v in videos"
+                    class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3"
+                >
+                    <div
+                        class="video-box d-flex justify-content-center align-items-center gap-2 word-break"
+                        @click="goToPage('/edit/clip/' + v.id)"
+                    >
+                        <div class="video-box-thumbnail">
+                            <img
+                                :src="v.thumbnail"
+                                class="card-img-top"
+                                :alt="v.title"
+                                width="180"
+                            />
+                        </div>
+                        <div class="flex-fill">
+                            <h5 style="font-size: 0.7rem">
+                                {{ v.title }}
+                            </h5>
+                            <div style="font-size: 0.6rem">
+                                {{ formatDate(v.publishedAt) }}投稿
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- /検索結果一覧 -->
         </div>
-        <!-- /検索結果一覧 -->
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import Header from "@/components/HeaderMini.vue";
-// import VideoSearch from "@/components/VideoSearch.vue";
+import ImageSearch from "@/components/Images/Search.vue";
+import ImageScissors from "@/components/Images/Scissors.vue";
 
 export default {
     components: {
         Header,
+        ImageSearch,
+        ImageScissors,
     },
     data() {
         return {
@@ -99,24 +129,41 @@ export default {
 </script>
 
 <style scoped>
-.page-form-container {
-    background-color: #222;
-    border: 1px solid #444;
-    border-left: transparent;
-    border-right: transparent;
-    padding: 3em 1em;
-    text-align: center;
+.page-container {
+    width: 90%;
+    margin: 0 auto;
 }
 
-h2 {
-    text-align: center;
+.page-title {
+    background-color: #c75c5c;
+    /* width: 100%; */
+    margin: 0 auto 2rem auto;
+    padding: 0.2em;
+    border-radius: 2em;
 }
 
-h2 button {
-    background: none;
-    border: none;
-    color: aliceblue;
-    font-size: 1em;
-    cursor: pointer;
+.page-form {
+    /* width: 90%; */
+    margin: 0 auto;
+}
+
+.page-form button {
+    width: 5em;
+}
+
+.video-container {
+    width: 100%;
+}
+
+.video-box {
+    margin: 0.4rem;
+    border: 2px solid #fff;
+    border-radius: 0.8rem;
+    padding: 0.8rem 1.2rem;
+    color: #fff;
+}
+
+.video-box-thumbnail {
+    width: 120px;
 }
 </style>
