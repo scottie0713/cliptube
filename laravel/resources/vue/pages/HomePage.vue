@@ -1,63 +1,46 @@
 <template>
     <div class="page-container text-center text-light">
         <Header />
-        <div class="area-clip fs-6">
-            <div class="d-flex flex-row gap-5 py-5">
+
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                 <div
-                    class="flex-fill menu-item"
+                    class="menu-box d-flex justify-content-center align-items-center gap-2 word-break"
+                    style="background-color: #c75c5c"
                     @click="goToPage('/video/search')"
                 >
-                    <div class="row justify-content-center">
-                        <div class="menu-icon">
-                            <img src="../../images/kari01.png" width="80" />
-                        </div>
+                    <div class="menu-icon">
+                        <ImageSearch size="36" />
                     </div>
-                    <div class="row justify-content-center menu-title">
-                        作成
-                    </div>
-                    <div class="row justify-content-center menu-desc">
-                        クリップの作成
-                    </div>
-                </div>
-                <div
-                    class="flex-fill menu-item"
-                    @click="goToPage('/user/video')"
-                >
-                    <div class="row justify-content-center">
-                        <div class="menu-icon">
-                            <img src="../../images/kari01.png" width="80" />
-                        </div>
-                    </div>
-                    <div class="row justify-content-center menu-title">
-                        確認
-                    </div>
-                    <div class="row justify-content-center menu-desc">
-                        作ったクリップを見る
+                    <div class="menu-desc flex-fill">
+                        動画を検索してクリップ作成
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-row gap-5">
-                <div class="flex-fill menu-item" @click="goToLogin()">
-                    <div class="row justify-content-center">
-                        <div class="menu-icon">
-                            <img src="../../images/kari01.png" width="80" />
-                        </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                <div
+                    class="menu-box d-flex justify-content-center align-items-center gap-2 word-break"
+                    style="background-color: #c7b95c"
+                    @click="goToPage('/user/video')"
+                >
+                    <div class="menu-icon">
+                        <ImageClip size="36" />
                     </div>
-                    <div class="row justify-content-center menu-title">X</div>
-                    <div class="row justify-content-center menu-desc">
-                        ログイン
-                    </div>
+                    <div class="menu-desc flex-fill">作ったクリップを見る</div>
                 </div>
-                <div class="flex-fill menu-item" @click="goToPage('/')">
-                    <div class="row justify-content-center">
-                        <div class="menu-icon">
-                            <img src="../../images/kari01.png" width="80" />
-                        </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                <div
+                    class="menu-box d-flex justify-content-center align-items-center gap-2 word-break"
+                    style="background-color: #5ca3c7"
+                    @click="goToPage('/user/video')"
+                >
+                    <div class="menu-icon">
+                        <ImageVideoStory size="36" />
                     </div>
-                    <div class="row justify-content-center menu-title">
-                        作成
+                    <div class="menu-desc flex-fill">
+                        クリップをまとめてプレイリスト作成
                     </div>
-                    <div class="row justify-content-center menu-desc">aaa</div>
                 </div>
             </div>
         </div>
@@ -67,10 +50,18 @@
 <script>
 import axios from "axios";
 import Header from "@/components/Header.vue";
+import ImageScissors from "@/components/Images/Scissors.vue";
+import ImageVideoStory from "@/components/Images/VideoStory.vue";
+import ImageClip from "@/components/Images/Clip.vue";
+import ImageSearch from "@/components/Images/Search.vue";
 
 export default {
     components: {
         Header,
+        ImageClip,
+        ImageSearch,
+        ImageScissors,
+        ImageVideoStory,
     },
     props: ["userHash"],
     data() {
@@ -89,6 +80,10 @@ export default {
 </script>
 
 <style scoped>
+.bg-clip {
+    background-color: #c75c5c;
+}
+
 .area-clip {
     width: 100%;
     background-image: url("../../images/black_00014.jpg");
@@ -99,33 +94,29 @@ export default {
     border: #333 3px solid;
     border-left: transparent;
     border-right: transparent;
-    padding: 3em 2em;
-}
-
-.menu-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2em;
-    justify-content: center;
+    padding: 1rem 2em;
 }
 
 .menu-item {
+    /* min-width: 10rem;
+    width: 16rem; */
+}
+
+.menu-box {
+    margin: 2rem;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: #fff;
+    font-size: 1.2rem;
 }
 
 .menu-icon {
-    border: 1px solid #fff;
-    border-radius: 8px;
-    background-color: #fff;
-}
-
-.menu-title {
-    padding: 0.2em 0;
-    font-size: 1em;
-    color: #eee;
+    margin: 0.2rem 0;
 }
 
 .menu-desc {
-    font-size: 0.8em;
-    color: #aaa;
+    font-size: 1rem;
+    color: #fff;
+    text-align: left;
 }
 </style>

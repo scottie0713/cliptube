@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .header {
     width: 100%;
-    height: 120px;
+    height: 200px;
     background-color: #1d2023;
     color: aliceblue;
 }
