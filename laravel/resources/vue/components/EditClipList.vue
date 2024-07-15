@@ -103,7 +103,7 @@ export default {
         async getClips() {
             try {
                 const response = await axios.get(
-                    "/api/clip/" + this.videoId,
+                    "/api/clip/" + this.videoId + "/my",
                     {}
                 );
                 if (response.status === 200) {

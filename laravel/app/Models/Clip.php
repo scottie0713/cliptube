@@ -19,8 +19,21 @@ class Clip extends Authenticatable
     protected $fillable = [
         'video_id',
         'title',
+        'hash',
         'start_sec',
         'end_sec',
         'point',
     ];
+
+    public function video()
+    {
+        return $this->belongsTo(Video::class);
+    }
+
+    public static function filterByProviderVideoId(string $providerVideoId)
+    {
+        return self::whereHas('video', function ($query) use ($providerVideoId) {
+            $query->where('provider_video_id', $providerVideoId);
+        });
+    }
 }

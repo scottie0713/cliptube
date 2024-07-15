@@ -1,7 +1,7 @@
 <?php
 
 // use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
+// use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 
 // use App\Http\Controllers\Auth\RegisteredUserController;
@@ -11,10 +11,11 @@ use App\Http\Controllers\API\YoutubeController;
 // use App\Http\Controllers\API\StoryController;
 use App\Http\Controllers\API\ClipController;
 use App\Http\Controllers\API\UserController;
-use App\Http\Middleware\CacheResponse;
+use App\Http\Controllers\API\VideoController;
+// use App\Http\Middleware\CacheResponse;
 
-//Route::post('/register', [RegisteredUserController::class, 'store']);
-//Route::post('/login', [LoginController::class, 'login']);
+Route::get('/video/list', [VideoController::class, 'list']);
+Route::get('/clip/{video_id}', [ClipController::class, 'list']);
 
 Route::middleware('auth')->group(function () {
     // ユーザ情報
@@ -30,10 +31,12 @@ Route::middleware('auth')->group(function () {
     //     ->name('logout');
 
     Route::get('/clip', [ClipController::class, 'listAll']);
-    Route::get('/clip/{video_id}', [ClipController::class, 'list']);
-    Route::get('/clip/{video_id}/trash', [ClipController::class, 'disableList']);
+    Route::get('/clip/{video_id}/my', [ClipController::class, 'myList']);
+    Route::get('/clip/{video_id}/my/trash', [ClipController::class, 'myDisableList']);
     Route::post('/clip', [ClipController::class, 'add']);
     Route::put('/user-clip/{id}', [ClipController::class, 'put']);
+
+    Route::get('/video/list/my/{?query}', [VideoController::class, 'myList']);
 });
 
 // auth.php取り込み

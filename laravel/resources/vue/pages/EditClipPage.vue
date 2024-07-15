@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import Header from "@/components/HeaderMini.vue";
+import Header from "@/components/Header.vue";
 import EditClipForm from "@/components/EditClipForm.vue";
 import EditClipList from "@/components/EditClipList.vue";
 import EditClipTrashList from "@/components/EditClipTrashList.vue";

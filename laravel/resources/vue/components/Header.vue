@@ -1,9 +1,16 @@
 <template>
-    <header class="header px-4 py-5">
-        <div class="title">
-            <img src="../../images/title.png" width="240" />
-            <div v-if="user.isLogin" class="area-clip fs-6 mb-4">
-                {{ user.provider }}でログイン中
+    <header class="header px-4 py-4 text-start">
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                <img
+                    @click="goToPage('/')"
+                    src="../../images/title.png"
+                    width="160"
+                />
+            </div>
+            <div class="mb-4 text-end">
+                <div v-if="user.isLogin">{{ user.provider }}でログイン中</div>
+                <div v-else class="mb-4">未ログイン</div>
             </div>
         </div>
     </header>
@@ -11,8 +18,8 @@
 
 <script>
 import axios from "axios";
+
 export default {
-    props: {},
     data() {
         return {
             user: {
@@ -39,10 +46,6 @@ export default {
         goToPage(path) {
             this.$router.push(path);
         },
-        async logout() {
-            const response = await axios.post("/api/logout");
-            this.goToPage("/");
-        },
     },
 };
 </script>
@@ -50,17 +53,13 @@ export default {
 <style scoped>
 .header {
     width: 100%;
-    height: 200px;
+    height: 70px;
     background-color: #1d2023;
     color: aliceblue;
+    font-size: 1rem;
 }
 
-.title {
-    width: 100%;
-    height: 100%;
-    margin: auto 0;
-    /* background-image: url("../..//images/title.png");
-    background-size: cover;
-    background-position: center; */
+.header img {
+    cursor: pointer;
 }
 </style>

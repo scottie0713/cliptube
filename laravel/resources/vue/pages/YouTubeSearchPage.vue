@@ -79,7 +79,7 @@
 
 <script>
 import axios from "axios";
-import Header from "@/components/HeaderMini.vue";
+import Header from "@/components/Header.vue";
 import ImageSearch from "@/components/Images/Search.vue";
 import ImageScissors from "@/components/Images/Scissors.vue";
 

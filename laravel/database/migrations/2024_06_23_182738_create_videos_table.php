@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clips', function (Blueprint $table) {
+        Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->string('hash', 6)->unique();
-            $table->integer('video_id');
+            $table->string('provider_video_id');
             $table->string('title');
-            $table->integer('start_sec');
-            $table->integer('end_sec')->nullable();
-            $table->integer('point')->default(0);
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
-            $table->index(['video_id']);
         });
     }
 
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clips');
+        Schema::dropIfExists('videos');
     }
 };

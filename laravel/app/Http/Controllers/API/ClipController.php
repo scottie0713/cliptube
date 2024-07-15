@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Actions\GetUserVideoListAction;
+use App\Models\Clip;
+use App\Models\Video;
 use App\Models\UserClip;
 use App\Http\Requests\API\ClipListRequest;
 use App\Http\Controllers\Controller;
@@ -14,7 +16,17 @@ use Illuminate\Support\Facades\Validator;
 
 class ClipController extends Controller
 {
-    public function list(Request $request, $videoId): JsonResponse
+    public function list(Request $request, $providerVideoId): JsonResponse
+    {
+        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $providerVideoId) === 0) {
+            return response()->json([], 422);
+        }
+
+        $response = Clip::filterByProviderVideoId($providerVideoId)->orderBy('start_sec', 'asc')->get();
+        return response()->json($response, 200);
+    }
+
+    public function myList(Request $request, $videoId): JsonResponse
     {
         if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoId) === 0) {
             return response()->json([], 422);
@@ -32,7 +44,7 @@ class ClipController extends Controller
         return response()->json($userClips, 200);
     }
 
-    public function disableList(ClipListRequest $request, $videoId): JsonResponse
+    public function myDisableList(ClipListRequest $request, $videoId): JsonResponse
     {
         $userClips = UserClip::with([
             'clip' => function ($query) use ($videoId) {
