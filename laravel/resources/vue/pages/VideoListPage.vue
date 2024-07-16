@@ -34,15 +34,6 @@
             <!-- 検索結果一覧 -->
             <div
                 v-if="videos.length > 0"
-                class="d-flex justify-content-center mb-2 gap-2 align-items-center"
-            >
-                <div>
-                    <ImageScissors size="24" />
-                </div>
-                <div>検索結果</div>
-            </div>
-            <div
-                v-if="videos.length > 0"
                 class="row video-container d-flex justify-content-start flex-wrap"
             >
                 <div
@@ -62,9 +53,7 @@
                             />
                         </div>
                         <div class="flex-fill">
-                            <h5 style="font-size: 0.7rem">
-                                {{ v.title }}
-                            </h5>
+                            {{ v.title }}
                         </div>
                     </div>
                 </div>
@@ -143,7 +132,6 @@ export default {
 
 .page-title {
     background-color: #c75c5c;
-    /* width: 100%; */
     margin: 0 auto 2rem auto;
     padding: 0.2em;
     border-radius: 2em;
@@ -164,10 +152,13 @@ export default {
 
 .video-box {
     margin: 0.4rem;
-    border: 2px solid #fff;
+    background-color: #c4d7d1;
     border-radius: 0.8rem;
     padding: 0.8rem 1.2rem;
-    color: #fff;
+    color: #344741;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0.2rem 0.2rem rgba(220, 255, 255, 0.5);
+    cursor: pointer;
 }
 
 .video-box-thumbnail {

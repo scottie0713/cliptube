@@ -1,142 +1,121 @@
 <template>
-  <div class="clip-list-container text-dark text-center" ref="YoutubeSection">
-    <h2 class="my-2 fs-2">
-      <button @click="switchTo('Menu')" class="text-dark">＜</button
-      >&nbsp;クリップ一覧
-    </h2>
-
-    <div class="player" v-if="videoId">
-      <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
+    <div class="scroll-box" :style="{ height: height + 'px' }">
+        <div
+            v-for="c in clips"
+            :key="c.id"
+            class="d-flex flex-row justify-content-start align-items-center gap-2"
+            @click="clickClip(c)"
+        >
+            <div class="card">
+                <div class="inner">
+                    <div>
+                        {{ timeFormat(c.start_sec) }}~{{
+                            timeFormat(c.end_sec)
+                        }}
+                    </div>
+                    <div class="flex-fill justify-content-end">
+                        {{ c.title }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="mt-4">
-      <ul class="clip-list">
-        <li v-for="clip in clips" :key="clip.id" class="clip-item">
-          <span>{{ clip.title }}</span>
-          <span>
-            {{ getTimeFormat(clip.start_sec) }}~{{
-              getTimeFormat(clip.end_sec)
-            }}
-          </span>
-          <button class="btn btn-outline-info" @click="playClip(clip)">
-            再生
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
 </template>
 
 <script>
-import axios from "axios";
-import YouTubePlayer from "@/components/CreateClip/YouTubePlayer.vue";
+import { timeHelper } from "~js/helpers/timeHelper.js";
 
 export default {
-  props: {},
-  components: {
-    YouTubePlayer,
-  },
-  data() {
-    return {
-      videoId: "",
-      clips: [],
-    };
-  },
-  mounted() {
-    this.getClips();
-    this.$emit("closeLoading");
-  },
-  methods: {
-    playClip(clip) {
-      this.videoId = clip.video_id;
-      this.$refs.YouTubePlayer.seekAndPlay(clip.start_sec);
+    props: {
+        clips: {
+            type: Array,
+            default: [],
+        },
+        height: {
+            type: Number,
+            default: 400,
+        },
     },
-    // クリップ
-    async getClips() {
-      try {
-        const response = await axios.get("/api/clip", {});
-        if (response.status === 200) {
-          this.setClips(response.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    mixins: [timeHelper],
+    components: {},
+    data() {
+        return {};
     },
-    setClips(userClips) {
-      this.clips = [];
-      for (const userClip of userClips) {
-        this.clips.push(userClip.clip);
-      }
+    mounted() {},
+    methods: {
+        clickClip(clip) {
+            this.$emit("clickClip", clip);
+        },
     },
-    // その他
-    getTimeFormat(seconds) {
-      if (seconds === 0) {
-        return "0:00";
-      }
-      const hours = Math.floor(seconds / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
-      const remainingSeconds = Math.floor(seconds % 60);
-
-      return `${hours > 0 ? `${hours}:` : ""}${
-        minutes < 10 && hours > 0 ? "0" : ""
-      }${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-    },
-    seekAndPlay(sec) {
-      this.$refs.YouTubePlayer.seekAndPlay(sec);
-    },
-    switchTo(component) {
-      this.$emit("switchTo", component);
-    },
-  },
 };
 </script>
 
 <style scoped>
-.clip-list-container {
-  text-align: center;
-  margin: 40px auto;
-  padding: 20px;
-  border-radius: 20px;
-  color: rgb(10, 36, 59);
+.scroll-box {
+    border: 1px solid #666;
+    overflow-y: auto;
 }
 
-.player {
-  position: relative;
+.scroll-box-item {
+    color: #333;
+    background-color: #f0f0f0;
+    border: 1px solid #bbb;
+    font-size: 1rem;
+    padding: 0.5rem;
+    margin: 0.2rem 0;
+    cursor: pointer;
 }
 
-.clip-list {
-  list-style-type: none;
-  padding: 0;
+.card {
+    position: relative;
+    border-radius: var(--border-radius);
+    padding: 4px;
 }
 
-.clip-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: white;
-  margin-bottom: 10px;
+.card .inner {
+    border-radius: 4px;
 }
 
-.clip-item button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #f00;
-  cursor: pointer;
+.card::before,
+.card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        45deg,
+        #ff595e,
+        #ffca3a,
+        #8ac926,
+        #1982c4,
+        #6a4c93,
+        #ff6700
+    );
+    background-size: 400%;
+    z-index: -1;
+    animation: glow 20s linear infinite;
+    width: 100%;
+    border-radius: var(--border-radius);
 }
 
-.clip-item button:hover {
-  color: #c00;
+.card::after {
+    filter: blur(25px);
+    transform: translate3d(0, 0, 0); /* For Safari */
 }
 
-h2 button {
-  background: none;
-  border: none;
-  color: aliceblue;
-  font-size: 1em;
-  cursor: pointer;
+@keyframes glow {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
 }
 </style>

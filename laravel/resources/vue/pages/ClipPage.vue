@@ -2,45 +2,36 @@
     <div>
         <Header />
         <div class="page-container w-100 h-100 text-wrap">
-            <h2 class="my-2 fs-2"></h2>
+            <!-- タイトル -->
+            <div
+                class="page-title d-flex justify-content-center align-items-center"
+            >
+                <div>
+                    <ImagePlay size="30" />
+                </div>
+                <div>クリップ再生</div>
+            </div>
+            <!-- /タイトル -->
             <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
 
-            <div
-                id="clip-box"
-                class="scroll-box"
-                :style="{ height: scrollBoxHeight + 'px' }"
-            >
-                <div
-                    v-for="c in clips"
-                    :key="c.id"
-                    class="scroll-box-item d-flex flex-row justify-content-start align-items-center gap-2"
-                    @click="playClip(c.start_sec, c.end_sec)"
-                >
-                    <div>
-                        {{ timeFormat(c.start_sec) }}~{{
-                            timeFormat(c.end_sec)
-                        }}
-                    </div>
-                    <div class="flex-fill justify-content-end">
-                        {{ c.title }}
-                    </div>
-                </div>
-            </div>
+            <ClipList :clips="clips" />
         </div>
     </div>
 </template>
 
 <script>
 import axios from "axios";
-import { timeHelper } from "~js/helpers/timeHelper.js";
+import ClipList from "@/components/ClipList.vue";
+import ImagePlay from "@/components/Images/Play.vue";
 import Header from "@/components/Header.vue";
 import YouTubePlayer from "@/components/YouTubePlayerForWatch.vue";
 export default {
     components: {
+        ClipList,
         Header,
+        ImagePlay,
         YouTubePlayer,
     },
-    mixins: [timeHelper],
     data() {
         return {
             videoId: null,
@@ -91,6 +82,13 @@ export default {
 </script>
 
 <style scoped>
+.page-title {
+    background-color: #76c2af;
+    margin: 0 auto 1rem auto;
+    padding: 0.2em;
+    border-radius: 2em;
+}
+
 .page-container {
     text-align: center;
 }
