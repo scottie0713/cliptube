@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ClipController extends Controller
 {
-    public function list(Request $request, $providerVideoId): JsonResponse
+    public function list(Request $request, $videoId): JsonResponse
     {
-        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $providerVideoId) === 0) {
+        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoId) === 0) {
             return response()->json([], 422);
         }
 
-        $response = Clip::filterByProviderVideoId($providerVideoId)->orderBy('start_sec', 'asc')->get();
+        $response = Clip::filterByVideoId($videoId)->orderBy('start_sec', 'asc')->get();
         return response()->json($response, 200);
     }
 
@@ -77,6 +77,7 @@ class ClipController extends Controller
 
         DB::beginTransaction();
         try {
+
             $clipId = DB::table('clips')->insertGetId([
                 'video_id' => $request->input('video_id'),
                 'hash' => Str::random(6),

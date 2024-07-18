@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Actions\GetUserVideoListAction;
 use App\Http\Requests\API\ClipListRequest;
+use App\Http\Requests\API\VideoPostRequest;
 use App\Http\Controllers\Controller;
 use App\DTOs\UserGetResponse;
 use App\Models\Video;
@@ -27,4 +28,18 @@ class VideoController extends Controller
         return response()->json($response, 200);
     }
 
+    public function post(VideoPostRequest $request): JsonResponse
+    {
+        Video::updateOrCreate(
+            [
+                'id' => $request->input('id')
+            ],
+            [
+                'title' => $request->input('title'),
+                'thumbnail' => $request->input('thumbnail'),
+            ]
+        );
+
+        return response()->json([], 201);
+    }
 }

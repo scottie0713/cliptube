@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Header from "@/components/Header.vue";
 import EditClipForm from "@/components/EditClipForm.vue";
 import EditClipList from "@/components/EditClipList.vue";

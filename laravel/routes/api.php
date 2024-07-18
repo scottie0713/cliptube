@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/user-clip/{id}', [ClipController::class, 'put']);
 
     Route::get('/video/list/my/{?query}', [VideoController::class, 'myList']);
+    Route::post('/video', [VideoController::class, 'post']);
 });
 
 // auth.php取り込み

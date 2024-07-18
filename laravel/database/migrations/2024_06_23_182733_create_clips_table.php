@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('clips', function (Blueprint $table) {
             $table->id();
             $table->string('hash', 6)->unique();
-            $table->integer('video_id');
+            $table->string('video_id', 16);
             $table->string('title');
             $table->integer('start_sec');
             $table->integer('end_sec')->nullable();

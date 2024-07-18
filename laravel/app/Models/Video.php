@@ -11,26 +11,20 @@ class Video extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'provider_video_id',
+        'id',
         'title',
+        'thumbnail',
     ];
-
-    protected $hidden = [
-        'provider_video_id',
-    ];
-
-    // カスタムアクセサを定義
-    // provider_video_idをidとして扱う
-    public function getIdAttribute()
-    {
-        return $this->attributes['provider_video_id'];
-    }
 
     public function clips()
     {

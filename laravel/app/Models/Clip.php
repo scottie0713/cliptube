@@ -30,10 +30,10 @@ class Clip extends Authenticatable
         return $this->belongsTo(Video::class);
     }
 
-    public static function filterByProviderVideoId(string $providerVideoId)
+    public static function filterByVideoId(string $videoId)
     {
-        return self::whereHas('video', function ($query) use ($providerVideoId) {
-            $query->where('provider_video_id', $providerVideoId);
+        return self::whereHas('video', function ($query) use ($videoId) {
+            $query->where('id', $videoId);
         });
     }
 }

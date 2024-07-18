@@ -16,7 +16,7 @@
 
             <!-- 動画検索フォーム -->
             <form
-                @submit.prevent="searchMovie"
+                @submit.prevent="searchVideo"
                 class="page-form d-flex justify-content-center gap-3 mb-4"
             >
                 <input
@@ -51,7 +51,7 @@
                 >
                     <div
                         class="video-box d-flex justify-content-center align-items-center gap-2 word-break"
-                        @click="goToPage('/edit/clip/' + v.id)"
+                        @click="clickVideo(v)"
                     >
                         <div class="video-box-thumbnail">
                             <img
@@ -97,7 +97,7 @@ export default {
     },
     mounted() {},
     methods: {
-        async searchMovie() {
+        async searchVideo() {
             try {
                 const response = await axios.get("/api/youtube/search", {
                     params: {
@@ -109,6 +109,26 @@ export default {
                 }
             } catch (error) {
                 console.error(error);
+            }
+        },
+        async postVideo(id, title, thumbnail) {
+            try {
+                const response = await axios.post("/api/video", {
+                    id: id,
+                    title: title,
+                    thumbnail: thumbnail,
+                });
+                if (response.status === 201) {
+                    return true;
+                }
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
+        },
+        clickVideo(video) {
+            if (this.postVideo(video.id, video.title, video.thumbnail)) {
+                this.goToPage(`/clip/${video.id}/edit`);
             }
         },
         formatDate(dateString) {

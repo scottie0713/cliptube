@@ -2,46 +2,46 @@
 
 namespace App\Actions;
 
-use App\Models\LogYoutubeApiEvent;
-use Google_Client;
-use Google_Service_YouTube;
-use Illuminate\Support\Facades\Cache;
+// use App\Models\LogYoutubeApiEvent;
+// use App\Models\Video;
+// use Google\Client;
+// use Google_Service_YouTube;
+// use Google\Service\Youtube;
+// use Illuminate\Support\Facades\Cache;
+// use Google\Service\YouTube\SearchListResponse;
 
 class GoogleServiceYoutubeSearchListAction
 {
-  public function execute($query)
-  {
-    return $this->responseMock();
+    private $youtubeService = null;
 
-    $client = new Google_Client();
-    $client->setDeveloperKey(env('YOUTUBE_API_KEY'));
-
-    $youtube = new Google_Service_YouTube($client);
-
-    try {
-      $searchResponse = $youtube->search->list([
-        'q' => $query,
-        'maxResults' => 10,
-        'part' => 'id,snippet',
-        'type' => 'video',
-      ]);
-
-      // log_youtube_api_eventsに記録
-      LogYoutubeApiEvent::create([
-        'api' => 'search',
-        'method' => 'list',
-        'params' => json_encode(['q' => $query]),
-      ]);
-
-      return $searchResponse;
-    } catch (\Exception $e) {
-      return ['error' => 'YouTube API error: ' . $e->getMessage()];
+    public function __construct()
+    {
+        $googleClient = new \Google\Client();
+        $googleClient->setDeveloperKey(env('YOUTUBE_API_KEY'));
+        $this->youtubeService = new \Google\Service\YouTube($googleClient);
     }
-  }
 
-  private function responseMock()
-  {
-    $json = <<<JSON
+    public function execute($query)
+    {
+        // YouTube Data API v3 で検索を実行
+        $searchListResponse = $this->search($query);
+
+        return $searchListResponse;
+    }
+
+    private function search(string $query)
+    {
+        // return $this->responseMock();
+        return $this->youtubeService->search->listSearch('snippet', [
+            'q' => $query,
+            'maxResults' => 20,
+            'type' => 'video',
+        ]);
+    }
+
+    private function responseMock()
+    {
+        $json = <<<JSON
  {
   "kind": "youtube#searchListResponse",
   "etag": "pIQ736zcZE48vYzFWpoQIJv2WVY",
@@ -157,8 +157,8 @@ class GoogleServiceYoutubeSearchListAction
   ]
 }
 JSON;
-    // dump(json_decode($json));
-    // return $json;
-    return json_decode($json, true);
-  }
+        // dump(json_decode($json));
+        // return $json;
+        return json_decode($json, true);
+    }
 }

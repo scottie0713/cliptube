@@ -19,7 +19,7 @@
                 <div
                     class="menu-box d-flex justify-content-center align-items-center gap-2 word-break"
                     style="background-color: #c75c5c"
-                    @click="goToPage('/video/search')"
+                    @click="goToPage('/youtube/search')"
                 >
                     <div class="menu-icon">
                         <ImageSearch size="36" />

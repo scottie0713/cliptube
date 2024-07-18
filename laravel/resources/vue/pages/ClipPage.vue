@@ -1,7 +1,7 @@
 <template>
     <div>
         <Header />
-        <div class="page-container w-100 h-100 text-wrap">
+        <div class="page-container w-100 text-wrap">
             <!-- タイトル -->
             <div
                 class="page-title d-flex justify-content-center align-items-center"
@@ -14,7 +14,13 @@
             <!-- /タイトル -->
             <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
 
-            <ClipList :clips="clips" />
+            <div
+                id="scroll-box"
+                class="mb-4"
+                :style="{ height: scrollBoxHeight + 'px' }"
+            >
+                <ClipList :clips="clips" @playClip="playClip" />
+            </div>
         </div>
     </div>
 </template>
@@ -45,11 +51,12 @@ export default {
         this.videoId = this.$route.params.hash;
     },
     mounted() {
-        // BOXの高さ調整
-        const box = document.getElementById("clip-box");
-        console.log("BOX", box.offsetHeight);
-        console.log("WINDOW", window.innerHeight);
-        this.scrollBoxHeight = window.innerHeight - box.offsetHeight - 40;
+        // BOXの高さ調整 なんかうまくいかない
+        // const box = document.getElementById("scroll-box");
+        // console.log("BOX", box.offsetHeight);
+        // console.log("WINDOW", window.innerHeight);
+        // this.scrollBoxHeight = window.innerHeight - box.offsetHeight - 40;
+        this.scrollBoxHeight = 400;
 
         setTimeout(() => {
             this.getClips();
@@ -84,7 +91,7 @@ export default {
 <style scoped>
 .page-title {
     background-color: #76c2af;
-    margin: 0 auto 1rem auto;
+    margin: 0 auto 0.4rem auto;
     padding: 0.2em;
     border-radius: 2em;
 }
