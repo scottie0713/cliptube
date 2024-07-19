@@ -4,15 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Actions\GetUserVideoListAction;
 use App\Models\Clip;
-use App\Models\Video;
 use App\Models\UserClip;
-use App\Http\Requests\API\ClipListRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 
 class ClipController extends Controller
 {
@@ -26,36 +22,30 @@ class ClipController extends Controller
         return response()->json($response, 200);
     }
 
-    public function myList(Request $request, $videoId): JsonResponse
+    public function myEnableList(Request $request, $videoId): JsonResponse
     {
-        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoId) === 0) {
-            return response()->json([], 422);
-        }
-
-        $userClips = UserClip::with([
-            'clip' => function ($query) use ($videoId) {
-                $query->where('video_id', $videoId);
-            }
-        ])
-            ->where('user_id', $request->user()->id)
-            ->where('enabled', true)
+        $userId = $request->user()->id;
+        $clips = Clip::whereHas('userClips', function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->where('enabled', true);
+        })
+            ->where('video_id', $videoId)
             ->get();
 
-        return response()->json($userClips, 200);
+        return response()->json($clips, 200);
     }
 
-    public function myDisableList(ClipListRequest $request, $videoId): JsonResponse
+    public function myDisableList(Request $request, $videoId): JsonResponse
     {
-        $userClips = UserClip::with([
-            'clip' => function ($query) use ($videoId) {
-                $query->where('video_id', $videoId);
-            }
-        ])
-            ->where('user_id', $request->user()->id)
-            ->where('enabled', false)
+        $userId = $request->user()->id;
+        $clips = Clip::whereHas('userClips', function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->where('enabled', false);
+        })
+            ->where('video_id', $videoId)
             ->get();
 
-        return response()->json($userClips, 200);
+        return response()->json($clips, 200);
     }
 
     public function listAll(Request $request): JsonResponse

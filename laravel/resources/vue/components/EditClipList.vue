@@ -6,36 +6,6 @@
             </button>
         </div>
         <ul class="list-group">
-            <li
-                v-for="tmpClip in tmpClips"
-                :key="tmpClip.id"
-                class="list-group-item"
-            >
-                <div class="d-flex flex-row">
-                    <div class="d-flex flex-column flex-grow-1">
-                        <span class="clip-title">{{ tmpClip.title }}</span>
-                        <span class="clip-time">
-                            {{ timeFormat(tmpClip.start_sec) }}~{{
-                                timeFormat(tmpClip.end_sec)
-                            }}
-                        </span>
-                    </div>
-                    <div v-if="tmpClip.status == 'new'" class="">保留中</div>
-                    <div v-else-if="tmpClip.status == 'saving'" class="">
-                        保存中...
-                    </div>
-                    <div v-else-if="tmpClip.status == 'saved'" class="">
-                        保存完了
-                    </div>
-                    <div v-if="tmpClip.status == 'disabling'" class="">
-                        削除中...
-                    </div>
-                    <div v-if="tmpClip.status == 'disabled'" class="">
-                        削除完了
-                    </div>
-                    <div v-else class="">エラー</div>
-                </div>
-            </li>
             <li v-for="clip in clips" :key="clip.id" class="list-group-item">
                 <div class="d-flex flex-row">
                     <div class="d-flex flex-column flex-grow-1">
@@ -65,6 +35,7 @@
 
 <script>
 import axios from "axios";
+import { apiGet, apiPost } from "~js/utils/api.js";
 import { timeHelper } from "~js/helpers/timeHelper.js";
 import TrashBox from "@/components/Parts/TrashBox.vue";
 import Edit from "@/components/Parts/Edit.vue";
@@ -83,7 +54,6 @@ export default {
     data() {
         return {
             clips: [],
-            tmpClips: [],
         };
     },
     created() {},
@@ -94,24 +64,15 @@ export default {
         setForm(clip) {
             this.$emit("setForm", clip);
         },
-        setClips(userClips) {
+        setClips(clips) {
+            console.log(clips);
             this.clips = [];
-            for (const userClip of userClips) {
-                this.clips.push(userClip.clip);
+            for (const clip of clips) {
+                this.clips.push(clip);
             }
         },
         async getClips() {
-            try {
-                const response = await axios.get(
-                    "/api/clip/" + this.videoId + "/my",
-                    {}
-                );
-                if (response.status === 200) {
-                    this.setClips(response.data);
-                }
-            } catch (error) {
-                console.error(error);
-            }
+            apiGet("/api/clip/" + this.videoId + "/my", this.setClips, this.errorClips);
         },
         async disableClip(clipId) {
             console.log("disableClip", this.newClip);

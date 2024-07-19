@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     //     ->name('logout');
 
     Route::get('/clip', [ClipController::class, 'listAll']);
-    Route::get('/clip/{video_id}/my', [ClipController::class, 'myList']);
+    Route::get('/clip/{video_id}/my', [ClipController::class, 'myEnableList']);
     Route::get('/clip/{video_id}/my/trash', [ClipController::class, 'myDisableList']);
     Route::post('/clip', [ClipController::class, 'add']);
     Route::put('/user-clip/{id}', [ClipController::class, 'put']);

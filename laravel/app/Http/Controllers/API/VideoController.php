@@ -4,11 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Actions\GetUserVideoListAction;
-use App\Http\Requests\API\ClipListRequest;
 use App\Http\Requests\API\VideoPostRequest;
 use App\Http\Controllers\Controller;
-use App\DTOs\UserGetResponse;
 use App\Models\Video;
 
 class VideoController extends Controller

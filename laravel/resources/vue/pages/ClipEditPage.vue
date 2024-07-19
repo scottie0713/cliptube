@@ -109,7 +109,7 @@ export default {
 .page-title {
     background-color: #c75c5c;
     width: 90%;
-    margin: 0 auto 2rem auto;
+    margin: 0 auto 0.4rem auto;
     padding: 0.2em;
     border-radius: 2em;
 }

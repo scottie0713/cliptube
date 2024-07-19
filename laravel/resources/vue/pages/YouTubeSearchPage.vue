@@ -62,9 +62,12 @@
                             />
                         </div>
                         <div class="flex-fill">
-                            <h5 style="font-size: 0.7rem">
+                            <div style="font-size: 0.8rem">
                                 {{ v.title }}
-                            </h5>
+                            </div>
+                            <div style="font-size: 0.6rem">
+                                {{ v.channelTitle }}
+                            </div>
                             <div style="font-size: 0.6rem">
                                 {{ formatDate(v.publishedAt) }}投稿
                             </div>
@@ -177,10 +180,12 @@ export default {
 
 .video-box {
     margin: 0.4rem;
-    border: 2px solid #fff;
+    background-color: #E0E0D1;
+    border: 2px solid #E0E0D1;
     border-radius: 0.8rem;
     padding: 0.8rem 1.2rem;
-    color: #fff;
+    color: #333;
+    cursor: pointer;
 }
 
 .video-box-thumbnail {

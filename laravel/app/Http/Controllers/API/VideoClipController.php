@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Actions\GetUserVideoListAction;
-use App\Http\Requests\API\ClipListRequest;
 use App\Http\Controllers\Controller;
 use App\DTOs\UserGetResponse;
 
@@ -30,7 +29,7 @@ class VideoClipController extends Controller
         }
     }
 
-        public function videoList(Request $request): JsonResponse
+    public function videoList(Request $request): JsonResponse
     {
         $action = new GetUserVideoListAction();
 
