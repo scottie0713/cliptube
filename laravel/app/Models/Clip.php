@@ -34,11 +34,4 @@ class Clip extends Authenticatable
     {
         return $this->hasMany(UserClip::class);
     }
-
-    public static function filterByVideoId(string $videoId)
-    {
-        return self::whereHas('video', function ($query) use ($videoId) {
-            $query->where('id', $videoId);
-        });
-    }
 }

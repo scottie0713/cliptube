@@ -12,27 +12,44 @@ use Illuminate\Support\Str;
 
 class ClipController extends Controller
 {
-    public function list(Request $request, $videoId): JsonResponse
+    public function enableList(Request $request, $videoId): JsonResponse
     {
-        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoId) === 0) {
-            return response()->json([], 422);
-        }
+        $response = Clip::whereHas('userClips', function ($query) {
+            $query->where('enabled', true);
+        })
+            ->where('video_id', $videoId)
+            ->orderBy('start_sec', 'asc')
+            ->get();
 
-        $response = Clip::filterByVideoId($videoId)->orderBy('start_sec', 'asc')->get();
         return response()->json($response, 200);
     }
 
     public function myEnableList(Request $request, $videoId): JsonResponse
     {
         $userId = $request->user()->id;
-        $clips = Clip::whereHas('userClips', function ($query) use ($userId) {
+        $response = Clip::whereHas('userClips', function ($query) use ($userId) {
             $query->where('user_id', $userId)
                 ->where('enabled', true);
         })
             ->where('video_id', $videoId)
+            ->orderBy('start_sec', 'asc')
             ->get();
 
-        return response()->json($clips, 200);
+        return response()->json($response, 200);
+    }
+
+    public function othersEnableList(Request $request, $videoId): JsonResponse
+    {
+        $userId = $request->user()->id;
+        $response = Clip::whereHas('userClips', function ($query) use ($userId) {
+            $query->where('user_id', '!=', $userId)
+                ->where('enabled', true);
+        })
+            ->where('video_id', $videoId)
+            ->orderBy('start_sec', 'asc')
+            ->get();
+
+        return response()->json($response, 200);
     }
 
     public function myDisableList(Request $request, $videoId): JsonResponse
@@ -43,6 +60,7 @@ class ClipController extends Controller
                 ->where('enabled', false);
         })
             ->where('video_id', $videoId)
+            ->orderBy('start_sec', 'asc')
             ->get();
 
         return response()->json($clips, 200);

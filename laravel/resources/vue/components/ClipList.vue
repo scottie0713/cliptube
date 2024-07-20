@@ -1,19 +1,19 @@
 <template>
-    <div class="wrapper d-flex flex-column align-items-center">
+    <div class="row">
         <div
             v-for="c in clips"
             :key="c.id"
-            class="mx-3 my-1 w-75"
-            @click="clickClip(c)"
+            class="col col-12 col-sm-6 col-md-12 col-lg-12"
         >
             <div
                 class="box-item"
                 :class="[c.id == selectedClipId ? 'active' : 'inactive', '']"
+                @click="clickClip(c)"
             >
                 <div>
                     {{ timeFormat(c.start_sec) }}~{{ timeFormat(c.end_sec) }}
                 </div>
-                <div>
+                <div style="font-size: 1rem">
                     {{ c.title }}
                 </div>
             </div>
@@ -55,7 +55,8 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
+.row {
+    padding: 0.5rem;
 }
 
 .box-item {

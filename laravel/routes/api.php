@@ -23,13 +23,14 @@ Route::middleware('auth')->group(function () {
     // Route::post('/logout', [LoginController::class, 'logout'])
     //     ->name('logout');
 
-    Route::get('/clip', [ClipController::class, 'listAll']);
+    Route::get('/clip/{video_id}', [ClipController::class, 'enableList']);
     Route::get('/clip/{video_id}/my', [ClipController::class, 'myEnableList']);
     Route::get('/clip/{video_id}/my/trash', [ClipController::class, 'myDisableList']);
+    Route::get('/clip/{video_id}/others', [ClipController::class, 'othersEnableList']);
     Route::post('/clip', [ClipController::class, 'add']);
     Route::put('/user-clip/{id}', [ClipController::class, 'put']);
 
-    Route::get('/video/list/my/{?query}', [VideoController::class, 'myList']);
+    Route::get('/video/list/my', [VideoController::class, 'myList']);
     Route::post('/video', [VideoController::class, 'post']);
 });
 

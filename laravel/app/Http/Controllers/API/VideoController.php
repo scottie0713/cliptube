@@ -12,16 +12,23 @@ class VideoController extends Controller
 {
     public function list(Request $request): JsonResponse
     {
-        $response = Video::withClips();
-        if ($request->query('query')) {
-            $response = $response->where('title', 'like', '%' . $request->query('query') . '%');
-        }
+        $response = Video::whereHas('clips', function ($clipQuery) {
+            $clipQuery->whereHas('userClips', function ($userClipQuery) {
+                $userClipQuery->where('enabled', true);
+            });
+        })->get();
         return response()->json($response, 200);
     }
 
     public function myList(Request $request): JsonResponse
     {
-        $response = Video::withClips()->where('user_id', $request->user()->id);
+        $userId = $request->user()->id;
+        $response = Video::whereHas('clips', function ($clipQuery) use ($userId) {
+            $clipQuery->whereHas('userClips', function ($userClipQuery) use ($userId) {
+                $userClipQuery->where('user_id', $userId)
+                    ->where('enabled', true);
+            });
+        })->get();
         return response()->json($response, 200);
     }
 

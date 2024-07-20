@@ -30,9 +30,4 @@ class Video extends Authenticatable
     {
         return $this->hasMany(Clip::class);
     }
-
-    public static function withClips()
-    {
-        return self::whereHas('clips')->get();
-    }
 }

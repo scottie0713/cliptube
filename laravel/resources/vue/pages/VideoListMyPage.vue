@@ -1,55 +1,16 @@
 <template>
     <div>
         <Header />
+        <VideoListMyTitle />
 
         <div class="page-container">
-            <!-- タイトル -->
-            <div
-                class="page-title d-flex justify-content-center align-items-center"
-            >
-                <div>
-                    <ImageSearch size="30" />
-                </div>
-                <div>クリップ検索</div>
-            </div>
-            <!-- /タイトル -->
-
             <!-- 検索結果一覧 -->
-            <div
-                v-if="videos.length > 0"
-                class="d-flex justify-content-center mb-2 gap-2 align-items-center"
-            >
-                <div>
-                    <ImageScissors size="24" />
-                </div>
-                <div>検索結果</div>
-            </div>
-            <div
-                v-if="videos.length > 0"
-                class="row video-container d-flex justify-content-start flex-wrap"
-            >
+            <div class="row">
                 <div
-                    v-for="v in videos"
-                    class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3"
+                    v-for="video in videos"
+                    class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3"
                 >
-                    <div
-                        class="video-box d-flex justify-content-center align-items-center gap-2 word-break"
-                        @click="goToPage('/clip/' + v.id)"
-                    >
-                        <div class="video-box-thumbnail">
-                            <img
-                                :src="v.thumbnail"
-                                class="card-img-top"
-                                :alt="v.title"
-                                width="180"
-                            />
-                        </div>
-                        <div class="flex-fill">
-                            <h5 style="font-size: 0.7rem">
-                                {{ v.title }}
-                            </h5>
-                        </div>
-                    </div>
+                    <VideoListMyVideos :video="video" />
                 </div>
             </div>
             <!-- /検索結果一覧 -->
@@ -59,15 +20,16 @@
 
 <script>
 import axios from "axios";
+import { apiGet, apiPost } from "~js/utils/api.js";
 import Header from "@/components/Header.vue";
-import ImageSearch from "@/components/Images/Search.vue";
-import ImageScissors from "@/components/Images/Scissors.vue";
+import VideoListMyTitle from "@/components/VideoListMy/Title.vue";
+import VideoListMyVideos from "@/components/VideoListMy/Videos.vue";
 
 export default {
     components: {
         Header,
-        ImageSearch,
-        ImageScissors,
+        VideoListMyTitle,
+        VideoListMyVideos,
     },
     data() {
         return {
@@ -75,40 +37,18 @@ export default {
             videos: [],
         };
     },
-    mounted() {
-        this.searchMovie();
+    created() {
+        apiGet("/api/video/list/my", this.setVideos, () => {});
     },
     methods: {
-        async searchMovie() {
-            try {
-                const response = await axios.get("/api/video/list/my", {});
-                if (response.status === 200) {
-                    console.log(response.data);
-                    this.videos = [];
-                    for (const v of response.data) {
-                        this.videos.push({
-                            id: v.id,
-                            title: v.title,
-                            thumbnail: v.thumbnail,
-                        });
-                    }
-                }
-            } catch (error) {
-                console.error(error);
+        setVideos(videos) {
+            for (const v of videos) {
+                this.videos.push({
+                    id: v.id,
+                    title: v.title,
+                    thumbnail: v.thumbnail,
+                });
             }
-        },
-        formatDate(dateString) {
-            const date = new Date(dateString);
-            return (
-                date.getFullYear() +
-                "/" +
-                (date.getMonth() + 1) +
-                "/" +
-                date.getDate()
-            );
-        },
-        goToPage(path) {
-            this.$router.push(path);
         },
     },
 };
@@ -118,35 +58,6 @@ export default {
 .page-container {
     width: 90%;
     margin: 0 auto;
-}
-
-.page-title {
-    background-color: #c75c5c;
-    /* width: 100%; */
-    margin: 0 auto 2rem auto;
-    padding: 0.2em;
-    border-radius: 2em;
-}
-
-.page-form {
-    /* width: 90%; */
-    margin: 0 auto;
-}
-
-.page-form button {
-    width: 5em;
-}
-
-.video-container {
-    width: 100%;
-}
-
-.video-box {
-    margin: 0.4rem;
-    border: 2px solid #fff;
-    border-radius: 0.8rem;
-    padding: 0.8rem 1.2rem;
-    color: #fff;
 }
 
 .video-box-thumbnail {

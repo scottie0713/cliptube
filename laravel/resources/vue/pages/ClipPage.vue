@@ -1,25 +1,29 @@
 <template>
     <div>
-        <Header />
-        <div class="page-container w-100 text-wrap">
-            <!-- タイトル -->
-            <div
-                class="page-title d-flex justify-content-center align-items-center"
-            >
-                <div>
-                    <ImagePlay size="30" />
+        <div id="content-top">
+            <Header />
+            <ClipTitle />
+        </div>
+        <div style="padding-top: 20px">
+            <div class="row">
+                <div class="col">
+                    <YouTubePlayer
+                        v-if="videoId && playerWidth"
+                        :videoId="videoId"
+                        :width="playerWidth"
+                        ref="YouTubePlayer"
+                    />
                 </div>
-                <div>クリップ再生</div>
-            </div>
-            <!-- /タイトル -->
-            <YouTubePlayer :videoId="videoId" ref="YouTubePlayer" />
-
-            <div
-                id="scroll-box"
-                class="mb-4"
-                :style="{ height: scrollBoxHeight + 'px' }"
-            >
-                <ClipList :clips="clips" @playClip="playClip" />
+                <div
+                    id="content-list"
+                    class="col"
+                    :style="{
+                        height: scrollBoxHeight + 'px',
+                        width: scrollBoxWidth + 'px',
+                    }"
+                >
+                    <ClipList :clips="clips" @playClip="playClip" />
+                </div>
             </div>
         </div>
     </div>
@@ -27,15 +31,16 @@
 
 <script>
 import axios from "axios";
+import { apiGet, apiPost } from "~js/utils/api.js";
 import ClipList from "@/components/ClipList.vue";
-import ImagePlay from "@/components/Images/Play.vue";
 import Header from "@/components/Header.vue";
+import ClipTitle from "@/components/Clip/Title.vue";
 import YouTubePlayer from "@/components/YouTubePlayerForWatch.vue";
 export default {
     components: {
         ClipList,
+        ClipTitle,
         Header,
-        ImagePlay,
         YouTubePlayer,
     },
     data() {
@@ -43,7 +48,10 @@ export default {
             videoId: null,
             startSec: null,
             endSec: null,
+            playerWidth: null,
+            scrollBoxWidth: 300,
             scrollBoxHeight: 400,
+            isResizeCoolDown: false,
             clips: [],
         };
     },
@@ -51,29 +59,48 @@ export default {
         this.videoId = this.$route.params.hash;
     },
     mounted() {
-        // BOXの高さ調整 なんかうまくいかない
-        // const box = document.getElementById("scroll-box");
-        // console.log("BOX", box.offsetHeight);
-        // console.log("WINDOW", window.innerHeight);
-        // this.scrollBoxHeight = window.innerHeight - box.offsetHeight - 40;
-        this.scrollBoxHeight = 400;
-
-        setTimeout(() => {
-            this.getClips();
-        }, 1000);
+        this.resize();
+        window.addEventListener("resize", this.handleResize);
+        apiGet("/api/clip/" + this.videoId, this.setClips, () => {});
     },
     methods: {
-        async getClips() {
-            try {
-                const response = await axios.get(
-                    "/api/clip/" + this.videoId,
-                    {}
-                );
-                if (response.status === 200) {
-                    this.setClips(response.data);
-                }
-            } catch (error) {
-                console.error(error);
+        handleResize() {
+            if (this.isResizeCoolDown) {
+                return;
+            }
+            this.isResizeCoolDown = true;
+            this.resize();
+            this.$refs.YouTubePlayer.setWidth(this.playerWidth);
+            setTimeout(() => {
+                this.isResizeCoolDown = false;
+            }, 300);
+        },
+        resize() {
+            // sm未満の場合
+            if (window.innerWidth < 768) {
+                this.playerWidth = window.innerWidth;
+                this.scrollBoxWidth = window.innerWidth - 40;
+                const contentTop = document.getElementById("content-top");
+                const contentList = document.getElementById("content-list");
+                // console.log(
+                //     "HEIGHT",
+                //     contentTop.offsetHeight,
+                //     contentList.offsetHeight
+                // );
+                this.scrollBoxHeight =
+                    window.innerHeight -
+                    contentTop.offsetHeight -
+                    contentList.offsetHeight -
+                    40;
+            }
+            // md以上の場合
+            else {
+                this.playerWidth = window.innerWidth - 300;
+                this.scrollBoxWidth = 300;
+                const contentTop = document.getElementById("content-top");
+                // console.log("HEIGHT", contentTop.offsetHeight);
+                this.scrollBoxHeight =
+                    window.innerHeight - contentTop.offsetHeight - 40;
             }
         },
         setClips(clips) {
@@ -85,37 +112,16 @@ export default {
             this.$refs.YouTubePlayer.seekAndPlay(startSec, endSec);
         },
     },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.handleResize);
+    },
 };
 </script>
 
 <style scoped>
-.page-title {
-    background-color: #76c2af;
-    margin: 0 auto 0.4rem auto;
-    padding: 0.2em;
-    border-radius: 2em;
-}
-
-.page-container {
-    text-align: center;
-}
-.p {
-    margin: 10px auto;
-    padding: 20px;
-}
-
-.scroll-box {
+#content-list {
     border: 1px solid #666;
     overflow-y: auto;
-}
-
-.scroll-box-item {
-    color: #333;
-    background-color: #f0f0f0;
-    border: 1px solid #bbb;
-    font-size: 1rem;
-    padding: 0.5rem;
-    margin: 0.2rem 0;
-    cursor: pointer;
+    margin: 0 20px;
 }
 </style>

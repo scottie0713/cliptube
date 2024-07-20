@@ -12,11 +12,14 @@ export default {
             type: String,
             required: true,
         },
+        width: {
+            type: Number,
+            default: 300,
+        },
     },
     data() {
         return {
             player: null,
-            width: 640,
             height: 360,
             isReady: false,
             isPlaying: false,
@@ -25,7 +28,7 @@ export default {
         };
     },
     mounted() {
-        this.setPlayerSize();
+        // this.setPlayerSize();
         this.loadYouTubeIframeAPI();
     },
     methods: {
@@ -104,6 +107,12 @@ export default {
             if (this.isReady) {
                 this.player.seekTo(this.startSec);
                 this.play();
+            }
+        },
+        setWidth(width) {
+            const height = Math.floor((width / 16) * 9);
+            if (this.player) {
+                this.player.setSize(width, height);
             }
         },
     },
