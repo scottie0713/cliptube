@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 h-100">
+    <div class="w-100 h-100" style="min-width: 360px">
         <div class="d-flex justify-content-center h-100">
             <div
                 class="flex bg-dark-subtle"

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class SocialiteController extends Controller
 {
@@ -47,5 +48,11 @@ class SocialiteController extends Controller
         Auth::login($user, true);
 
         return redirect()->intended('/');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
     }
 }
