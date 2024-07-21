@@ -13,7 +13,7 @@
                 <div>
                     {{ timeFormat(c.start_sec) }}~{{ timeFormat(c.end_sec) }}
                 </div>
-                <div style="font-size: 1rem">
+                <div style="font-size: 0.8rem">
                     {{ c.title }}
                 </div>
             </div>
@@ -61,17 +61,17 @@ export default {
 
 .box-item {
     font-size: 0.7rem;
+    font-weight: bold;
     color: #333;
-    border-radius: 0.4rem;
-    padding: 0.4rem 0.8rem;
+    padding: 0.2rem 0.8rem;
     margin: 0.1rem 0;
     text-align: left;
     cursor: pointer;
 }
 
 .box-item.active {
-    background-color: #f5cf87;
-    border: 2px solid #f5cf87;
+    background-color: #fff;
+    border: 2px solid #fff;
 }
 
 .box-item.inactive {

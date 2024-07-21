@@ -20,8 +20,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/video', [UserController::class, 'videoList']);
     Route::get('/youtube/search', [YoutubeController::class, 'search']);
     Route::get('/youtube/video', [YoutubeController::class, 'video']);
-    // Route::post('/logout', [LoginController::class, 'logout'])
-    //     ->name('logout');
 
     Route::get('/clip/{video_id}', [ClipController::class, 'enableList']);
     Route::get('/clip/{video_id}/my', [ClipController::class, 'myEnableList']);
@@ -31,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/user-clip/{id}', [ClipController::class, 'put']);
 
     Route::get('/video/list/my', [VideoController::class, 'myList']);
+    Route::get('/video/{video_id}', [VideoController::class, 'info']);
     Route::post('/video', [VideoController::class, 'post']);
 });
 

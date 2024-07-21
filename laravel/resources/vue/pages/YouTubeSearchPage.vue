@@ -1,19 +1,8 @@
 <template>
     <div>
         <Header />
-
+        <YouTubeSearchTitle />
         <div class="page-container">
-            <!-- タイトル -->
-            <div
-                class="page-title d-flex justify-content-center align-items-center"
-            >
-                <div>
-                    <ImageSearch size="30" />
-                </div>
-                <div>YouTube動画検索</div>
-            </div>
-            <!-- /タイトル -->
-
             <!-- 動画検索フォーム -->
             <form
                 @submit.prevent="searchVideo"
@@ -32,15 +21,6 @@
             <!-- /動画検索フォーム -->
 
             <!-- 検索結果一覧 -->
-            <div
-                v-if="videos.length > 0"
-                class="d-flex justify-content-center mb-2 gap-2 align-items-center"
-            >
-                <div>
-                    <ImageScissors size="24" />
-                </div>
-                <div>クリップする動画を選択</div>
-            </div>
             <div
                 v-if="videos.length > 0"
                 class="row video-container d-flex justify-content-start flex-wrap"
@@ -83,14 +63,12 @@
 <script>
 import axios from "axios";
 import Header from "@/components/Header.vue";
-import ImageSearch from "@/components/Images/Search.vue";
-import ImageScissors from "@/components/Images/Scissors.vue";
+import YouTubeSearchTitle from "@/components/YouTubeSearch/Title.vue";
 
 export default {
     components: {
         Header,
-        ImageSearch,
-        ImageScissors,
+        YouTubeSearchTitle,
     },
     data() {
         return {
@@ -153,20 +131,11 @@ export default {
 
 <style scoped>
 .page-container {
-    width: 90%;
+    padding: 2rem;
     margin: 0 auto;
 }
 
-.page-title {
-    background-color: #c75c5c;
-    /* width: 100%; */
-    margin: 0 auto 2rem auto;
-    padding: 0.2em;
-    border-radius: 2em;
-}
-
 .page-form {
-    /* width: 90%; */
     margin: 0 auto;
 }
 
@@ -180,8 +149,8 @@ export default {
 
 .video-box {
     margin: 0.4rem;
-    background-color: #E0E0D1;
-    border: 2px solid #E0E0D1;
+    background-color: #e0e0d1;
+    border: 2px solid #e0e0d1;
     border-radius: 0.8rem;
     padding: 0.8rem 1.2rem;
     color: #333;

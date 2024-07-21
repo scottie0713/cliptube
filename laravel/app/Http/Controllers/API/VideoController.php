@@ -32,6 +32,12 @@ class VideoController extends Controller
         return response()->json($response, 200);
     }
 
+    public function info(Request $request, string $videoId): JsonResponse
+    {
+        $response = Video::where('id', $videoId)->first();
+        return response()->json($response, 200);
+    }
+
     public function post(VideoPostRequest $request): JsonResponse
     {
         Video::updateOrCreate(
