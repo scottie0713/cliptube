@@ -3,13 +3,19 @@
         <div>
             <ImagePlay size="30" />
         </div>
-        <div>クリップ再生</div>
+        <div>{{ title }}</div>
     </div>
 </template>
 
 <script>
 import ImagePlay from "@/components/Images/Play.vue";
 export default {
+    props: {
+        title: {
+            type: String,
+            default: "",
+        },
+    },
     components: {
         ImagePlay,
     },

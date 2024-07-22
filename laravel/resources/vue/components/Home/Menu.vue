@@ -17,6 +17,9 @@
         <div v-else-if="imageName == 'ImageScissors'" class="menu-icon">
             <ImageScissors size="36" />
         </div>
+        <div v-else-if="imageName == 'ImageVideoStory'" class="menu-icon">
+            <ImageVideoStory size="36" />
+        </div>
         <div class="menu-desc flex-fill">
             {{ menuTitle }}
         </div>
@@ -26,7 +29,7 @@
 <script>
 import { markRaw } from "vue";
 import ImageScissors from "@/components/Images/Scissors.vue";
-// import ImageVideoStory from "@/components/Images/VideoStory.vue";
+import ImageVideoStory from "@/components/Images/VideoStory.vue";
 import ImageClip from "@/components/Images/Clip.vue";
 // import ImageSearch from "@/components/Images/Search.vue";
 import ImageSearchOrange from "@/components/Images/SearchOrange.vue";
@@ -58,7 +61,7 @@ export default {
         // ImageSearch,
         ImageSearchOrange,
         ImageScissors,
-        // ImageVideoStory,
+        ImageVideoStory,
     },
     methods: {
         goToPage(path) {

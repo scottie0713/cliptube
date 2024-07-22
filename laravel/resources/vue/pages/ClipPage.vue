@@ -2,53 +2,45 @@
     <div>
         <div id="content-top">
             <Header />
-            <ClipTitle />
+            <ClipTitle :title="videoTitle" />
         </div>
         <div style="padding-top: 20px">
-            <div class="row">
-                <div class="col">
+            <div class="row g-0">
+                <div
+                    id="youtube-container"
+                    class="col col-12 col-sm-12 col-md-8 col-lg-8 mb-2"
+                >
                     <div>
                         <YouTubePlayer
                             v-if="videoId && playerWidth"
                             :videoId="videoId"
                             :width="playerWidth"
                             ref="YouTubePlayer"
-                        />
-                    </div>
-                    <div>
-                        {{ videoTitle }}
-                        <ShareToTwitter
-                            :text="videoTitle"
-                            :url="`https://clipper.tokyo/watch/${videoId}`"
+                            @playerReady="playerReady"
                         />
                     </div>
                 </div>
                 <div
                     id="clip-container"
-                    class="col"
-                    :style="{
-                        width: scrollBoxWidth + 'px',
-                        margin: '0 20px',
-                    }"
+                    class="col col-12 col-sm-12 col-md-4 col-lg-4 mb-2"
                 >
-                    <div
-                        class="bg-secondary p-0 text-center"
-                        :style="{
-                            width: scrollBoxWidth + 'px',
-                            margin: '0 20px',
-                        }"
-                    >
-                        クリップ一覧
+                    <div class="mx-2 bg-light p-1">
+                        <div
+                            class="bg-light text-dark fw-bold text-center py-2"
+                            style="font-size: 0.8rem"
+                        >
+                            クリップ一覧
+                        </div>
+                        <div id="clip-list" class="p-1 bg-dark">
+                            <ClipList :clips="clips" @playClip="playClip" />
+                        </div>
                     </div>
-                    <div
-                        id="clip-list"
-                        :style="{
-                            height: scrollBoxHeight + 'px',
-                            width: scrollBoxWidth + 'px',
-                        }"
-                    >
-                        <ClipList :clips="clips" @playClip="playClip" />
-                    </div>
+                </div>
+                <div class="col col-12 col-sm-12 col-md-4 col-lg-4">
+                    <ShareToTwitter
+                        :text="videoTitle"
+                        :url="`https://clipper.tokyo/watch/${videoId}`"
+                    />
                 </div>
             </div>
         </div>
@@ -77,8 +69,7 @@ export default {
             startSec: null,
             endSec: null,
             playerWidth: null,
-            scrollBoxWidth: 300,
-            scrollBoxHeight: 400,
+            isPlayerReady: false,
             isResizeCoolDown: false,
             clips: [],
             videoTitle: "",
@@ -90,48 +81,30 @@ export default {
         apiGet("/api/clip/" + this.videoId, this.setClips, () => {});
     },
     mounted() {
-        this.resize();
+        this.handleResize();
         window.addEventListener("resize", this.handleResize);
     },
     methods: {
+        playerReady() {
+            this.isPlayerReady = true;
+        },
+        getYouTubeContainerWidth() {
+            const youtubeContainer =
+                document.getElementById("youtube-container");
+            this.playerWidth = youtubeContainer.clientWidth;
+        },
         handleResize() {
             if (this.isResizeCoolDown) {
                 return;
             }
             this.isResizeCoolDown = true;
-            this.resize();
-            this.$refs.YouTubePlayer.setWidth(this.playerWidth);
+            this.getYouTubeContainerWidth();
+            if (this.isPlayerReady) {
+                this.$refs.YouTubePlayer.setWidth(this.playerWidth);
+            }
             setTimeout(() => {
                 this.isResizeCoolDown = false;
             }, 100);
-        },
-        resize() {
-            // sm未満の場合
-            if (window.innerWidth < 768) {
-                this.playerWidth = window.innerWidth;
-                this.scrollBoxWidth = window.innerWidth - 40;
-                const contentTop = document.getElementById("content-top");
-                const contentList = document.getElementById("clip-container");
-                // console.log(
-                //     "HEIGHT",
-                //     contentTop.offsetHeight,
-                //     contentList.offsetHeight
-                // );
-                this.scrollBoxHeight =
-                    window.innerHeight -
-                    contentTop.offsetHeight -
-                    contentList.offsetHeight -
-                    40;
-            }
-            // md以上の場合
-            else {
-                this.playerWidth = window.innerWidth - 300;
-                this.scrollBoxWidth = 300;
-                const contentTop = document.getElementById("content-top");
-                // console.log("HEIGHT", contentTop.offsetHeight);
-                this.scrollBoxHeight =
-                    window.innerHeight - contentTop.offsetHeight - 40;
-            }
         },
         setVideo(data) {
             this.videoTitle = data.title;
@@ -151,12 +124,4 @@ export default {
 };
 </script>
 
-<style scoped>
-#clip-container {
-    border: 1px solid #666;
-    margin: 0 20px;
-}
-#clip-list {
-    overflow-y: auto;
-}
-</style>
+<style scoped></style>

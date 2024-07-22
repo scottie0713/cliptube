@@ -19,7 +19,6 @@
 import { createApp } from "vue";
 import axios from "axios";
 import router from "~js/router";
-// import Header from "@/components/Header.vue";
 import LeftAd from "@/components/LeftAd.vue";
 
 export default {
@@ -39,27 +38,12 @@ export default {
         };
     },
     created() {
-        //this.login();
         window.addEventListener("resize", this.checkWindowSize);
         this.checkWindowSize(); // 初回チェック
         this.maxWidth = window.innerWidth;
     },
     mounted() {},
     methods: {
-        // async login() {
-        //     try {
-        //         const response = await axios.post("/api/login", {
-        //             account_id: "kimukimi713",
-        //             password: "kiminori713",
-        //         });
-        //         if (response.status === 200) {
-        //             this.getUser();
-        //         }
-        //     } catch (error) {}
-        // },
-        checkIsXXL() {
-            console.log("breakPoint", this.breakPoint);
-        },
         checkWindowSize() {
             if (window.innerWidth >= 1400) {
                 this.breakPoint = "XXL";

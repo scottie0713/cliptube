@@ -1,6 +1,6 @@
 <template>
     <div class="login-box text-center">
-        <p>一部機能はX(旧:Twitter)アカウントでログインして利用できます</p>
+        <p>機能はX(旧:Twitter)アカウントでログインして利用できます</p>
         <div v-if="isLogin">
             <div
                 v-if="loginProvider == 'X'"
@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .login-box {
-    margin: 2rem 0;
+    margin: 1rem 0;
     border-radius: 0.5rem;
     border: 0.1rem solid #fff;
     padding: 1.4rem;

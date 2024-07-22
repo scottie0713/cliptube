@@ -20,7 +20,6 @@ export default {
     data() {
         return {
             player: null,
-            height: 360,
             isReady: false,
             isPlaying: false,
             startSec: null,
@@ -28,7 +27,7 @@ export default {
         };
     },
     mounted() {
-        // this.setPlayerSize();
+        console.log("mounted");
         this.loadYouTubeIframeAPI();
     },
     methods: {
@@ -42,30 +41,27 @@ export default {
                 }
             }, 500);
         },
-        setPlayerSize() {
-            // 横幅は画面いっぱいに広げる 最大幅は1024px
-            this.width = Math.min(window.innerWidth, 1024);
-            // 立幅は横幅の16:9
-            this.height = (this.width * 9) / 16;
-        },
         loadYouTubeIframeAPI() {
             if (!window.YT) {
+                console.log("loadYouTubeIframeAPI 2");
                 const tag = document.createElement("script");
                 tag.src = "https://www.youtube.com/iframe_api";
                 const firstScriptTag =
                     document.getElementsByTagName("script")[0];
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
                 window.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady;
+            } else {
+                window.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady;
+                this.onYouTubeIframeAPIReady();
             }
         },
         onYouTubeIframeAPIReady() {
             this.player = new YT.Player("player", {
                 width: this.width,
-                height: this.height,
+                height: this.calcHeight(this.width),
                 videoId: this.videoId,
                 playerVars: {
-                    controls: 1, // コントロールバーを表示
+                    controls: 0, // コントロールバーを非表示
                     modestbranding: 1, // YouTubeロゴを非表示
                     rel: 0, // 関連動画を非表示
                     showinfo: 0, // タイトルを非表示
@@ -83,6 +79,7 @@ export default {
         },
         onPlayerReady(event) {
             this.isReady = true;
+            this.$emit("playerReady");
         },
         onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.ENDED) {
@@ -110,11 +107,20 @@ export default {
             }
         },
         setWidth(width) {
-            const height = Math.floor((width / 16) * 9);
             if (this.player) {
-                this.player.setSize(width, height);
+                this.player.setSize(width, this.calcHeight(width));
             }
         },
+        calcHeight(width) {
+            return Math.floor((width / 16) * 9);
+        },
+    },
+    beforeUnmount() {
+        console.log("beforeUnmount");
+        if (this.player) {
+            this.player.stopVideo();
+            this.player.destroy();
+        }
     },
 };
 </script>

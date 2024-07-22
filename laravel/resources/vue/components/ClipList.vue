@@ -1,21 +1,12 @@
 <template>
     <div class="row">
-        <div
-            v-for="c in clips"
-            :key="c.id"
-            class="col col-12 col-sm-6 col-md-12 col-lg-12"
-        >
+        <div v-for="c in clips" :key="c.id" class="col-auto mb-1">
             <div
                 class="box-item"
                 :class="[c.id == selectedClipId ? 'active' : 'inactive', '']"
                 @click="clickClip(c)"
             >
-                <div>
-                    {{ timeFormat(c.start_sec) }}~{{ timeFormat(c.end_sec) }}
-                </div>
-                <div style="font-size: 0.8rem">
-                    {{ c.title }}
-                </div>
+                <div>{{ timeFormat(c.start_sec) }}&nbsp;{{ c.title }}</div>
             </div>
         </div>
     </div>
@@ -42,9 +33,7 @@ export default {
             selectedClipId: null,
         };
     },
-    mounted() {
-        // console.log(this.clips);
-    },
+    mounted() {},
     methods: {
         clickClip(clip) {
             this.selectedClipId = clip.id;
@@ -60,6 +49,7 @@ export default {
 }
 
 .box-item {
+    border-radius: 0.8rem;
     font-size: 0.7rem;
     font-weight: bold;
     color: #333;
