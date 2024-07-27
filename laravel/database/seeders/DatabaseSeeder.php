@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             'provider' => 'twitter',
             'provider_id' => '11194222',
-            'name' => 'scottie2nd',
+            'provider_name' => 'scottie2nd',
+            'name' => 'kiki',
+            'hash' => Str::random(6),
             'avatar' => 'https://pbs.twimg.com/profile_images/824897060495167489/a15ksl2S_x96.jpg',
             'token' => 'Snlrb28zVWpLakxUTEF5dDZ6RV9UM2Y3cmhJaGE4TjZFdFdKeFh5bkdHRWdJOjE3MjA2MzMwMDc2NzQ6MToxOmF0OjE',
         ]);

@@ -1,7 +1,7 @@
 <template>
     <div>
         <Header />
-        <VideoListMyTitle />
+        <PlaylistTitle />
 
         <div class="page-container">
             <!-- 検索結果一覧 -->
@@ -22,14 +22,14 @@
 import axios from "axios";
 import { apiGet, apiPost } from "~js/utils/api.js";
 import Header from "@/components/Header.vue";
-import VideoListMyTitle from "@/components/VideoListMy/Title.vue";
-import VideoListMyVideos from "@/components/VideoListMy/Videos.vue";
+import PlaylistTitle from "@/components/Playlist/Title.vue";
+import PlaylistLists from "@/components/Playlist/Lists.vue";
 
 export default {
     components: {
         Header,
-        VideoListMyTitle,
-        VideoListMyVideos,
+        PlaylistTitle,
+        // VideoListMyVideos,
     },
     data() {
         return {
@@ -38,7 +38,7 @@ export default {
         };
     },
     created() {
-        apiGet("/api/video/list/my", this.setVideos, () => {});
+        apiGet("/api/playlist/list/my", this.setVideos, () => {});
     },
     methods: {
         setVideos(videos) {

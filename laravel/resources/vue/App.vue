@@ -9,7 +9,7 @@
                 <LeftAd />
             </div>
             <div class="flex col word-break w-100 h-100 text-light">
-                <router-view :userHash="userHash"></router-view>
+                <router-view :user="user"></router-view>
             </div>
         </div>
     </div>
@@ -17,6 +17,7 @@
 
 <script>
 import { createApp } from "vue";
+import { apiGet, apiPost } from "~js/utils/api.js";
 import axios from "axios";
 import router from "~js/router";
 import LeftAd from "@/components/LeftAd.vue";
@@ -28,11 +29,12 @@ export default {
     },
     data() {
         return {
-            isLoggedIn: false,
-            accountId: "",
-            userHash: "",
-            showLogin: false,
-            showRegister: false,
+            user: {
+                isLogin: false,
+                accountId: "",
+                provider: "",
+                hash: "",
+            },
             maxWidth: 0,
             breakPoint: "",
         };
@@ -41,6 +43,7 @@ export default {
         window.addEventListener("resize", this.checkWindowSize);
         this.checkWindowSize(); // 初回チェック
         this.maxWidth = window.innerWidth;
+        apiGet("/api/user", this.loggedInCallback, () => {});
     },
     mounted() {},
     methods: {
@@ -57,25 +60,9 @@ export default {
                 this.breakPoint = "SM";
             }
         },
-        setAccountId(accountId) {
-            this.isLoggedIn = true;
-            this.accountId = accountId;
-        },
-        async getUser() {
-            try {
-                const response = await axios.get("/api/user");
-                if (response.status === 200) {
-                    this.setAccountId(response.data.account_id);
-                    this.userHash = response.data.hash;
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        logout() {
-            this.isLoggedIn = false;
-            this.accountId = "";
-            this.userHash = "";
+        loggedInCallback(response) {
+            this.user.isLogin = true;
+            this.user.provider = response.provider;
         },
     },
 };

@@ -30,22 +30,22 @@ class ClipSeeder extends Seeder
             'thumbnail' => 'https://i.ytimg.com/vi/wK3ebMX2TZU/default.jpg',
         ]);
 
-        $storyId = DB::table('stories')->insertGetId([
-            'title' => 'ストーリーテスト',
+        $playlistId = DB::table('playlists')->insertGetId([
+            'title' => 'プレイリストA',
             'hash' => Str::random(6),
             'description' => 'description',
         ]);
 
-        DB::table('user_stories')->insert([
+        DB::table('user_playlists')->insert([
             'user_id' => 1,
-            'story_id' => $storyId,
+            'playlist_id' => $playlistId,
         ]);
 
         foreach ($this->getAttributes() as $index => $attribute) {
             $attribute['hash'] = Str::random(6);
             $clipId = DB::table('clips')->insertGetId($attribute);
-            DB::table('story_clips')->insert([
-                'story_id' => $storyId,
+            DB::table('playlist_clips')->insert([
+                'playlist_id' => $playlistId,
                 'clip_id' => $clipId,
                 'order' => $index + 1,
             ]);

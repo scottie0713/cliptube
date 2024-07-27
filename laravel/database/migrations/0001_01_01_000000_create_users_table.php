@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('provider');
             $table->string('provider_id');
-            $table->string('name');
+            $table->string('provider_name', 50);
+            $table->string('name', 16)->nullable();
+            $table->string('hash', 6);
             $table->string('avatar');
             $table->string('token');
             $table->rememberToken();

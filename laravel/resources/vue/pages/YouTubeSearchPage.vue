@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header />
+        <Header :user="user" />
         <YouTubeSearchTitle />
         <div class="page-container">
             <!-- 動画検索フォーム -->
@@ -62,6 +62,7 @@
 
 <script>
 import axios from "axios";
+import { apiGet, apiPost } from "~js/utils/api.js";
 import Header from "@/components/Header.vue";
 import YouTubeSearchTitle from "@/components/YouTubeSearch/Title.vue";
 
@@ -70,27 +71,31 @@ export default {
         Header,
         YouTubeSearchTitle,
     },
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
+    },
     data() {
         return {
             query: "",
             videos: [],
         };
     },
-    mounted() {},
+    mounted() {
+        console.log(this.user);
+    },
     methods: {
         async searchVideo() {
-            try {
-                const response = await axios.get("/api/youtube/search", {
-                    params: {
-                        query: this.query,
-                    },
-                });
-                if (response.status === 200) {
-                    this.videos = response.data.items;
-                }
-            } catch (error) {
-                console.error(error);
-            }
+            apiGet(
+                "/api/youtube/search?query=" + this.query,
+                this.searchVideoCallback,
+                () => {}
+            );
+        },
+        searchVideoCallback(response) {
+            this.videos = response.items;
         },
         async postVideo(id, title, thumbnail) {
             try {

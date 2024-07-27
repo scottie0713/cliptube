@@ -36,7 +36,7 @@
         <!-- /このサービスについて -->
         <div class="row justify-content-center">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
-                <HomeLogin :isLogin="isLogin" :loginProvider="loginProvider" />
+                <HomeLogin :user="user" />
             </div>
         </div>
 
@@ -45,7 +45,7 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                 <HomeMenu
                     imageName="ImageScissors"
-                    :isEnable="isLogin"
+                    :isEnable="user.isLogin"
                     menuTitle="動画を検索してクリップ作成"
                     backgroundColor="#c75c5c"
                     linkPath="/youtube/search"
@@ -54,7 +54,7 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                 <HomeMenu
                     imageName="ImageClip"
-                    :isEnable="isLogin"
+                    :isEnable="user.isLogin"
                     menuTitle="自分の作ったクリップを見る"
                     backgroundColor="#c7b95c"
                     linkPath="/video/list/my"
@@ -63,9 +63,10 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                 <HomeMenu
                     imageName="ImageVideoStory"
+                    :isEnable="user.isLogin"
                     menuTitle="プレイリスト作成"
                     backgroundColor="#5ca3c7"
-                    linkPath="/playlist/my"
+                    :linkPath="`/playlist/${user.hash}`"
                 />
             </div>
         </div>
@@ -88,22 +89,27 @@ export default {
         HomeMenu,
         HomeTitle,
     },
-    props: [],
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
+    },
     data() {
         return {
-            isLogin: false,
-            loginProvider: "",
+            // isLogin: false,
+            // loginProvider: "",
         };
     },
     created() {
-        apiGet("/api/user", this.loggedIn, () => {});
+        // apiGet("/api/user", this.loggedIn, () => {});
     },
     mounted() {},
     methods: {
-        loggedIn(response) {
-            this.isLogin = true;
-            this.loginProvider = response.provider;
-        },
+        // loggedIn(response) {
+        //     this.isLogin = true;
+        //     this.loginProvider = response.provider;
+        // },
     },
 };
 </script>

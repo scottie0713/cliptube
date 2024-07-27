@@ -1,9 +1,9 @@
 <template>
     <div class="login-box text-center">
         <p>機能はX(旧:Twitter)アカウントでログインして利用できます</p>
-        <div v-if="isLogin">
+        <div v-if="user.isLogin">
             <div
-                v-if="loginProvider == 'X'"
+                v-if="user.provider == 'X'"
                 class="d-flex flex-row align-items-center p-2 gap-2 justify-content-center"
             >
                 <div>
@@ -37,12 +37,8 @@ import ImageTwitterBlack from "~images/logo-twitter-black.png";
 import ImageTwitterWhite from "~images/logo-twitter-white.png";
 export default {
     props: {
-        isLogin: {
-            type: Boolean,
-            required: true,
-        },
-        loginProvider: {
-            type: String,
+        user: {
+            type: Object,
             required: true,
         },
     },

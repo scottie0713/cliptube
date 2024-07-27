@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('story_clips', function (Blueprint $table) {
+        Schema::create('playlist_clips', function (Blueprint $table) {
             $table->id();
-            $table->integer('story_id');
+            $table->integer('playlist_id');
             $table->integer('clip_id');
             $table->integer('order');
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('story_clips');
+        Schema::dropIfExists('playlist_clips');
     }
 };

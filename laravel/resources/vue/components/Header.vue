@@ -20,29 +20,13 @@
 import axios from "axios";
 
 export default {
-    data() {
-        return {
-            user: {
-                isLogin: false,
-                provider: "",
-            },
-        };
-    },
-    created() {
-        this.getUser();
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
     },
     methods: {
-        async getUser() {
-            try {
-                const response = await axios.get("/api/user");
-                if (response.status === 200) {
-                    this.user.isLogin = true;
-                    this.user.provider = response.data.provider;
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        },
         goToPage(path) {
             this.$router.push(path);
         },
