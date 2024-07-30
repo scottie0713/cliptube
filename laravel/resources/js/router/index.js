@@ -6,7 +6,7 @@ import HomePage from "@/pages/HomePage.vue";
 // import UserClipPage from "@/pages/UserClipPage.vue";
 // import UserVideoPage from "@/pages/UserVideoPage.vue";
 import PlaylistPage from "@/pages/PlaylistPage.vue";
-import VideoListMyPage from "@/pages/VideoListMyPage.vue";
+import VideoListPage from "@/pages/VideoListPage.vue";
 import YouTubeSearchPage from "@/pages/YouTubeSearchPage.vue";
 
 const routes = [
@@ -16,7 +16,7 @@ const routes = [
     // { path: "/user/video/:hash", component: UserClipPage },
     // { path: "/user/video", component: UserVideoPage },
     { path: "/playlist/:hash", component: PlaylistPage },
-    { path: "/video/list/my", component: VideoListMyPage },
+    { path: "/video/list/:hash", component: VideoListPage },
     { path: "/youtube/search", component: YouTubeSearchPage },
     { path: "/:pathMatch(.*)*", redirect: "/" },
 ];

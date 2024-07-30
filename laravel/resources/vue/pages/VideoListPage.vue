@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Header />
-        <VideoListMyTitle />
+        <Header :user="user" />
+        <VideoListTitle />
 
         <div class="page-container">
             <!-- 検索結果一覧 -->
@@ -10,7 +10,7 @@
                     v-for="video in videos"
                     class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3"
                 >
-                    <VideoListMyVideos :video="video" />
+                    <VideoListVideos :video="video" />
                 </div>
             </div>
             <!-- /検索結果一覧 -->
@@ -22,23 +22,31 @@
 import axios from "axios";
 import { apiGet, apiPost } from "~js/utils/api.js";
 import Header from "@/components/Header.vue";
-import VideoListMyTitle from "@/components/VideoListMy/Title.vue";
-import VideoListMyVideos from "@/components/VideoListMy/Videos.vue";
+import VideoListTitle from "@/components/VideoList/Title.vue";
+import VideoListVideos from "@/components/VideoList/Videos.vue";
 
 export default {
     components: {
         Header,
-        VideoListMyTitle,
-        VideoListMyVideos,
+        VideoListTitle,
+        VideoListVideos,
+    },
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
     },
     data() {
         return {
+            userHash: "",
             query: "",
             videos: [],
         };
     },
     created() {
-        apiGet("/api/video/list/my", this.setVideos, () => {});
+        this.userHash = this.$route.params.hash;
+        apiGet(`/api/video/list/${this.userHash}`, this.setVideos, () => {});
     },
     methods: {
         setVideos(videos) {

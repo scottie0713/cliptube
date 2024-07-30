@@ -23,7 +23,7 @@ import ImageSearchOrange from "@/components/Images/SearchOrange.vue";
 export default {
     props: {
         number: {
-            type: Number,
+            type: String,
             required: true,
         },
         title: {

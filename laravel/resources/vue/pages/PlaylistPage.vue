@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header />
+        <Header :user="user" />
         <PlaylistTitle />
 
         <div class="page-container">
@@ -10,7 +10,7 @@
                     v-for="video in videos"
                     class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3"
                 >
-                    <VideoListMyVideos :video="video" />
+                    <PlaylistLists :video="video" />
                 </div>
             </div>
             <!-- /検索結果一覧 -->
@@ -29,16 +29,24 @@ export default {
     components: {
         Header,
         PlaylistTitle,
-        // VideoListMyVideos,
+        PlaylistLists,
+    },
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
     },
     data() {
         return {
+            userHash: "",
             query: "",
             videos: [],
         };
     },
     created() {
-        apiGet("/api/playlist/list/my", this.setVideos, () => {});
+        this.userHash = this.$route.params.hash;
+        apiGet(`/api/playlist/user/${this.userHash}`, this.setVideos, () => {});
     },
     methods: {
         setVideos(videos) {

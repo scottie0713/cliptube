@@ -57,7 +57,7 @@
                     :isEnable="user.isLogin"
                     menuTitle="自分の作ったクリップを見る"
                     backgroundColor="#c7b95c"
-                    linkPath="/video/list/my"
+                    :linkPath="`/video/list/${user.hash}`"
                 />
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
@@ -96,21 +96,11 @@ export default {
         },
     },
     data() {
-        return {
-            // isLogin: false,
-            // loginProvider: "",
-        };
+        return {};
     },
-    created() {
-        // apiGet("/api/user", this.loggedIn, () => {});
-    },
+    created() {},
     mounted() {},
-    methods: {
-        // loggedIn(response) {
-        //     this.isLogin = true;
-        //     this.loginProvider = response.provider;
-        // },
-    },
+    methods: {},
 };
 </script>
 

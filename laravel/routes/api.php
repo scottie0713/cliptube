@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\API\YoutubeController;
 use App\Http\Controllers\API\ClipController;
+use App\Http\Controllers\API\PlaylistController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VideoController;
 // use App\Http\Middleware\CacheResponse;
@@ -28,7 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/clip', [ClipController::class, 'add']);
     Route::put('/user-clip/{id}', [ClipController::class, 'put']);
 
-    Route::get('/video/list/my', [VideoController::class, 'myList']);
+    Route::get('/playlist/user/{user_hash}', [PlaylistController::class, 'list']);
+
+    Route::get('/video/list/{user_hash}', [VideoController::class, 'list']);
     Route::get('/video/{video_id}', [VideoController::class, 'info']);
     Route::post('/video', [VideoController::class, 'post']);
 });

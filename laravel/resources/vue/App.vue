@@ -63,6 +63,9 @@ export default {
         loggedInCallback(response) {
             this.user.isLogin = true;
             this.user.provider = response.provider;
+            this.user.providerName = response.providerName;
+            this.user.hash = response.hash;
+            this.user.name = response.name;
         },
     },
 };

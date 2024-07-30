@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class UserStory extends Authenticatable
+class Playlist extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -17,7 +17,19 @@ class UserStory extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'story_id',
+        'title',
+        'description',
     ];
+
+    // relation: playlists.id -> user_playlists.playlist_id
+    public function userPlaylists()
+    {
+        return $this->hasMany(UserPlaylist::class);
+    }
+
+    // relation: playlists.id -> playlist_clips.playlist_id
+    public function clips()
+    {
+        return $this->hasMany(PlaylistClip::class);
+    }
 }

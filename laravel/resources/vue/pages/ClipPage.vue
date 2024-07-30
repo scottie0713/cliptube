@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="content-top">
-            <Header />
+            <Header :user="user" />
             <ClipTitle :title="videoTitle" />
         </div>
         <div style="padding-top: 20px">
@@ -62,6 +62,12 @@ export default {
         Header,
         ShareToTwitter,
         YouTubePlayer,
+    },
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
     },
     data() {
         return {
