@@ -2,7 +2,9 @@
     <div>
         <Header :user="user" />
         <PlaylistTitle />
-        <PlaylistForm />
+        <div class="p-4">
+            <PlaylistForm />
+        </div>
     </div>
 </template>
 

@@ -24,6 +24,19 @@ class VideoController extends Controller
         return response()->json($response, 200);
     }
 
+    public function myListAll(Request $request): JsonResponse
+    {
+        $userId = $request->user()->id;
+        $response = Video::whereHas('clips', function ($clipQuery) use ($userId) {
+            $clipQuery->whereHas('userClips', function ($userClipQuery) use ($userId) {
+                $userClipQuery->where('user_id', $userId)
+                    ->where('enabled', true);
+            });
+        })->get();
+
+        return response()->json($response, 200);
+    }
+
     public function info(Request $request, string $videoId): JsonResponse
     {
         $response = Video::where('id', $videoId)->first();

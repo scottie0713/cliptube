@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/playlist/user/{user_hash}', [PlaylistController::class, 'list']);
 
     Route::get('/video/list/{user_hash}', [VideoController::class, 'list']);
+    Route::get('/video/list/my/all', [VideoController::class, 'myListAll']);
     Route::get('/video/{video_id}', [VideoController::class, 'info']);
     Route::post('/video', [VideoController::class, 'post']);
 });

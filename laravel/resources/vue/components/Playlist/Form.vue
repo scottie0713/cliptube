@@ -1,32 +1,139 @@
 <template>
-    <div class="edit-clip-form-container">
-        <div class="text-center px-2">
-
-            <div class="d-flex fs-6 mt-1 justify-content-center w-100">
-                <div class="flex-fill">
-                    {{ timeFormat(startSec) }}
-                </div>
-                <div class="flex-fill">~</div>
-                <div class="flex-fill">{{ timeFormat(endSec) }}</div>
-            </div>
-
-            <div class="fs-6">▽わかるように簡単にメモをつけてください</div>
+    <div class="playlist-form-container">
+        <div class="form-group">
+            <div class="">プレイリスト名</div>
             <input
                 type="text"
                 v-model="title"
                 id="title"
-                placeholder="クリップメモ"
+                placeholder="プレイリスト名"
+                class="form-control mb-3"
             />
+            <div>説明文</div>
+            <textarea
+                v-model="description"
+                id="description"
+                placeholder="説明文"
+                class="form-control mb-4"
+            >
+            </textarea>
 
-            <div class="mt-3 d-flex gap-2 justify-content-center">
-                <button @click="playClip(startSec)" class="btn btn-success">
-                    開始時間へ
-                </button>
-                <button @click="playClip(endSec)" class="btn btn-success">
-                    終了時間へ
-                </button>
-                <button @click="postClip" class="btn btn-success">保存</button>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button
+                            class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne"
+                            @click="toggleCollapse1"
+                        >
+                            クリップ登録・解除
+                        </button>
+                    </h2>
+                    <transition>
+                        <div
+                            id="collapseOne"
+                            class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionExample"
+                            v-if="isCollapse1"
+                        >
+                            <div class="accordion-body">
+                                <strong
+                                    >This is the first item's accordion
+                                    body.</strong
+                                >
+                                It is shown by default, until the collapse
+                                plugin adds the appropriate classes that we use
+                                to style each element. These classes control the
+                                overall appearance, as well as the showing and
+                                hiding via CSS transitions. You can modify any
+                                of this with custom CSS or overriding our
+                                default variables. It's also worth noting that
+                                just about any HTML can go within the
+                                <code>.accordion-body</code>, though the
+                                transition does limit overflow.
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="collapseTwo"
+                        >
+                            クリップ並べ替え
+                        </button>
+                    </h2>
+                    <div
+                        id="collapseTwo"
+                        class="accordion-collapse collapse"
+                        data-bs-parent="#accordionExample"
+                    >
+                        <div class="accordion-body">
+                            <strong
+                                >This is the second item's accordion
+                                body.</strong
+                            >
+                            It is hidden by default, until the collapse plugin
+                            adds the appropriate classes that we use to style
+                            each element. These classes control the overall
+                            appearance, as well as the showing and hiding via
+                            CSS transitions. You can modify any of this with
+                            custom CSS or overriding our default variables. It's
+                            also worth noting that just about any HTML can go
+                            within the <code>.accordion-body</code>, though the
+                            transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree"
+                            aria-expanded="false"
+                            aria-controls="collapseThree"
+                        >
+                            ３
+                        </button>
+                    </h2>
+                    <div
+                        id="collapseThree"
+                        class="accordion-collapse collapse"
+                        data-bs-parent="#accordionExample"
+                    >
+                        <div class="accordion-body">
+                            <strong
+                                >This is the third item's accordion
+                                body.</strong
+                            >
+                            It is hidden by default, until the collapse plugin
+                            adds the appropriate classes that we use to style
+                            each element. These classes control the overall
+                            appearance, as well as the showing and hiding via
+                            CSS transitions. You can modify any of this with
+                            custom CSS or overriding our default variables. It's
+                            also worth noting that just about any HTML can go
+                            within the <code>.accordion-body</code>, though the
+                            transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <div class="mt-3 d-flex gap-2 justify-content-center">
+            <button @click="postClip" class="btn btn-success">保存</button>
         </div>
     </div>
 </template>
@@ -34,134 +141,88 @@
 <script>
 import axios from "axios";
 import { timeHelper } from "~js/helpers/timeHelper.js";
-import YouTubePlayer from "@/components/YouTubePlayer.vue";
-import Pause from "@/components/Parts/Pause.vue";
-import Play from "@/components/Parts/Play.vue";
+import { apiGet, apiPost } from "~js/utils/api.js";
 
 export default {
     props: {
-        videoId: {
+        playlistHash: {
             type: String,
-            required: true,
-        },
-        videoSec: {
-            type: Number,
             required: false,
         },
     },
-    components: {
-        YouTubePlayer,
-        Pause,
-        Play,
-    },
+    components: {},
     mixins: [timeHelper],
     data() {
         return {
-            isPlay: false,
-            currentTime: 0,
             title: "",
-            startSec: 0,
-            endSec: 0,
+            description: "",
+            videosClips: [],
+            isCollapse1: true,
+            isCollapse2: false,
+            isCollapse3: false,
         };
     },
-    mounted() {
-        this.setCurrentTime();
-    },
-    methods: {
-        setCurrentTime() {
-            if (this.isPlay) {
-                this.currentTime = this.$refs.YouTubePlayer.getCurrentTime();
-            }
-            setTimeout(this.setCurrentTime, 300);
-        },
-        setStartSec() {
-            this.startSec = Math.floor(
-                this.$refs.YouTubePlayer.getCurrentTime()
+    created() {
+        if (this.playlistHash) {
+            apiGet(
+                `/api/playlist/${this.playlistHash}`,
+                this.setPlaylist,
+                () => {}
             );
+        }
+        apiGet("/api/video/list/my/all", this.setVideoClips, () => {});
+    },
+    mounted() {},
+    methods: {
+        toggleCollapse1() {
+            this.isCollapse1 = !this.isCollapse1;
         },
-        setEndSec() {
-            this.endSec = Math.floor(this.$refs.YouTubePlayer.getCurrentTime());
+        toggleCollapse2() {
+            this.isCollapse2 = !this.isCollapse2;
         },
-        gainStartSecond() {
-            this.start = this.start + 1;
+        toggleCollapse3() {
+            this.isCollapse3 = !this.isCollapse3;
         },
-        reduceStartSecond() {
-            if (this.start > 0) {
-                this.start = this.start - 1;
-            }
+        setPlaylist(data) {
+            this.title = data.title;
+            this.description = data.description;
+            this.clips = data.clips;
         },
-        gainEndSecond() {
-            this.end = this.end + 1;
-        },
-        reduceEndSecond() {
-            if (this.end > 0) {
-                this.end = this.end - 1;
-            }
-        },
-        setForm(clip) {
-            this.title = clip.title;
-            this.startSec = clip.start_sec;
-            this.endSec = clip.end_sec;
-        },
-        playClip(sec) {
-            this.$refs.YouTubePlayer.seek(sec);
-            this.$refs.YouTubePlayer.play();
-        },
-        async postClip() {
-            try {
-                const response = await axios.post("/api/clip", {
-                    video_id: this.videoId,
-                    start_sec: this.startSec,
-                    end_sec: this.endSec,
-                    title: this.title,
+        setVideoClips(data) {
+            this.videosClips = [];
+            data.forEach((video) => {
+                this.videosClips.push({
+                    id: video.id,
+                    title: video.title,
+                    url: video.url,
+                    thumbnail: video.thumbnail,
+                    duration: video.duration,
+                    isClip: false,
                 });
-                if (response.status === 200) {
-                    this.$emit("getClips");
-                }
-            } catch (error) {
-                console.error(error);
-            }
+            });
         },
-        // Youtubeプレイヤー操作系
-        async pause() {
-            if (this.$refs.YouTubePlayer.pause()) {
-                this.isPlay = false;
-            }
+        async save() {
+            const data = {
+                title: this.title,
+                description: this.description,
+                clips: this.clips,
+            };
+            apiPost(`/api/playlist`, data, this.saveCallback, () => {});
         },
-        async play() {
-            if (this.$refs.YouTubePlayer.play()) {
-                this.isPlay = true;
-            }
-        },
-        eventPlay() {
-            this.isPlay = true;
-        },
-        eventPause() {
-            this.isPlay = false;
-        },
-        async seek(sec) {
-            this.$refs.YouTubePlayer.seek(sec);
-        },
-        async relativeSeek(sec) {
-            this.$refs.YouTubePlayer.relativeSeek(sec);
+        saveCallback() {
+            // this.$emit("getClips");
         },
     },
 };
 </script>
 
 <style scoped>
-.vr {
-    width: 2px;
+.playlist-form-container {
 }
 
 .current-time {
     font-size: 0.7em;
     line-height: 0.5em;
-}
-
-.edit-clip-form-control button {
-    height: 2em;
-    line-height: 1em;
 }
 
 .btn-narrow {
