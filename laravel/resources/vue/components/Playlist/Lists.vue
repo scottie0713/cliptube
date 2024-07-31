@@ -1,18 +1,12 @@
 <template>
     <div
+        :v-if="playlist"
         class="playlist-box d-flex justify-content-center align-items-center gap-2 word-break"
-        @click="goToPage('/clip/' + video.id)"
+        @click="goToPage('/clip/' + playlist.hash)"
     >
-        <div class="video-box-thumbnail">
-            <img
-                :src="video.thumbnail"
-                class="card-img-top"
-                :alt="video.title"
-                width="120"
-            />
-        </div>
+        <div class="video-box-thumbnail"></div>
         <div class="flex-fill">
-            {{ video.title }}
+            {{ playlist.title }}
         </div>
     </div>
 </template>
@@ -20,9 +14,9 @@
 <script>
 export default {
     props: {
-        playlists: {
+        playlist: {
             type: Array,
-            required: true,
+            required: false,
         },
     },
     components: {},

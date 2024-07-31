@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header />
+        <Header :user="user" />
 
         <div class="page-container">
             <!-- タイトル -->
@@ -61,7 +61,12 @@ import EditClipTrashList from "@/components/EditClipTrashList.vue";
 import ImageScissors from "@/components/Images/Scissors.vue";
 
 export default {
-    props: {},
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        },
+    },
     components: {
         EditClipForm,
         EditClipList,
