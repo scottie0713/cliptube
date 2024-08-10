@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use App\Http\Requests\API\VideoPostRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Playlist;
@@ -30,15 +32,23 @@ class PlaylistController extends Controller
 
     public function post(VideoPostRequest $request): JsonResponse
     {
-        Playlist::updateOrCreate(
-            [
-                'id' => $request->input('id')
-            ],
-            [
-                'title' => $request->input('title'),
-                'description' => $request->input('description'),
-            ]
-        );
+        DB::beginTransaction();
+        try {
+            $playlist = new Playlist();
+            $playlist->title = $request->input('title');
+            $playlist->description = $request->input('description');
+            $playlist->hash = Str::random(6);
+            $playlist->save();
+            $playlist->userPlaylists()->create([
+                'user_id' => $request->user()->id,
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dump($e->getMessage());
+            return response()->json([], 500);
+        }
 
         return response()->json([], 201);
     }

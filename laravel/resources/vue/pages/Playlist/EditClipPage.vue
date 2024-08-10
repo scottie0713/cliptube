@@ -1,7 +1,14 @@
 <template>
     <div>
         <Header :user="user" />
-        <PlaylistTitle />
+        <div
+            class="page-title d-flex justify-content-center align-items-center"
+        >
+            <div>
+                <ImagePlay size="30" />
+            </div>
+            <div>あなたのプレイリスト</div>
+        </div>
         <PlaylistForm />
     </div>
 </template>
@@ -10,7 +17,6 @@
 import axios from "axios";
 import Header from "@/components/Header.vue";
 import PlaylistForm from "@/components/Playlist/Form.vue";
-import PlaylistTitle from "@/components/Playlist/EditTitle.vue";
 
 export default {
     props: {
@@ -22,7 +28,6 @@ export default {
     components: {
         Header,
         PlaylistForm,
-        PlaylistTitle,
     },
     data() {
         return {
@@ -43,5 +48,12 @@ export default {
 
 <style scoped>
 .page-container {
+}
+
+.page-title {
+    background-color: #76c2af;
+    margin: 0 auto 0 auto;
+    padding: 0.2em;
+    width: 100%;
 }
 </style>

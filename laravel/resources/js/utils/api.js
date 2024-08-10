@@ -1,32 +1,29 @@
-// src/utils/api.js
-import axios from 'axios';
+import axios from "axios";
 
-async function apiGet(url, onSuccess, onFailure)
-{
+async function apiGet(url, onSuccess, onFailure) {
     try {
         const response = await axios.get(url);
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status < 300) {
             onSuccess(response.data);
         } else {
             onFailure(`Unexpected response status: ${response.status}`);
         }
     } catch (error) {
-        console.error('API GET request error:', error);
+        console.error("API GET request error:", error);
         onFailure(error);
     }
 }
 
-async function apiPost(url, data, onSuccess, onFailure)
-{
+async function apiPost(url, data, onSuccess, onFailure) {
     try {
         const response = await axios.post(url, data);
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status < 300) {
             onSuccess(response.data);
         } else {
             onFailure(`Unexpected response status: ${response.status}`);
         }
     } catch (error) {
-        console.error('API POST request error:', error);
+        console.error("API POST request error:", error);
         onFailure(error);
     }
 }

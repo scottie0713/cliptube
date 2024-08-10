@@ -66,7 +66,7 @@
                     :isEnable="user.isLogin"
                     menuTitle="プレイリスト作成"
                     backgroundColor="#5ca3c7"
-                    :linkPath="`/playlist/${user.hash}`"
+                    :linkPath="`/user/${user.hash}/playlist`"
                 />
             </div>
         </div>

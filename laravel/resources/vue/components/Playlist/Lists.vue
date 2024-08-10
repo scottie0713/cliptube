@@ -8,16 +8,30 @@
         <div class="flex-fill">
             {{ playlist.title }}
         </div>
+        <div
+            class="btn btn-secondary"
+            v-if="isEditable"
+            @click="goToPage(`/playlist/${playlist.hash}/edit-title`)"
+        >
+            タイトル変更
+        </div>
     </div>
 </template>
 
 <script>
 export default {
     props: {
+        isEditable: {
+            type: Boolean,
+            required: true,
+        },
         playlist: {
             type: Array,
             required: false,
         },
+    },
+    mounted() {
+        console.log("isEditable", this.isEditable);
     },
     components: {},
     methods: {

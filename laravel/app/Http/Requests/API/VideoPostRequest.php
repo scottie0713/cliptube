@@ -14,9 +14,8 @@ class VideoPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|string|max:16',
-            'title' => 'required|string|max:255',
-            'thumbnail' => 'required|url:http,https',
+            'title' => 'required|string|max:32',
+            'description' => 'string|max:255',
         ];
     }
 }
