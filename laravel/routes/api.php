@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/playlist/user/{user_hash}', [PlaylistController::class, 'list']);
     Route::post('/playlist', [PlaylistController::class, 'post']);
+    Route::put('/playlist', [PlaylistController::class, 'put']);
+    Route::delete('/playlist', [PlaylistController::class, 'delete']);
 
     Route::get('/video/list/{user_hash}', [VideoController::class, 'list']);
     Route::get('/video/list/my/all', [VideoController::class, 'myListAll']);

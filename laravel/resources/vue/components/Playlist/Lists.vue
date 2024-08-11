@@ -1,12 +1,13 @@
 <template>
-    <div
-        :v-if="playlist"
-        class="playlist-box d-flex justify-content-center align-items-center gap-2 word-break"
-        @click="goToPage('/clip/' + playlist.hash)"
-    >
-        <div class="video-box-thumbnail"></div>
-        <div class="flex-fill">
-            {{ playlist.title }}
+    <div :v-if="playlist">
+        <div
+            class="playlist-box d-flex justify-content-center align-items-center gap-2 word-break"
+            @click="goToPage('/clip/' + playlist.hash)"
+        >
+            <div class="video-box-thumbnail"></div>
+            <div class="flex-fill">
+                {{ playlist.title }}
+            </div>
         </div>
         <div
             class="btn btn-secondary"
@@ -15,10 +16,25 @@
         >
             タイトル変更
         </div>
+        <div
+            class="btn btn-secondary"
+            v-if="isEditable"
+            @click="goToPage(`/playlist/${playlist.hash}/edit-clip`)"
+        >
+            クリップ編集
+        </div>
+        <div
+            class="btn btn-secondary"
+            v-if="isEditable"
+            @click="deletePlaylist(playlist.hash)"
+        >
+            削除
+        </div>
     </div>
 </template>
 
 <script>
+import { apiDelete } from "~js/utils/api.js";
 export default {
     props: {
         isEditable: {
@@ -35,6 +51,15 @@ export default {
     },
     components: {},
     methods: {
+        async deletePlaylist(playlistHash) {
+            const data = {
+                playlist_hash: playlistHash,
+            };
+            apiDelete(`/api/playlist`, data, this.successCallback, () => {});
+        },
+        successCallback() {
+            this.$emit("reload");
+        },
         goToPage(path) {
             this.$router.push(path);
         },

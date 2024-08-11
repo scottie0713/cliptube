@@ -32,4 +32,10 @@ class User extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    // $this->user()から、UserPlaylistにアクセスできるようにする
+    public function userPlaylists()
+    {
+        return $this->hasMany(UserPlaylist::class);
+    }
 }

@@ -10,7 +10,7 @@
             <div>プレイリスト作成</div>
         </div>
         <div class="p-4">
-            <PlaylistCreateForm
+            <PlaylistTitleForm
                 @redirectToPlaylist="goToPage(`/playlist/${userHash}`)"
             />
         </div>
@@ -20,7 +20,7 @@
 <script>
 import axios from "axios";
 import Header from "@/components/Header.vue";
-import PlaylistCreateForm from "@/components/Playlist/CreateForm.vue";
+import PlaylistTitleForm from "@/components/Playlist/TitleForm.vue";
 import ImagePlay from "@/components/Images/Play.vue";
 
 export default {
@@ -32,7 +32,7 @@ export default {
     },
     components: {
         Header,
-        PlaylistCreateForm,
+        PlaylistTitleForm,
         ImagePlay,
     },
     data() {

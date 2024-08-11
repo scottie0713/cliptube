@@ -9,14 +9,18 @@
             </div>
             <div>あなたのプレイリスト</div>
         </div>
-        <PlaylistForm />
+        <div class="p-4">
+            <PlaylistTitleForm
+                @redirectToPlaylist="goToPage(`/playlist/${userHash}`)"
+            />
+        </div>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import Header from "@/components/Header.vue";
-import PlaylistForm from "@/components/Playlist/Form.vue";
+import PlaylistTitleForm from "@/components/Playlist/TitleForm.vue";
 
 export default {
     props: {
@@ -27,7 +31,7 @@ export default {
     },
     components: {
         Header,
-        PlaylistForm,
+        PlaylistTitleForm,
     },
     data() {
         return {

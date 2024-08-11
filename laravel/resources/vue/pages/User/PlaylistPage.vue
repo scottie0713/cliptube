@@ -13,7 +13,7 @@
         <div class="page-container">
             <div
                 class="page-create my-3 d-inline-flex rounded py-2 px-4 mx-2"
-                @click="goToPage(`/playlist/${userHash}/create`)"
+                @click="goToPage(`/playlist/create`)"
             >
                 &#x2719;&nbsp;新規作成
             </div>
@@ -26,6 +26,7 @@
                     <PlaylistLists
                         :playlist="playlist"
                         :isEditable="isEditable"
+                        @reload="reload"
                     />
                 </div>
             </div>
@@ -36,7 +37,7 @@
 
 <script>
 import axios from "axios";
-import { apiGet, apiPost } from "~js/utils/api.js";
+import { apiGet } from "~js/utils/api.js";
 import Header from "@/components/Header.vue";
 import ImagePlay from "@/components/Images/Play.vue";
 import PlaylistLists from "@/components/Playlist/Lists.vue";
@@ -90,6 +91,9 @@ export default {
         goToPage(path) {
             this.$router.push(path);
         },
+        reload() {
+            this.$router.go();
+        },
     },
 };
 </script>
@@ -98,6 +102,11 @@ export default {
 .page-container {
     width: 90%;
     margin: 0 auto;
+}
+
+.page-create {
+    background-color: #76c2af;
+    cursor: pointer;
 }
 
 .page-title {

@@ -1,23 +1,6 @@
 <template>
     <div class="playlist-form-container">
         <div class="form-group">
-            <div class="">プレイリスト名</div>
-            <input
-                type="text"
-                v-model="title"
-                id="title"
-                placeholder="プレイリスト名"
-                class="form-control mb-3"
-            />
-            <div>説明文</div>
-            <textarea
-                v-model="description"
-                id="description"
-                placeholder="説明文"
-                class="form-control mb-4"
-            >
-            </textarea>
-
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header">

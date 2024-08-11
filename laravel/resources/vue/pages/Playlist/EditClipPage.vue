@@ -16,7 +16,7 @@
 <script>
 import axios from "axios";
 import Header from "@/components/Header.vue";
-import PlaylistForm from "@/components/Playlist/Form.vue";
+import PlaylistClipForm from "@/components/Playlist/ClipForm.vue";
 
 export default {
     props: {
@@ -27,7 +27,7 @@ export default {
     },
     components: {
         Header,
-        PlaylistForm,
+        PlaylistClipForm,
     },
     data() {
         return {
