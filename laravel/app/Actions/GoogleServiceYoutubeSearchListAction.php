@@ -2,14 +2,6 @@
 
 namespace App\Actions;
 
-// use App\Models\LogYoutubeApiEvent;
-// use App\Models\Video;
-// use Google\Client;
-// use Google_Service_YouTube;
-// use Google\Service\Youtube;
-// use Illuminate\Support\Facades\Cache;
-// use Google\Service\YouTube\SearchListResponse;
-
 class GoogleServiceYoutubeSearchListAction
 {
     private $youtubeService = null;

@@ -1,9 +1,14 @@
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
+        # Options -MultiViews -Indexes
+        Options -Indexes
     </IfModule>
 
     RewriteEngine On
+
+    # /build/assets/ 配下のファイルはリダイレクトを無効化して直接読み込む
+    RewriteCond %{REQUEST_URI} ^/build/assets/ [NC]
+    RewriteRule .* - [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

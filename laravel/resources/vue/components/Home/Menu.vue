@@ -31,7 +31,6 @@ import { markRaw } from "vue";
 import ImageScissors from "@/components/Images/Scissors.vue";
 import ImageVideoStory from "@/components/Images/VideoStory.vue";
 import ImageClip from "@/components/Images/Clip.vue";
-// import ImageSearch from "@/components/Images/Search.vue";
 import ImageSearchOrange from "@/components/Images/SearchOrange.vue";
 export default {
     props: {

@@ -1,10 +1,5 @@
 @import "~bootstrap/scss/bootstrap";
 
-// @font-face {
-//     font-family: 'Keifont';
-//     src: url('../fonts/keifont.ttf') format('truetype');
-// }
-
 html,
 body {
     height: 100%;
@@ -19,31 +14,4 @@ body {
 
 body {
     background-color: #1d2023;
-    // background-image: url('../images/background-curve.svg');
-    // background-image: url('../images/black_00014.jpg');
-    // background-size: cover; // 必要に応じてサイズを調整
-    // background-repeat: no-repeat; // 繰り返しを無効にする
-    // background-position: bottom; // 中央に配置
-    // background-attachment: fixed; // 背景を固定する
 }
-
-// .play {
-//     background-image: url("../images/play.svg");
-// }
-// .pause {
-//     background-image: url("../images/pause.svg");
-// }
-
-// #app {
-//     height: 100%;
-// }
-
-// .component-container {
-//     background-color: rgba(255, 255, 255, 0.8);
-//     width: 100%;
-//     max-width: 1200px;
-//     margin: 20px auto;
-//     margin-bottom: 400px;
-//     padding: 20px;
-//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-// }
