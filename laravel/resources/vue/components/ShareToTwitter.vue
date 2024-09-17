@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         shareToTwitter() {
-            const url = `https://twitter.com/intent/tweet?text=${this.title}&url=${this.url}`;
+            const url = `https://twitter.com/intent/tweet?text=${this.text}&url=${this.url}`;
             window.open(url, "_blank");
         },
     },

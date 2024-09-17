@@ -6,7 +6,7 @@
             { clickable: isEnable },
         ]"
         :style="{ backgroundColor: backgroundColor }"
-        @click="isEnable ? goToPage(linkPath) : null"
+        @click="isEnable ? $router.push(linkPath) : null"
     >
         <div v-if="imageName == 'ImageClip'" class="menu-icon">
             <ImageClip size="36" />
@@ -57,15 +57,9 @@ export default {
     },
     components: {
         ImageClip,
-        // ImageSearch,
         ImageSearchOrange,
         ImageScissors,
         ImageVideoStory,
-    },
-    methods: {
-        goToPage(path) {
-            this.$router.push(path);
-        },
     },
 };
 </script>

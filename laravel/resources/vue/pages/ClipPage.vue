@@ -36,11 +36,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-12 col-sm-12 col-md-4 col-lg-4">
-                    <ShareToTwitter
-                        :text="videoTitle"
-                        :url="`https://clipper.tokyo/watch/${videoId}`"
-                    />
+                <div class="mx-2">
+                    <div class="col col-12 col-sm-12 col-md-4 col-lg-4">
+                        <ShareToTwitter
+                            :text="`${videoTitle} のお気に入りシーンをY-Clippersで作りました。`"
+                            :url="`https://y-clippers.net/clip/${videoId}`"
+                        />
+                    </div>
+                    <div class="my-2 col col-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="btn btn-secondary btn-to-edit" @click="$router.push(`/clip/${videoId}/edit`)">
+                            編集
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,4 +137,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn-to-edit {
+    cursor: pointer;
+    font-size: 0.8rem;
+    background-color: aa6;
+    border-radius: 0.8rem;
+    padding: 0.5rem;
+}
+</style>
